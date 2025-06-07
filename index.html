@@ -1,83 +1,632 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Science & Facts - Home</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>Science & Facts – Ultimate Single Page Experience</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /*--------------------------------------------------------------
+    GENERAL STYLES
+    --------------------------------------------------------------*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /*--------------------------------------------------------------
+    NAVIGATION STYLES
+    --------------------------------------------------------------*/
+    header {
+      background-color: #333;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      gap: 2rem;
+    }
+    nav a {
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    nav a:hover {
+      background-color: #575757;
+    }
+    /*--------------------------------------------------------------
+    HERO / HOME SECTION
+    --------------------------------------------------------------*/
+    .hero {
+      background: url('https://via.placeholder.com/1920x600?text=Science+%26+Facts') no-repeat center center/cover;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background: rgba(0,0,0,0.65);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+    }
+    /*--------------------------------------------------------------
+    SECTION STYLES
+    --------------------------------------------------------------*/
+    section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    section h2 {
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    /*--------------------------------------------------------------
+    ARTICLES / FACTS / DISCOVERIES
+    --------------------------------------------------------------*/
+    article {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      overflow: hidden;
+    }
+    article:last-child {
+      border: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    article h3 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    article p {
+      margin-bottom: 10px;
+    }
+    article a.read-more {
+      display: inline-block;
+      background-color: #333;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    article a.read-more:hover {
+      background-color: #575757;
+    }
+    /*--------------------------------------------------------------
+    CONTACT SECTION
+    --------------------------------------------------------------*/
+    .contact-form {
+      max-width: 600px;
+      margin: auto;
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .contact-form button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover {
+      background-color: #575757;
+    }
+    /*--------------------------------------------------------------
+    FOOTER STYLES
+    --------------------------------------------------------------*/
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+    /*--------------------------------------------------------------
+    RESPONSIVE ADDITIONS
+    --------------------------------------------------------------*/
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+    /*--------------------------------------------------------------
+    ANIMATIONS
+    --------------------------------------------------------------*/
+    .fade-in {
+      animation: fadeInAppear 1s ease forwards;
+    }
+    @keyframes fadeInAppear {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  <!-- Navigation -->
+
+  <!-- HEADER: Sticky Navigation -->
   <header>
     <nav>
-      <ul>
-        <li><a href="index.html" title="Home">Home</a></li>
-        <li><a href="facts.html" title="Science Facts">Facts</a></li>
-        <li><a href="discoveries.html" title="Latest Discoveries">Discoveries</a></li>
-        <li><a href="#contact" title="Contact Us">Contact</a></li>
-      </ul>
+      <a href="#home">Home</a>
+      <a href="#facts">Facts</a>
+      <a href="#discoveries">Discoveries</a>
+      <a href="#history">Historical Notes</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <!-- Animated Banner Section -->
-  <section id="home" class="banner">
-    <div class="banner-content">
+  <!-- HERO / HOME SECTION -->
+  <section id="home" class="hero">
+    <div class="hero-content fade-in">
       <h1>Welcome to Science & Facts</h1>
-      <p>Where Curiosity Meets Discovery</p>
+      <p>Your all-in-one destination for groundbreaking discoveries, compelling facts, and inspiring narratives from around the world.</p>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about">
-    <h2 class="section-title">Our Journey Into Discovery</h2>
-    <div class="about-content">
-      <p>
-        Science & Facts is passionate about unraveling the mysteries of the universe. We present captivating scientific facts and groundbreaking discoveries, fueling curiosity and inspiring lifelong learning. Whether you're a student, enthusiast, or professional, our curated content brings education and entertainment together.
-      </p>
+  <!-- FACTS SECTION -->
+  <section id="facts">
+    <h2>Latest Facts</h2>
+    <!-- Fact 1: HIV Prevention Breakthrough -->
+    <article class="fade-in" style="animation-delay:0.2s;">
+      <h3>HIV Prevention Breakthrough</h3>
+      <p>A revolutionary drug, Lenacapavir, shows unprecedented success in HIV prevention, promising a new era in global healthcare.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Fact 2: Climate Change Milestone -->
+    <article class="fade-in" style="animation-delay:0.4s;">
+      <h3>Climate Change Milestone</h3>
+      <p>Recent studies indicate a breakthrough in sustainable energy solutions, highlighting how renewable energy is scaling globally.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Fact 3: Advancements in AI -->
+    <article class="fade-in" style="animation-delay:0.6s;">
+      <h3>Advancements in Artificial Intelligence</h3>
+      <p>AI-powered algorithms now revolutionize how data is processed, leading to smarter and more efficient systems in healthcare and technology.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+  </section>
+
+  <!-- DISCOVERIES SECTION -->
+  <section id="discoveries">
+    <h2>Latest Discoveries</h2>
+    <!-- Discovery 1: Fruit Fly Brain Connectome -->
+    <article class="fade-in" style="animation-delay:0.2s;">
+      <h3>Fruit Fly Brain Connectome</h3>
+      <p>Researchers have mapped 140,000 neurons within a fruit fly brain, opening new avenues to understand human cognition. This achievement might pave the way for insights into neural networks and biology.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Discovery 2: Super-Earth in the Habitable Zone -->
+    <article class="fade-in" style="animation-delay:0.4s;">
+      <h3>Super-Earth Discovery</h3>
+      <p>NASA recently detected a super-Earth in the habitable zone—fueling exhilarating discussions on extraterrestrial life and the potential for future colonization in outer space.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Discovery 3: Quantum Computing Leap -->
+    <article class="fade-in" style="animation-delay:0.6s;">
+      <h3>Quantum Computing Leap</h3>
+      <p>Recent developments in quantum circuitry promise faster computing speeds than ever before, setting the stage for revolutions in data processing and artificial intelligence.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+  </section>
+  
+  <!-- HISTORICAL NOTES SECTION -->
+  <section id="history">
+    <h2>Historical Narratives & Aayi Mandapam</h2>
+    <article class="fade-in" style="animation-delay:0.2s;">
+      <h3>Aayi Mandapam: A Walk Through Time</h3>
+      <p>Revisit the intricate stories etched in what is known as Aayi Mandapam—an emblem of history and cultural heritage. This narrative not only illustrates the artistry of its creators but also provides reflections on tradition meeting modernity.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed historical insights coming soon!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay:0.4s;">
+      <h3>GitHub Pages Troubleshooting & Publishing Tips</h3>
+      <p>Struggling with GitHub Pages? We share detailed insights and troubleshooting steps for publishing your website online, explaining everything from issues with case sensitivity to browser cache hiccups.</p>
+      <a class="read-more" href="#!" onclick="alert('Stay tuned for comprehensive guidance!')">Read More →</a>
+    </article>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>If you have any questions, feedback, or contributions to our growing repository of facts and discoveries, feel free to reach out!</p>
+    <div class="contact-form fade-in" style="animation-delay:0.2s;">
+      <form action="#!" method="post">
+        <input type="text" name="name" placeholder="Your Full Name" required>
+        <input type="email" name="email" placeholder="Your Email Address" required>
+        <textarea name="message" placeholder="Your Message..." rows="6" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2>Get in Touch</h2>
-    <p>
-      Have brilliant ideas or questions? If you want to share your passion for science, drop us an email—we'd love to chat!
-    </p>
-    <a href="mailto:sciencefacts@example.com" title="Send us an email">Contact Us</a>
-    <div class="creator">Created by Ishan Pal</div>
-  </section>
-
-  <!-- Back to Top Button -->
-  <button id="backToTop" title="Back to Top">&#8679;</button>
-
+  <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Science & Facts. All rights reserved.</p>
+    <p>Designed with passion to inspire curiosity and drive discovery.</p>
   </footer>
 
-  <!-- JavaScript for Animations and Back-to-Top -->
+  <!-- OPTIONAL: JavaScript for Additional Interactivity -->
   <script>
-    // Banner content animation on page load
-    window.addEventListener('load', () => {
-      const bannerContent = document.querySelector('.banner-content');
-      bannerContent.classList.add('visible');
-    });
-    
-    // Smooth back to top button
-    const backToTopBtn = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        backToTopBtn.classList.add('active');
-      } else {
-        backToTopBtn.classList.remove('active');
-      }
-    });
-    
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    // This script can be expanded for more interactive features.
+    // For now, it simply logs navigation clicks.
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        console.log(`Navigating to ${e.target.getAttribute('href')}`);
       });
     });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Science & Facts – Ultimate Single Page Experience</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /*--------------------------------------------------------------
+    GENERAL STYLES
+    --------------------------------------------------------------*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /*--------------------------------------------------------------
+    NAVIGATION STYLES
+    --------------------------------------------------------------*/
+    header {
+      background-color: #333;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      gap: 2rem;
+    }
+    nav a {
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    nav a:hover {
+      background-color: #575757;
+    }
+    /*--------------------------------------------------------------
+    HERO / HOME SECTION
+    --------------------------------------------------------------*/
+    .hero {
+      background: url('https://via.placeholder.com/1920x600?text=Science+%26+Facts') no-repeat center center/cover;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background: rgba(0,0,0,0.65);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+    }
+    /*--------------------------------------------------------------
+    SECTION STYLES
+    --------------------------------------------------------------*/
+    section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    section h2 {
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    /*--------------------------------------------------------------
+    ARTICLES / FACTS / DISCOVERIES
+    --------------------------------------------------------------*/
+    article {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      overflow: hidden;
+    }
+    article:last-child {
+      border: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    article h3 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    article p {
+      margin-bottom: 10px;
+    }
+    article a.read-more {
+      display: inline-block;
+      background-color: #333;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    article a.read-more:hover {
+      background-color: #575757;
+    }
+    /*--------------------------------------------------------------
+    CONTACT SECTION
+    --------------------------------------------------------------*/
+    .contact-form {
+      max-width: 600px;
+      margin: auto;
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .contact-form button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover {
+      background-color: #575757;
+    }
+    /*--------------------------------------------------------------
+    FOOTER STYLES
+    --------------------------------------------------------------*/
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+    /*--------------------------------------------------------------
+    RESPONSIVE ADDITIONS
+    --------------------------------------------------------------*/
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+    /*--------------------------------------------------------------
+    ANIMATIONS
+    --------------------------------------------------------------*/
+    .fade-in {
+      animation: fadeInAppear 1s ease forwards;
+    }
+    @keyframes fadeInAppear {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER: Sticky Navigation -->
+  <header>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#facts">Facts</a>
+      <a href="#discoveries">Discoveries</a>
+      <a href="#history">Historical Notes</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO / HOME SECTION -->
+  <section id="home" class="hero">
+    <div class="hero-content fade-in">
+      <h1>Welcome to Science & Facts</h1>
+      <p>Your all-in-one destination for groundbreaking discoveries, compelling facts, and inspiring narratives from around the world.</p>
+    </div>
+  </section>
+
+  <!-- FACTS SECTION -->
+  <section id="facts">
+    <h2>Latest Facts</h2>
+    <!-- Fact 1: HIV Prevention Breakthrough -->
+    <article class="fade-in" style="animation-delay:0.2s;">
+      <h3>HIV Prevention Breakthrough</h3>
+      <p>A revolutionary drug, Lenacapavir, shows unprecedented success in HIV prevention, promising a new era in global healthcare.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Fact 2: Climate Change Milestone -->
+    <article class="fade-in" style="animation-delay:0.4s;">
+      <h3>Climate Change Milestone</h3>
+      <p>Recent studies indicate a breakthrough in sustainable energy solutions, highlighting how renewable energy is scaling globally.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Fact 3: Advancements in AI -->
+    <article class="fade-in" style="animation-delay:0.6s;">
+      <h3>Advancements in Artificial Intelligence</h3>
+      <p>AI-powered algorithms now revolutionize how data is processed, leading to smarter and more efficient systems in healthcare and technology.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+  </section>
+
+  <!-- DISCOVERIES SECTION -->
+  <section id="discoveries">
+    <h2>Latest Discoveries</h2>
+    <!-- Discovery 1: Fruit Fly Brain Connectome -->
+    <article class="fade-in" style="animation-delay:0.2s;">
+      <h3>Fruit Fly Brain Connectome</h3>
+      <p>Researchers have mapped 140,000 neurons within a fruit fly brain, opening new avenues to understand human cognition. This achievement might pave the way for insights into neural networks and biology.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Discovery 2: Super-Earth in the Habitable Zone -->
+    <article class="fade-in" style="animation-delay:0.4s;">
+      <h3>Super-Earth Discovery</h3>
+      <p>NASA recently detected a super-Earth in the habitable zone—fueling exhilarating discussions on extraterrestrial life and the potential for future colonization in outer space.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+    
+    <!-- Discovery 3: Quantum Computing Leap -->
+    <article class="fade-in" style="animation-delay:0.6s;">
+      <h3>Quantum Computing Leap</h3>
+      <p>Recent developments in quantum circuitry promise faster computing speeds than ever before, setting the stage for revolutions in data processing and artificial intelligence.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
+    </article>
+  </section>
+  
+  <!-- HISTORICAL NOTES SECTION -->
+  <section id="history">
+    <h2>Historical Narratives & Aayi Mandapam</h2>
+    <article class="fade-in" style="animation-delay:0.2s;">
+      <h3>Aayi Mandapam: A Walk Through Time</h3>
+      <p>Revisit the intricate stories etched in what is known as Aayi Mandapam—an emblem of history and cultural heritage. This narrative not only illustrates the artistry of its creators but also provides reflections on tradition meeting modernity.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed historical insights coming soon!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay:0.4s;">
+      <h3>GitHub Pages Troubleshooting & Publishing Tips</h3>
+      <p>Struggling with GitHub Pages? We share detailed insights and troubleshooting steps for publishing your website online, explaining everything from issues with case sensitivity to browser cache hiccups.</p>
+      <a class="read-more" href="#!" onclick="alert('Stay tuned for comprehensive guidance!')">Read More →</a>
+    </article>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>If you have any questions, feedback, or contributions to our growing repository of facts and discoveries, feel free to reach out!</p>
+    <div class="contact-form fade-in" style="animation-delay:0.2s;">
+      <form action="#!" method="post">
+        <input type="text" name="name" placeholder="Your Full Name" required>
+        <input type="email" name="email" placeholder="Your Email Address" required>
+        <textarea name="message" placeholder="Your Message..." rows="6" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Science & Facts. All rights reserved.</p>
+    <p>Designed with passion to inspire curiosity and drive discovery.</p>
+  </footer>
+
+  <!-- OPTIONAL: JavaScript for Additional Interactivity -->
+  <script>
+    // This script can be expanded for more interactive features.
+    // For now, it simply logs navigation clicks.
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        console.log(`Navigating to ${e.target.getAttribute('href')}`);
+      });
+    });
+<link rel="stylesheet" href="styles.css">
+
+  </script>
+</body>
+</html>
   </script>
 </body>
 </html>
