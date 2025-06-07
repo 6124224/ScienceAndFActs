@@ -3,8 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Science & Facts - Latest Discoveries 2024-25</title>
+  <title>Science & Facts - Latest Scientific Discoveries 2024-25</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- Inline styles for accordions (optional: these may be in your external CSS file) -->
+  <style>
+    .accordion {
+      border-top: 1px solid #ddd;
+      cursor: pointer;
+      padding: 10px;
+      background: #f8f8f8;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .accordion:hover {
+      background: #eee;
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: #fafafa;
+      padding: 0 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .accordion.active .accordion-content {
+      max-height: 500px; /* Adjust as needed */
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
@@ -19,55 +45,208 @@
     </nav>
   </header>
 
-  <!-- Discoveries Section -->
+  <!-- Animated Banner Section -->
+  <section id="home" class="banner">
+    <div class="banner-content">
+      <h1>Breakthrough Discoveries 2024-25</h1>
+      <p>Unveiling the Latest Frontiers of Science</p>
+    </div>
+  </section>
+  
+  <!-- Introductory Information Section -->
+  <section id="intro">
+    <h2 class="section-title">Exploring New Realms of Science</h2>
+    <div class="intro-content" style="max-width: 900px; margin: 0 auto; text-align: center; padding: 0 20px;">
+      <p>
+        Welcome to our dedicated discoveries page, where the cutting edge of science comes to life. In 2024-25, researchers around the globe have made groundbreaking strides—from revolutionary medical therapies and quantum innovations to astronomical revelations that challenge our understanding of the universe.
+      </p>
+      <p>
+        Each discovery featured below is presented as a dynamic card. Not only will you see a brief summary and captivating imagery, but you may also click to "Read Extended Info" for an in-depth look at how these breakthroughs are shaping the future. Scroll down, explore our curated resources, and join us on this journey through scientific innovation!
+      </p>
+    </div>
+  </section>
+  
+  <!-- Discoveries Cards Section -->
   <section id="discoveries">
     <h2 class="section-title">Latest Discoveries 2024-25</h2>
     <div class="cards" id="discoveries-cards">
-      <!-- Discovery Card 1 -->
+      
+      <!-- Discovery Card 1: HIV Prevention Breakthrough -->
       <div class="card">
-        <img src="https://source.unsplash.com/300x180/?medical,innovation" alt="HIV Prevention Breakthrough" />
+        <img src="https://source.unsplash.com/300x180/?medical,innovation" alt="HIV Prevention Breakthrough">
         <div class="card-content">
           <h3>HIV Prevention Breakthrough</h3>
-          <p>A revolutionary drug, Lenacapavir, shows unprecedented success in HIV prevention, promising a new era in global healthcare.</p>
-          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Learn more about this breakthrough">Read More &rarr;</a>
+          <p>
+            A revolutionary drug, Lenacapavir, has shown unprecedented success in preventing HIV, offering a promising new tool for global health.
+          </p>
+          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Learn more about HIV breakthroughs">Read More &rarr;</a>
+          <!-- Extended Accordion -->
+          <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-title">Read Extended Info</div>
+            <div class="accordion-content">
+              <p>
+                Lenacapavir works by targeting the capsid protein of HIV, a strategy that differs from standard antiviral medications. Clinical trials have revealed success rates as high as 96-100% in selected groups, making it a potent candidate for pre-exposure prophylaxis (PrEP).
+              </p>
+              <p>
+                Its innovative delivery method—a twice-yearly subcutaneous injection—could significantly improve adherence compared to daily pills. This breakthrough marks a transformative moment in HIV prevention and opens doors to similar antiviral strategies.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- Discovery Card 2 -->
+      
+      <!-- Discovery Card 2: Complete Brain Connectome -->
       <div class="card">
-        <img src="https://source.unsplash.com/300x180/?brain,science" alt="Fruit Fly Brain Connectome" />
+        <img src="https://source.unsplash.com/300x180/?brain,neuron" alt="Complete Brain Connectome">
         <div class="card-content">
-          <h3>Fruit Fly Brain Connectome</h3>
-          <p>Researchers have mapped 140,000 neurons within a fruit fly brain, opening new avenues to understand human cognition.</p>
-          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Discover more details">Read More &rarr;</a>
+          <h3>Complete Brain Connectome</h3>
+          <p>
+            Scientists have successfully mapped over 140,000 neurons and millions of synapses within a fruit fly's brain—a milestone that could unlock new understanding of human cognition.
+          </p>
+          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Explore brain mapping">Read More &rarr;</a>
+          <!-- Extended Accordion -->
+          <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-title">Read Extended Info</div>
+            <div class="accordion-content">
+              <p>
+                Known as a connectome, this comprehensive mapping of neural circuits in Drosophila melanogaster represents years of painstaking research. By understanding these connections, researchers hope to extrapolate principles that govern learning, memory, and decision-making in more complex brains.
+              </p>
+              <p>
+                This breakthrough not only provides insights into the fruit fly's mind but also serves as a stepping stone toward creating detailed models of the human brain—paving the way for innovative treatments for neurological disorders.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- Discovery Card 3 -->
+      
+      <!-- Discovery Card 3: Super-Earth in the Habitable Zone -->
       <div class="card">
-        <img src="https://source.unsplash.com/300x180/?space,planet" alt="Super-Earth Discovery" />
+        <img src="https://source.unsplash.com/300x180/?space,planet" alt="Super-Earth Discovery">
         <div class="card-content">
           <h3>Super-Earth Discovery</h3>
-          <p>NASA recently detected a super-Earth in the habitable zone—fueling exhilarating discussion on extraterrestrial life.</p>
+          <p>
+            NASA's latest find, a super-Earth residing comfortably within its star's habitable zone, renews discussions about the potential for extraterrestrial life.
+          </p>
           <a href="https://www.nasa.gov/" target="_blank" title="Explore space discoveries">Read More &rarr;</a>
+          <!-- Extended Accordion -->
+          <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-title">Read Extended Info</div>
+            <div class="accordion-content">
+              <p>
+                Designated TOI-715 b, this super-Earth boasts a diameter roughly 1.5 times that of our planet. Its location in a region considered ideal for the sustaining of liquid water places it among the most promising exoplanet candidates for harboring life.
+              </p>
+              <p>
+                The discovery leverages advanced space telescopes and data from international observatories, reinforcing the importance of multi-national collaborations in unraveling cosmic mysteries.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+      
+      <!-- Discovery Card 4: Fusion Energy Advancement -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?fusion,energy" alt="Fusion Energy Breakthrough">
+        <div class="card-content">
+          <h3>Fusion Energy Breakthrough</h3>
+          <p>
+            After decades of research, a major breakthrough in fusion technology brings us closer to a future of clean and abundant energy.
+          </p>
+          <a href="https://mycareerinfo.in/15-major-scientific-discoveries-and-innovations-of-2024/" target="_blank" title="Learn about fusion energy">Read More &rarr;</a>
+          <!-- Extended Accordion -->
+          <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-title">Read Extended Info</div>
+            <div class="accordion-content">
+              <p>
+                Fusion energy mimics the processes powering the sun—a nearly inexhaustible energy source produced by fusing light atomic nuclei. Recent experiments have successfully generated more energy from fusion reactions than previously possible, an achievement that many experts believe could revolutionize the global energy landscape.
+              </p>
+              <p>
+                While commercial fusion power plants may still be years away, this breakthrough is a monumental stride forward in the quest for sustainable, carbon-free energy.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Discovery Card 5: CRISPR and Gene Editing Innovations -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?gene,editing" alt="CRISPR Innovations">
+        <div class="card-content">
+          <h3>CRISPR & Gene Editing Innovations</h3>
+          <p>
+            Cutting-edge refinements in CRISPR technology have paved the way for unprecedented precision in gene editing—revolutionizing treatments for genetic disorders.
+          </p>
+          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Discover gene editing advances">Read More &rarr;</a>
+          <!-- Extended Accordion -->
+          <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-title">Read Extended Info</div>
+            <div class="accordion-content">
+              <p>
+                By enhancing the accuracy of CRISPR systems, scientists are now able to target defective genes with minimal off-target effects. This not only holds promise for curing once-intractable genetic diseases but also for unlocking potential in regenerative medicine and personalized therapies.
+              </p>
+              <p>
+                Clinical trials in this area have demonstrated dramatic improvements in conditions ranging from sickle cell anemia to muscular dystrophy, heralding a new era in genomic medicine.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- End of Cards Grid -->
+  </section>
+  
+  <!-- Recommended Articles and Resources Section -->
+  <section id="discoveries-articles">
+    <h2 class="section-title">Recommended Articles & Resources</h2>
+    <div class="article-list" style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+      <article style="margin-bottom: 25px;">
+        <h3>
+          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Remarkable Discoveries of 2024">
+            9 of the Most Remarkable Scientific Discoveries of 2024
+          </a>
+        </h3>
+        <p>
+          Dive into a comprehensive review of breakthroughs spanning space exploration, medical innovations, and quantum advancements that reshaped the scientific landscape.
+        </p>
+      </article>
+      <article style="margin-bottom: 25px;">
+        <h3>
+          <a href="https://mycareerinfo.in/15-major-scientific-discoveries-and-innovations-of-2024/" target="_blank" title="Major Discoveries and Innovations">
+            15 Major Scientific Discoveries and Innovations of 2024
+          </a>
+        </h3>
+        <p>
+          Explore in-depth analyses of the pivotal breakthroughs—from nuclear clocks and fusion progress to gene-editing revolutions—that defined 2024.
+        </p>
+      </article>
+      <article style="margin-bottom: 25px;">
+        <h3>
+          <a href="https://www.smithsonianmag.com/smart-news/the-ten-most-significant-science-stories-of-2024-180985698/" target="_blank" title="The Ten Most Significant Science Stories">
+            The Ten Most Significant Science Stories of 2024
+          </a>
+        </h3>
+        <p>
+          Smithsonian Magazine details the science stories that captured global attention—from unexpected astronomical finds to breakthroughs in healthcare technology.
+        </p>
+      </article>
     </div>
   </section>
-
+  
   <!-- Back to Top Button -->
   <button id="backToTop" title="Back to Top">&#8679;</button>
-
+  
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 Science & Facts. All rights reserved.</p>
   </footer>
-
-  <!-- JavaScript for Card Animations & Back-to-Top -->
+  
+  <!-- JavaScript Section for Interactivity -->
   <script>
-    // IntersectionObserver for fade-in animations
+    // IntersectionObserver: Trigger fade-in animations as cards enter the viewport
     const cards = document.querySelectorAll('.card');
     const observerOptions = { threshold: 0.2 };
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
-        if(entry.isIntersecting) {
+        if (entry.isIntersecting) {
           entry.target.classList.add('visible');
           observer.unobserve(entry.target);
         }
@@ -75,7 +254,12 @@
     }, observerOptions);
     cards.forEach(card => observer.observe(card));
 
-    // Back to top button functionality
+    // Accordion Toggle: Expand/Collapse extended info sections
+    function toggleAccordion(element) {
+      element.classList.toggle('active');
+    }
+
+    // Back-to-Top Button Functionality
     const backToTopBtn = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 300) {
@@ -84,12 +268,8 @@
         backToTopBtn.classList.remove('active');
       }
     });
-    
     backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
 </body>
