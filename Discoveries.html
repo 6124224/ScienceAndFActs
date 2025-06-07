@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Science & Facts - Latest Discoveries 2024-25</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html" title="Home">Home</a></li>
+        <li><a href="facts.html" title="Science Facts">Facts</a></li>
+        <li><a href="discoveries.html" title="Latest Discoveries">Discoveries</a></li>
+        <li><a href="index.html#contact" title="Contact Us">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Discoveries Section -->
+  <section id="discoveries">
+    <h2 class="section-title">Latest Discoveries 2024-25</h2>
+    <div class="cards" id="discoveries-cards">
+      <!-- Discovery Card 1 -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?medical,innovation" alt="HIV Prevention Breakthrough" />
+        <div class="card-content">
+          <h3>HIV Prevention Breakthrough</h3>
+          <p>A revolutionary drug, Lenacapavir, shows unprecedented success in HIV prevention, promising a new era in global healthcare.</p>
+          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Learn more about this breakthrough">Read More &rarr;</a>
+        </div>
+      </div>
+      <!-- Discovery Card 2 -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?brain,science" alt="Fruit Fly Brain Connectome" />
+        <div class="card-content">
+          <h3>Fruit Fly Brain Connectome</h3>
+          <p>Researchers have mapped 140,000 neurons within a fruit fly brain, opening new avenues to understand human cognition.</p>
+          <a href="https://www.discovermagazine.com/the-sciences/9-of-the-most-remarkable-scientific-discoveries-of-2024" target="_blank" title="Discover more details">Read More &rarr;</a>
+        </div>
+      </div>
+      <!-- Discovery Card 3 -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?space,planet" alt="Super-Earth Discovery" />
+        <div class="card-content">
+          <h3>Super-Earth Discovery</h3>
+          <p>NASA recently detected a super-Earth in the habitable zone—fueling exhilarating discussion on extraterrestrial life.</p>
+          <a href="https://www.nasa.gov/" target="_blank" title="Explore space discoveries">Read More &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" title="Back to Top">&#8679;</button>
+
+  <footer>
+    <p>&copy; 2025 Science & Facts. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript for Card Animations & Back-to-Top -->
+  <script>
+    // IntersectionObserver for fade-in animations
+    const cards = document.querySelectorAll('.card');
+    const observerOptions = { threshold: 0.2 };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    cards.forEach(card => observer.observe(card));
+
+    // Back to top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('active');
+      } else {
+        backToTopBtn.classList.remove('active');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
