@@ -3,259 +3,298 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Science & Facts 2025 - Created by Ishan Pal</title>
+  <title>Science & Facts - Curiosity Unleashed</title>
   <style>
-    /* Global Styles */
+    /* Global Resets and Styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Helvetica Neue', sans-serif;
       line-height: 1.6;
-      background-color: #f4f4f4;
+      background-color: #f9f9f9;
       color: #333;
     }
     a {
-      color: #3498db;
       text-decoration: none;
+      color: #3498db;
       transition: color 0.3s ease;
     }
     a:hover {
       color: #1d6fa5;
     }
-    /* Sticky Header - Index on top style */
+    
+    /* Sticky Header and Navigation */
     header {
       position: sticky;
       top: 0;
-      background-color: #222;
+      background: linear-gradient(90deg, #2c3e50, #34495e);
       color: #fff;
-      width: 100%;
+      padding: 10px 0;
       z-index: 10;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
-    header nav ul {
-      display: flex;
+    nav ul {
       list-style: none;
+      display: flex;
       justify-content: center;
     }
-    header nav ul li {
-      margin: 15px;
+    nav ul li {
+      margin: 0 20px;
     }
-    header nav ul li a {
+    nav ul li a {
+      font-size: 1.1em;
       font-weight: bold;
     }
-    /* Banner Section with a cool background image */
+    
+    /* Banner Section with a Dynamic Background */
     .banner {
-      background: url('https://via.placeholder.com/1920x600?text=Science+and+Facts+Banner') no-repeat center center/cover;
-      height: 60vh;
+      position: relative;
+      height: 70vh;
+      background: url('https://source.unsplash.com/1600x900/?science,technology') no-repeat center center/cover;
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
     }
     .banner::after {
-      content: "";
+      content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
+      inset: 0;
+      background-color: rgba(0,0,0,0.4);
     }
     .banner h1 {
+      position: relative;
       color: #fff;
-      font-size: 3em;
-      z-index: 1;
-      animation: fadeInDown 1s ease-out;
+      font-size: 3rem;
+      text-align: center;
+      animation: slideDown 1s ease-out;
     }
-    /* Keyframes for animation */
-    @keyframes fadeInDown {
-      from {opacity: 0; transform: translateY(-20px);}
-      to {opacity: 1; transform: translateY(0);}
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    /* Sections */
+    
+    /* Section Titles for Consistency & Informative Layout */
     section {
-      padding: 40px 20px;
+      padding: 60px 20px;
     }
     .section-title {
       text-align: center;
-      font-size: 2em;
-      margin-bottom: 20px;
+      font-size: 2rem;
+      margin-bottom: 30px;
       position: relative;
     }
     .section-title::after {
-      content: "";
-      width: 60px;
+      content: '';
+      width: 80px;
       height: 4px;
-      background-color: #3498db;
+      background: #3498db;
       margin: 10px auto;
       display: block;
       border-radius: 2px;
     }
-    /* Facts Cards */
+    
+    /* About Section for Detailed Information */
+    #about div {
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    
+    /* Cards grid for Science Facts with Interactive Animations */
     .cards {
       display: grid;
-      gap: 20px;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      padding: 0 20px;
+      gap: 20px;
+      margin-top: 20px;
     }
     .card {
-      background: #fff;
-      border-radius: 8px;
+      background-color: #fff;
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .card.visible { 
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
     .card img {
       width: 100%;
       height: 180px;
       object-fit: cover;
-      animation: scaleIn 0.8s ease forwards;
-    }
-    @keyframes scaleIn {
-      from {transform: scale(0.95); opacity: 0;}
-      to {transform: scale(1); opacity: 1;}
     }
     .card-content {
       padding: 15px;
     }
     .card-content h3 {
       margin-bottom: 10px;
-      font-size: 1.2em;
-      color: #222;
+      font-size: 1.3rem;
+      color: #2c3e50;
     }
     .card-content p {
-      font-size: 0.95em;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      line-height: 1.5;
     }
     .card-content a {
-      font-size: 0.9em;
+      font-size: 0.9rem;
       font-weight: bold;
+      display: inline-block;
+      margin-top: 5px;
     }
-    /* Contact Section */
+    
+    /* Enhanced Contact Section */
     .contact {
-      background: #3498db;
+      background: linear-gradient(45deg, #3498db, #8e44ad);
       color: #fff;
       text-align: center;
-      padding: 40px 20px;
-      position: relative;
-      overflow: hidden;
+      padding: 50px 20px;
     }
     .contact h2 {
-      margin-bottom: 15px;
-      font-size: 2em;
-      animation: fadeInUp 1s ease-out;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      animation: fadeIn 1s ease-in;
     }
     .contact p {
-      font-size: 1.1em;
       margin-bottom: 20px;
+      font-size: 1.1rem;
     }
-    .contact a.email {
+    .contact a {
       background: #fff;
       color: #3498db;
-      padding: 10px 20px;
+      padding: 10px 25px;
       border-radius: 25px;
-      transition: background-color 0.3s ease;
+      font-weight: bold;
+      transition: background 0.3s;
     }
-    .contact a.email:hover {
+    .contact a:hover {
       background: #f1f1f1;
     }
-    .contact .creator {
-      font-size: 0.9em;
+    .creator {
       margin-top: 20px;
       font-style: italic;
+      font-size: 0.9rem;
     }
-    @keyframes fadeInUp {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    /* Footer */
+    
+    /* Footer Stylized */
     footer {
-      background: #222;
-      color: #fff;
+      background-color: #222;
+      color: #ccc;
       text-align: center;
       padding: 20px;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <!-- Header (Index Navigation) -->
+  <!-- Header with Intuitive Navigation -->
   <header>
     <nav>
       <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#facts">Facts</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#home" title="Home Section">Home</a></li>
+        <li><a href="#about" title="About Science & Facts">About</a></li>
+        <li><a href="#facts" title="Latest Science Facts">Facts</a></li>
+        <li><a href="#contact" title="Contact Us">Contact</a></li>
       </ul>
     </nav>
   </header>
-
-  <!-- Banner Section -->
-  <section class="banner" id="home">
-    <h1>Science & Facts 2025</h1>
+  
+  <!-- Banner Section with a Captivating Visual -->
+  <section id="home" class="banner">
+    <h1>Welcome to Science & Facts</h1>
   </section>
-
-  <!-- Facts Section with cards and links -->
-  <section id="facts">
-    <h2 class="section-title">Latest Science Facts</h2>
-    <div class="cards">
-      <!-- Card 1 -->
-      <div class="card">
-        <img src="https://via.placeholder.com/300x180?text=Honey" alt="Honey Fact">
-        <div class="card-content">
-          <h3>Timeless Honey</h3>
-          <p>Honey never spoils – even 3000-year-old honey remains edible.</p>
-          <a href="https://www.nationalgeographic.com/foodfeatures/honey/" target="_blank">Read Article &rarr;</a>
-        </div>
-      </div>
-      <!-- Card 2 -->
-      <div class="card">
-        <img src="https://via.placeholder.com/300x180?text=Quantum+Wonders" alt="Quantum Wonders">
-        <div class="card-content">
-          <h3>Quantum Wonders</h3>
-          <p>The quantum realm unveils phenomena that defy classical physics.</p>
-          <a href="https://www.quantamagazine.org/" target="_blank">Read Article &rarr;</a>
-        </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="card">
-        <img src="https://via.placeholder.com/300x180?text=Lightning+Fury" alt="Lightning Fury">
-        <div class="card-content">
-          <h3>Lightning Fury</h3>
-          <p>Lightning reaches temperatures five times that of the sun’s surface.</p>
-          <a href="https://www.sciencealert.net/lightning" target="_blank">Read Article &rarr;</a>
-        </div>
-      </div>
-      <!-- Card 4 -->
-      <div class="card">
-        <img src="https://via.placeholder.com/300x180?text=Deep+Ocean+Secrets" alt="Deep Ocean Secrets">
-        <div class="card-content">
-          <h3>Deep Ocean Secrets</h3>
-          <p>Bioluminescent creatures create magical light shows in the darkness.</p>
-          <a href="https://oceanservice.noaa.gov/education/tutorial_corals/coral04_zooxanthellae.html" target="_blank">Read Article &rarr;</a>
-        </div>
-      </div>
-      <!-- Add additional cards as desired -->
+  
+  <!-- Informative About Section Explaining the Mission -->
+  <section id="about">
+    <h2 class="section-title">Our Journey Into Discovery</h2>
+    <div>
+      <p>Science & Facts is passionate about unraveling the mysteries of the universe and presenting them through engaging content. Here, we not only list juicy scientific facts but also dive deeper into their significance—fueling curiosity and inspiring learning at every level. Our platform is dedicated to students, enthusiasts, and lifelong learners who are eager to explore the intricacies of nature, technology, and beyond.</p>
+      <p>Every article, image, and animation on this site is curated with precision, ensuring the highest quality of factual information that both educates and entertains.</p>
     </div>
   </section>
-
-  <!-- Contact Section -->
+  
+  <!-- Facts Section Displaying Interactive Science Fact Cards -->
+  <section id="facts">
+    <h2 class="section-title">Latest Science Facts</h2>
+    <div class="cards" id="cards-container">
+      <!-- Card 1: Honey Fact -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?honey" alt="Honey Fact" />
+        <div class="card-content">
+          <h3>Timeless Honey</h3>
+          <p>Honey can preserve for millennia. Archaeologists have discovered ancient honey in Egyptian tombs that remains edible to this day.</p>
+          <a href="https://www.nationalgeographic.com/foodfeatures/honey/" target="_blank" title="Learn more about honey">Read More &rarr;</a>
+        </div>
+      </div>
+      <!-- Card 2: Quantum Fact -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?quantum" alt="Quantum Wonders" />
+        <div class="card-content">
+          <h3>Quantum Wonders</h3>
+          <p>Dive into a realm where particles exist in multiple states until observed—challenging everything we know about classical physics.</p>
+          <a href="https://www.quantamagazine.org/" target="_blank" title="Discover quantum mysteries">Read More &rarr;</a>
+        </div>
+      </div>
+      <!-- Card 3: Lightning Fact -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?lightning" alt="Lightning Fury" />
+        <div class="card-content">
+          <h3>Lightning Fury</h3>
+          <p>Lightning bolts can heat the surrounding air five times hotter than the surface of the sun, creating stunning displays of plasma.</p>
+          <a href="https://www.sciencealert.net/lightning" target="_blank" title="Explore lightning facts">Read More &rarr;</a>
+        </div>
+      </div>
+      <!-- Card 4: Ocean Fact -->
+      <div class="card">
+        <img src="https://source.unsplash.com/300x180/?ocean" alt="Deep Ocean Secrets" />
+        <div class="card-content">
+          <h3>Deep Ocean Secrets</h3>
+          <p>Unveil the mysteries of the deep sea where bioluminescent organisms create a surreal underwater light show.</p>
+          <a href="https://oceanservice.noaa.gov/education/tutorial_corals/coral04_zooxanthellae.html" target="_blank" title="Learn about the ocean">Read More &rarr;</a>
+        </div>
+      </div>
+      <!-- Add additional cards as desired to share more fascinating facts -->
+    </div>
+  </section>
+  
+  <!-- Enhanced Contact Section with a Personal Touch -->
   <section id="contact" class="contact">
     <h2>Get in Touch</h2>
-    <p>Have brilliant scientific ideas or want to share feedback? Drop us an email!</p>
-    <a class="email" href="mailto:sciencefacts@example.com">Email Us</a>
-    <div class="creator">Created with passion by Ishan Pal</div>
+    <p>If you have brilliant ideas, questions, or simply want to share your passion for science, drop us an email. We're excited to hear from you!</p>
+    <a href="mailto:sciencefacts@example.com" title="Send an email">Contact Us</a>
+    <div class="creator">Created by Ishan Pal</div>
   </section>
-
-  <!-- Footer -->
+  
+  <!-- Footer with Essential Details -->
   <footer>
     <p>&copy; 2025 Science & Facts. All rights reserved.</p>
   </footer>
+  
+  <!-- JavaScript: IntersectionObserver for Smooth Fade-In Effects on Cards -->
+  <script>
+    const cards = document.querySelectorAll('.card');
+    const observerOptions = { threshold: 0.2 };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    cards.forEach(card => observer.observe(card));
+  </script>
 </body>
 </html>
