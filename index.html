@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Science &amp; Facts 2025 - AI Enhanced</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Link external CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Google Fonts for stylish typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <!-- Preloader Animation -->
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+
+  <div class="site-wrapper">
+    <!-- Header with AI-generated Background -->
+    <header>
+      <div class="header-overlay">
+        <h1 class="animate-h1">Science &amp; Facts 2025</h1>
+        <p class="animate-p">Exploring the universe with AI-powered insights</p>
+        <nav>
+          <ul class="nav-list">
+            <li><a href="#index">Index</a></li>
+            <li><a href="#facts">Facts</a></li>
+            <li><a href="#discoveries">Discoveries</a></li>
+            <li><a href="#experiments">Experiments</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content with Sidebar Index -->
+    <div class="main-content">
+      <!-- Sidebar Table of Contents -->
+      <aside id="index" class="sidebar">
+        <h2>Site Index</h2>
+        <ul>
+          <li><a href="#facts">Latest Science Facts</a></li>
+          <li><a href="#discoveries">Latest Discoveries</a></li>
+          <li><a href="#experiments">Fun Experiments</a></li>
+        </ul>
+      </aside>
+      
+      <div class="content">
+        <!-- Science Facts Section -->
+        <section id="facts" class="two-column-section">
+          <h2>Latest Science Facts</h2>
+          <div class="columns">
+            <div class="column">
+              <article class="fact-item">
+                <h3>Timeless Honey</h3>
+                <p>Did you know? Honey never spoils! Even 3000-year-old honey found in tombs remains edible.</p>
+              </article>
+              <article class="fact-item">
+                <h3>Quantum Wonders</h3>
+                <p>The quantum realm reveals phenomena that defy the rules of classical physics.</p>
+              </article>
+              <article class="fact-item">
+                <h3>Lightning Fury</h3>
+                <p>Lightning can reach temperatures five times greater than the surface of the sun!</p>
+              </article>
+            </div>
+            <div class="column">
+              <article class="fact-item">
+                <h3>Ocean Depths</h3>
+                <p>Bioluminescent creatures create natural light shows in the pitch-black depths of the ocean.</p>
+              </article>
+              <article class="fact-item">
+                <h3>Cosmic Dust</h3>
+                <p>Even space is speckled with tiny atoms—adding a touch of cosmic glitter everywhere!</p>
+              </article>
+              <article class="fact-item">
+                <h3>Brain Power</h3>
+                <p>The human brain produces enough energy to light a small bulb when active.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Discoveries Section -->
+        <section id="discoveries" class="two-column-section">
+          <h2>Latest Scientific Discoveries</h2>
+          <div class="columns">
+            <div class="column">
+              <article class="discovery-item">
+                <h3>CRISPR Breakthrough</h3>
+                <p>Revolutionary gene-editing techniques hold promise for curing genetic diseases.</p>
+              </article>
+              <article class="discovery-item">
+                <h3>Green Nuclear</h3>
+                <p>Innovative small modular reactors are paving the way for a cleaner nuclear future.</p>
+              </article>
+            </div>
+            <div class="column">
+              <article class="discovery-item">
+                <h3>Battery Evolution</h3>
+                <p>Solid-state batteries herald a new era of safe, long-lasting power for electric vehicles.</p>
+              </article>
+              <article class="discovery-item">
+                <h3>Hypersonic Flight</h3>
+                <p>New aerospace technologies have pushed aircraft speeds to break the Mach 5 barrier.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Experiments Section -->
+        <section id="experiments">
+          <h2>Fun Science Experiments</h2>
+          <article class="experiment-item">
+            <h3>Volcano in a Bottle</h3>
+            <p>Create mini-eruptions with baking soda, vinegar, and dish soap—an educational blast!</p>
+          </article>
+          <article class="experiment-item">
+            <h3>Non-Newtonian Fluid</h3>
+            <p>Mix cornstarch and water to see a substance that behaves both like a liquid and a solid.</p>
+          </article>
+          <article class="experiment-item">
+            <h3>Solar Oven</h3>
+            <p>Harness the power of the sun to cook a snack with your very own eco‑friendly oven.</p>
+          </article>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+          <h2>Contact Us</h2>
+          <p>Have a scientific idea or feedback? Email us at <a href="mailto:sciencefacts@example.com">sciencefacts@example.com</a>.</p>
+          <p>Follow our journey on social media:</p>
+          <ul class="social-links">
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Science &amp; Facts. All rights reserved. Designed with AI-enhanced artistry.</p>
+    </footer>
+  </div>
+  
+  <!-- JavaScript: Preloader and Smooth Scroll -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Fade out preloader after 1.5 seconds
+      var preloader = document.getElementById('preloader');
+      setTimeout(function(){
+        preloader.style.opacity = '0';
+        setTimeout(function(){ preloader.style.display = 'none'; }, 500);
+      }, 1500);
+
+      // Smooth scroll for navigation
+      document.querySelectorAll('nav ul li a, .sidebar ul li a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetID = this.getAttribute('href').slice(1);
+          document.getElementById(targetID).scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
