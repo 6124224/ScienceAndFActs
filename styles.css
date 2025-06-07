@@ -1,6 +1,6 @@
-/* =================================
+/* =====================================================
    Global Reset & Base Styles
-================================= */
+===================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -14,9 +14,9 @@ body {
   line-height: 1.6;
 }
 
-/* =================================
+/* =====================================================
    Preloader Styles
-================================= */
+===================================================== */
 #preloader {
   position: fixed;
   width: 100%;
@@ -45,18 +45,18 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* =================================
+/* =====================================================
    Site Wrapper & Layout
-================================= */
+===================================================== */
 .site-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* =================================
-   Header Styles with AI Image Background
-================================= */
+/* =====================================================
+   Header Styles with AI-Generated Background
+===================================================== */
 header {
   position: relative;
   height: 80vh;
@@ -92,7 +92,6 @@ header h1 {
   letter-spacing: 2px;
   animation: slideInDown 1.5s ease-out;
 }
-
 @keyframes slideInDown {
   from { transform: translateY(-50px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
@@ -104,15 +103,14 @@ header p {
   margin-bottom: 20px;
   animation: slideInUp 1.5s ease-out;
 }
-
 @keyframes slideInUp {
   from { transform: translateY(50px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
 
-/* =================================
+/* =====================================================
    Navigation Styles
-================================= */
+===================================================== */
 nav ul {
   list-style: none;
   display: flex;
@@ -120,11 +118,9 @@ nav ul {
   justify-content: center;
   margin-top: 20px;
 }
-
 nav ul li {
   margin: 0 15px;
 }
-
 nav ul li a {
   color: #fff;
   text-decoration: none;
@@ -132,67 +128,62 @@ nav ul li a {
   padding: 5px 10px;
   transition: color 0.3s ease, background 0.3s ease;
 }
-
 nav ul li a:hover {
   background: #f4d03f;
   color: #000;
   border-radius: 5px;
 }
 
-/* =================================
-   Main Content Layout
-================================= */
+/* =====================================================
+   Main Content: Sidebar & Content Layout
+===================================================== */
 .main-content {
   display: flex;
   flex: 1;
   padding: 40px 20px;
   gap: 20px;
 }
-
 .sidebar {
   flex: 0 0 220px;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  height: fit-content;
   position: sticky;
   top: 20px;
+  height: fit-content;
 }
-
 .sidebar h2 {
   font-size: 1.8em;
   color: #003366;
   margin-bottom: 15px;
 }
-
 .sidebar ul {
   list-style: none;
 }
-
 .sidebar ul li {
   margin-bottom: 10px;
 }
-
 .sidebar ul li a {
   text-decoration: none;
   font-weight: 500;
   color: #003366;
   transition: color 0.2s ease;
 }
-
 .sidebar ul li a:hover {
   color: #f4d03f;
 }
 
-/* =================================
+/* =====================================================
    Content Section Layout
-================================= */
+===================================================== */
 .content {
   flex: 1;
 }
 
-/* Two‑Column Section Styles */
+/* =====================================================
+   Two‑Column Sections (Facts & Discoveries)
+===================================================== */
 .two-column-section {
   background: #fff;
   margin-bottom: 40px;
@@ -201,12 +192,10 @@ nav ul li a:hover {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   animation: sectionFadeIn 1.5s ease;
 }
-
 @keyframes sectionFadeIn {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .two-column-section h2 {
   text-align: center;
   font-size: 2em;
@@ -216,42 +205,36 @@ nav ul li a:hover {
   display: inline-block;
   padding-bottom: 5px;
 }
-
 .columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
-
-/* Fact & Discovery Items */
 .fact-item, .discovery-item {
   background: #fdfdfd;
   border-left: 5px solid #003366;
   padding: 15px 20px;
   border-radius: 5px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: slideUp 0.8s ease both;
 }
-
 .fact-item:hover, .discovery-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
-
 .fact-item h3, .discovery-item h3 {
   font-size: 1.5em;
   color: #003366;
   margin-bottom: 8px;
 }
-
 .fact-item p, .discovery-item p {
   text-align: justify;
   font-size: 1em;
   color: #555;
 }
-
-/* =================================
-   Experiments Section Styles
-================================= */
+/* =====================================================
+   Experiments Section
+===================================================== */
 #experiments {
   background: #fff;
   padding: 30px 20px;
@@ -260,7 +243,6 @@ nav ul li a:hover {
   animation: fadeIn 1.5s ease;
   margin-bottom: 40px;
 }
-
 #experiments h2 {
   text-align: center;
   font-size: 2em;
@@ -270,7 +252,6 @@ nav ul li a:hover {
   display: inline-block;
   padding-bottom: 5px;
 }
-
 .experiment-item {
   background: #f9f9f9;
   border-left: 5px solid #f4d03f;
@@ -278,26 +259,24 @@ nav ul li a:hover {
   border-radius: 5px;
   transition: background-color 0.3s ease;
   margin-bottom: 25px;
+  animation: slideUp 0.8s ease both;
 }
-
 .experiment-item:hover {
   background: #fffbe6;
 }
-
 .experiment-item h3 {
   font-size: 1.5em;
   color: #bf5700;
   margin-bottom: 10px;
 }
-
 .experiment-item p {
   font-size: 1em;
   color: #555;
 }
 
-/* =================================
-   Contact Section Styles
-================================= */
+/* =====================================================
+   Contact Section
+===================================================== */
 #contact {
   background: #fff;
   padding: 30px 20px;
@@ -306,7 +285,6 @@ nav ul li a:hover {
   animation: fadeIn 1.5s ease;
   margin-bottom: 40px;
 }
-
 #contact h2 {
   text-align: center;
   font-size: 2em;
@@ -316,13 +294,11 @@ nav ul li a:hover {
   display: inline-block;
   padding-bottom: 5px;
 }
-
 #contact p {
   text-align: center;
   font-size: 1.1em;
   margin: 10px 0;
 }
-
 #contact a {
   color: #003366;
   text-decoration: none;
@@ -331,11 +307,9 @@ nav ul li a:hover {
   padding-bottom: 2px;
   transition: color 0.2s ease;
 }
-
 #contact a:hover {
   color: #f4d03f;
 }
-
 /* Social Links */
 .social-links {
   display: flex;
@@ -343,25 +317,22 @@ nav ul li a:hover {
   list-style: none;
   margin-top: 15px;
 }
-
 .social-links li {
   margin: 0 10px;
 }
-
 .social-links li a {
   text-decoration: none;
   font-size: 1.1em;
   color: #003366;
   transition: color 0.3s ease;
 }
-
 .social-links li a:hover {
   color: #f4d03f;
 }
 
-/* =================================
-   Footer Section Styles
-================================= */
+/* =====================================================
+   Footer Section
+===================================================== */
 footer {
   background: #003366;
   color: #fff;
@@ -370,22 +341,25 @@ footer {
   font-size: 0.95em;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
 }
-
 footer p {
   margin: 5px 0;
 }
 
-/* =================================
-   Animations & Transitions
-================================= */
+/* =====================================================
+   Extra Animations & Transitions
+===================================================== */
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-/* =================================
-   Responsive Design
-================================= */
+/* =====================================================
+   Responsive Design Adjustments
+===================================================== */
 @media (max-width: 1024px) {
   header h1 {
     font-size: 2.8em;
@@ -401,7 +375,6 @@ footer p {
     margin-bottom: 20px;
   }
 }
-
 @media (max-width: 600px) {
   nav ul {
     flex-direction: column;
