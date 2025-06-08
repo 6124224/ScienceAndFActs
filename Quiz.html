@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Science Quiz - Facts & Discoveries</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="styles.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -147,5 +146,391 @@
     loadQuestion();
   </script>
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Science Quiz and Atom Catch Game</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles with Animated Gradient Background */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      padding: 20px;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: auto;
+      margin-bottom: 50px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    hr {
+      margin: 50px auto;
+      max-width: 600px;
+      border: 1px solid #ccc;
+    }
+    
+    /* =============================
+       Science Quiz Game Section
+       ============================= */
+    #quiz-section {
+      /* Uses shared container styling above */
+    }
+    #quiz-game {
+      text-align: center;
+    }
+    #quiz-question {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+    #quiz-options {
+      margin-bottom: 20px;
+    }
+    .quiz-option-btn {
+      display: block;
+      width: 100%;
+      margin: 10px auto;
+      padding: 10px;
+      background: #48dbfb;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .quiz-option-btn:hover {
+      background: #1dd1a1;
+    }
+    #quiz-game button {
+      padding: 10px 20px;
+      background: #e67e22;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 15px;
+    }
+    #quiz-game button:hover {
+      background: #d35400;
+    }
+    
+    /* =============================
+       Catch the Atom Game Section
+       ============================= */
+    #atom-game-section {
+      /* Updated to follow the same white container styling */
+    }
+    #atom-game-container {
+      text-align: center;
+      color: #333;
+    }
+    #score {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    canvas {
+      background: #222;
+      border: 4px solid #fff;
+      border-radius: 10px;
+      display: block;
+      margin: 0 auto;
+    }
+    #instructions {
+      margin-top: 10px;
+      font-size: 0.9em;
+    }
+    #game-restart {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #e67e22;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #game-restart:hover {
+      background: #d35400;
+    }
+  </style>
+</head>
+<body>
+  <h1>Science Quiz and Atom Catch Game</h1>
+  
+  <!-- Science Quiz Section -->
+  <section id="quiz-section" class="container">
+    <h2>Science Fun Quiz Game</h2>
+    <div id="quiz-game">
+      <p id="quiz-question">Press "Start Quiz" to begin!</p>
+      <div id="quiz-options"></div>
+      <button id="quiz-next-btn" style="display: none;">Next Question</button>
+      <button id="quiz-start-btn">Start Quiz</button>
+    </div>
+  </section>
+  
+  <hr>
+  
+  <!-- Catch the Atom Game Section -->
+  <section id="atom-game-section" class="container">
+    <h2>Catch the Atom</h2>
+    <div id="atom-game-container">
+      <div id="score">Score: 0</div>
+      <canvas id="gameCanvas" width="600" height="400"></canvas>
+      <div id="instructions">
+        Use the left and right arrow keys to catch the falling atoms in your beaker.<br>
+        Missing an atom ends the game.
+      </div>
+      <button id="game-restart" style="display: none;">Restart Atom Game</button>
+    </div>
+  </section>
+<script>
+    // Science Quiz Variables and Functions
+    const quizQuestions = [
+      {
+        question: "What planet is known as the Red Planet?",
+        options: ["Mars", "Venus", "Jupiter", "Saturn"],
+        answer: "Mars"
+      },
+      {
+        question: "What gas do plants absorb from the atmosphere?",
+        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+        answer: "Carbon Dioxide"
+      },
+      {
+        question: "What is the center of an atom called?",
+        options: ["Electron", "Proton", "Nucleus", "Neutron"],
+        answer: "Nucleus"
+      }
+    ];
+    
+    let currentQuizIndex = 0;
+    const quizQuestionEl = document.getElementById('quiz-question');
+    const quizOptionsEl = document.getElementById('quiz-options');
+    const quizNextBtn = document.getElementById('quiz-next-btn');
+    const quizStartBtn = document.getElementById('quiz-start-btn');
+    
+    quizStartBtn.addEventListener('click', startQuiz);
+    quizNextBtn.addEventListener('click', nextQuizQuestion);
+    
+    function startQuiz() {
+      quizStartBtn.style.display = "none";
+      quizNextBtn.style.display = "none";
+      currentQuizIndex = 0;
+      showQuizQuestion();
+    }
+    
+    function showQuizQuestion() {
+      clearQuizOptions();
+      const currentQuestion = quizQuestions[currentQuizIndex];
+      quizQuestionEl.textContent = currentQuestion.question;
+      currentQuestion.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.classList.add('quiz-option-btn');
+        btn.addEventListener('click', () => selectQuizAnswer(option));
+        quizOptionsEl.appendChild(btn);
+      });
+    }
+    
+    function selectQuizAnswer(selectedOption) {
+      const currentQuestion = quizQuestions[currentQuizIndex];
+      const optionButtons = document.querySelectorAll('.quiz-option-btn');
+      optionButtons.forEach(button => {
+        button.disabled = true;
+        if (button.textContent === currentQuestion.answer) {
+          button.style.backgroundColor = "#1dd1a1"; // Correct answer: green
+        } else if (button.textContent === selectedOption) {
+          button.style.backgroundColor = "#ff6b6b"; // Wrong answer: red
+        }
+      });
+      if (currentQuizIndex < quizQuestions.length - 1) {
+        quizNextBtn.style.display = "inline-block";
+      } else {
+        quizStartBtn.style.display = "inline-block";
+        quizStartBtn.textContent = "Restart Quiz";
+      }
+    }
+    
+    function nextQuizQuestion() {
+      currentQuizIndex++;
+      if (currentQuizIndex < quizQuestions.length) {
+        showQuizQuestion();
+        quizNextBtn.style.display = "none";
+      }
+    }
+    
+    function clearQuizOptions() {
+      quizOptionsEl.innerHTML = '';
+    }
+  </script>
+  
+  <!-- =============================
+       JavaScript for Atom Catch Game
+       ============================= -->
+  <script>
+    // Atom Catch Game Variables and Functions
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreDiv = document.getElementById('score');
+    const restartGameBtn = document.getElementById('game-restart');
+    
+    let atomScore = 0;
+    let atomGameOver = false;
+    
+    // Player (beaker) properties
+    const player = {
+      width: 80,
+      height: 20,
+      x: canvas.width / 2 - 40,
+      y: canvas.height - 40,
+      speed: 7,
+      dx: 0
+    };
+    
+    // Array to hold falling atoms
+    const atoms = [];
+    const atomRadius = 12;
+    let atomSpawnTimer = 0;
+    const atomSpawnInterval = 80;
+    
+    // Key event listeners for player movement
+    document.addEventListener('keydown', (e) => {
+      if (e.key === "ArrowRight") {
+        player.dx = player.speed;
+      } else if (e.key === "ArrowLeft") {
+        player.dx = -player.speed;
+      }
+    });
+    document.addEventListener('keyup', (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        player.dx = 0;
+      }
+    });
+    
+    // Restart the atom game
+    restartGameBtn.addEventListener('click', () => {
+      atomScore = 0;
+      atomGameOver = false;
+      atoms.length = 0;
+      player.x = canvas.width / 2 - player.width / 2;
+      scoreDiv.textContent = "Score: 0";
+      restartGameBtn.style.display = "none";
+      animateAtomGame();
+    });
+    
+    function drawPlayer() {
+      ctx.fillStyle = "#e67e22";
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+    
+    function drawAtom(atom) {
+      ctx.beginPath();
+      ctx.arc(atom.x, atom.y, atomRadius, 0, Math.PI * 2);
+      ctx.fillStyle = "#48dbfb";
+      ctx.fill();
+      ctx.closePath();
+    }
+    
+    function spawnAtom() {
+      const x = Math.random() * (canvas.width - atomRadius * 2) + atomRadius;
+      atoms.push({ x: x, y: -atomRadius, dy: 3 + Math.random() * 2 });
+    }
+    
+    function updatePlayerAtom() {
+      player.x += player.dx;
+      if (player.x < 0) {
+        player.x = 0;
+      } else if (player.x + player.width > canvas.width) {
+        player.x = canvas.width - player.width;
+      }
+    }
+    
+    function updateAtoms() {
+      atoms.forEach(atom => {
+        atom.y += atom.dy;
+      });
+      // End game if an atom falls beyond the canvas
+      while (atoms.length && atoms[0].y - atomRadius > canvas.height) {
+        endAtomGame();
+        break;
+      }
+    }
+    
+    function checkAtomCollisions() {
+      atoms.forEach((atom, index) => {
+        if (
+          atom.y + atomRadius >= player.y &&
+          atom.x >= player.x &&
+          atom.x <= player.x + player.width
+        ) {
+          atomScore++;
+          scoreDiv.textContent = "Score: " + atomScore;
+          atoms.splice(index, 1);
+        }
+      });
+    }
+    
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    function animateAtomGame() {
+      if (atomGameOver) return;
+      clearCanvas();
+      updatePlayerAtom();
+      updateAtoms();
+      checkAtomCollisions();
+      drawPlayer();
+      atoms.forEach(drawAtom);
+      
+      atomSpawnTimer++;
+      if (atomSpawnTimer >= atomSpawnInterval) {
+        spawnAtom();
+        atomSpawnTimer = 0;
+      }
+      requestAnimationFrame(animateAtomGame);
+    }
+    
+    function endAtomGame() {
+      atomGameOver = true;
+      ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "30px Roboto";
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.fillText("Game Over!", canvas.width / 2, canvas.height / 2 - 20);
+      ctx.fillText("Your Score: " + atomScore, canvas.width / 2, canvas.height / 2 + 20);
+      restartGameBtn.style.display = "inline-block";
+    }
+    
+    // Start the Atom Catch Game automatically
+    animateAtomGame();
+  </script>
 </body>
 </html>
