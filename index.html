@@ -2,198 +2,401 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Science And FActs</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <title>Science & Facts – Ultimate Single Page Experience</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Embedded CSS -->
   <style>
-    /* ===== Global Styling with Animated Background ===== */
+    /* --------------------------------------------------------------
+       RESET & GENERAL STYLES
+    -------------------------------------------------------------- */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-    body {
-      font-family: 'Roboto', sans-serif;
-      line-height: 1.6;
+    html, body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
       color: #333;
-      background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
+      scroll-behavior: smooth;
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* --------------------------------------------------------------
+       NAVIGATION & HEADER
+    -------------------------------------------------------------- */
+    header {
+      background-color: #333;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      background-color: transparent;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s linear;
+    }
+    nav a:hover {
+      background-color: #575757;
+    }
+    /* --------------------------------------------------------------
+       HERO / HOME SECTION
+    -------------------------------------------------------------- */
+    .hero {
+      position: relative;
+      background: url('https://via.placeholder.com/1920x600?text=Science+%26+Facts') no-repeat center center/cover;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
       padding: 20px;
     }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    h1, h2 {
-      text-align: center;
+    .hero h1 {
+      font-size: 3.5rem;
       margin-bottom: 20px;
     }
-    .container {
-      width: 90%;
-      max-width: 900px;
-      margin: auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards;
+    .hero p {
+      font-size: 1.2rem;
     }
-    @keyframes fadeInUp {
-      from {
-        transform: translateY(30px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0px);
-        opacity: 1;
-      }
+    /* --------------------------------------------------------------
+       SECTION BASE STYLES
+    -------------------------------------------------------------- */
+    section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: 40px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    hr {
-      margin: 50px auto;
-      max-width: 600px;
-      border: 1px solid #ccc;
+    section h2 {
+      margin-bottom: 30px;
+      font-size: 2.8rem;
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
     }
-    /* Buttons */
-    .btn-primary {
+    /* --------------------------------------------------------------
+       ARTICLE STYLES - FACTS, DISCOVERIES & MORE
+    -------------------------------------------------------------- */
+    article {
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    article:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    article h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #444;
+    }
+    article p {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      text-align: justify;
+    }
+    article a.read-more {
       display: inline-block;
-      padding: 12px 25px;
-      background-color: #e67e22;
+      background-color: #333;
       color: #fff;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: background-color 0.3s ease, transform 0.3s ease;
+      padding: 10px 14px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
     }
-    .btn-primary:hover {
-      background-color: #d35400;
-      transform: scale(1.03);
+    article a.read-more:hover {
+      background-color: #575757;
+    }
+    /* --------------------------------------------------------------
+       HISTORICAL, TUTORIAL & EXTRA CONTENT STYLES
+    -------------------------------------------------------------- */
+    .extra-content {
+      background-color: #eef;
+      border: 1px dashed #444;
+      padding: 20px;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+    .extra-content h4 {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    /* --------------------------------------------------------------
+       CONTACT FORM STYLES
+    -------------------------------------------------------------- */
+    .contact-form {
+      max-width: 700px;
+      margin: auto;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .contact-form button {
+      background-color: #333;
+      border: none;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover {
+      background-color: #575757;
+    }
+    /* --------------------------------------------------------------
+       FOOTER STYLES
+    -------------------------------------------------------------- */
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 25px;
+      font-size: 0.9rem;
+    }
+    /* --------------------------------------------------------------
+       RESPONSIVE DESIGN
+    -------------------------------------------------------------- */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      section {
+        padding: 40px 10px;
+      }
+    }
+    /* --------------------------------------------------------------
+       CSS ANIMATIONS
+    -------------------------------------------------------------- */
+    .fade-in {
+      opacity: 0;
+      animation: fadeInAppear 1s forwards;
+    }
+    @keyframes fadeInAppear {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* --------------------------------------------------------------
+       SCROLL TO TOP BUTTON
+    -------------------------------------------------------------- */
+    #scrollToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #333;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 50%;
+      display: none;
+      cursor: pointer;
+      z-index: 1001;
+      transition: background-color 0.3s ease;
+    }
+    #scrollToTop:hover {
+      background-color: #575757;
     }
   </style>
 </head>
 <body>
+
+  <!-- HEADER & NAVIGATION -->
   <header>
-    <div class="container header-container">
-      <div class="logo">
-        <h1>Science<span>FActs</span></h1>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="articles.html">Articles</a></li>
-          <li><a href="history.html">History</a></li>
-          <li><a href="quizzes.html">Quizzes And Games</a></li>
-          <li><a href="games.html">Games</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
+    <nav>
+      <a href="#home" class="nav-link">Home</a>
+      <a href="#facts" class="nav-link">Facts</a>
+      <a href="#discoveries" class="nav-link">Discoveries</a>
+      <a href="#history" class="nav-link">Historical Narratives</a>
+      <a href="#troubleshooting" class="nav-link">GitHub Tips</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
   </header>
 
-  <!-- Home Section -->
-  <section id="home" class="section section-home">
-    <div class="container">
-      <h2>Welcome to Science And FActs</h2>
-      <p>Explore groundbreaking science, historical narratives of technology, innovative articles, and more.</p>
-      <a href="articles.html" class="btn-primary">Explore Articles</a>
+  <!-- HERO / HOME SECTION -->
+  <section id="home" class="hero fade-in">
+    <div class="hero-content">
+      <h1>Science & Facts</h1>
+      <p>Welcome to the ultimate hub combining groundbreaking discoveries, fascinating facts, and historical narratives—all in one immersive experience.</p>
     </div>
   </section>
 
-  <!-- Search Section -->
-  <section id="search-section" class="section search-section">
-    <div class="container">
-      <h2>Search Our Articles</h2>
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Type to search for articles..." autocomplete="off">
-        <div id="suggestions"></div>
-      </div>
-      <p class="search-info">Click on any suggestion to visit the respective site for more detailed information.</p>
+  <!-- FACTS SECTION -->
+  <section id="facts">
+    <h2>Latest Facts</h2>
+    <article class="fade-in" style="animation-delay: 0.3s;">
+      <h3>HIV Prevention Breakthrough</h3>
+      <p>The innovative drug, Lenacapavir, is leading the charge in HIV prevention, showcasing unprecedented success and opening doors to a revolution in global healthcare practices.</p>
+      <a class="read-more" href="#!" onclick="alert('More details coming soon!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay: 0.5s;">
+      <h3>Climate Change Milestone</h3>
+      <p>Scientists have recently celebrated a milestone in renewable energy—demonstrating that innovation in sustainable technologies is rapidly transforming our approach to climate change.</p>
+      <a class="read-more" href="#!" onclick="alert('This article will be updated with full insights!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay: 0.7s;">
+      <h3>Advancements in Artificial Intelligence</h3>
+      <p>Modern AI is revolutionizing industries; from healthcare to transport, breakthrough algorithms now drive smarter, more efficient systems across the globe.</p>
+      <a class="read-more" href="#!" onclick="alert('Stay tuned for detailed analysis!')">Read More →</a>
+    </article>
+    <!-- Additional fact content can be appended here -->
+    <div class="extra-content fade-in" style="animation-delay: 0.9s;">
+      <h4>Deep Dive: The Science Behind the Facts</h4>
+      <p>Dive deep into the methodologies of modern research, uncovering experimental designs, statistical breakthroughs, and future projections that paint the next decade of scientific progress.</p>
     </div>
   </section>
 
-  <!-- Articles Section -->
-  <section id="articles" class="section articles-section">
-    <div class="container">
-      <h2>Featured Articles</h2>
-      <div class="articles-grid">
-        <article class="card fade-in" style="animation-delay: 0.2s;">
-          <h3>Latest Science Discoveries</h3>
-          <p>Learn about the newest breakthroughs in various fields of scientific research.</p>
-          <a href="https://www.nationalgeographic.com" class="btn-secondary" target="_blank">Read More</a>
-        </article>
-        <article class="card fade-in" style="animation-delay: 0.4s;">
-          <h3>Astounding Physics</h3>
-          <p>Explore the mysteries of the universe and unravel the secrets behind cosmic events.</p>
-          <a href="https://www.space.com" class="btn-secondary" target="_blank">Read More</a>
-        </article>
-      </div>
-    </div>
+  <!-- DISCOVERIES SECTION -->
+  <section id="discoveries">
+    <h2>Latest Discoveries</h2>
+    <article class="fade-in" style="animation-delay: 0.3s;">
+      <h3>Fruit Fly Brain Connectome</h3>
+      <p>Researchers have successfully mapped 140,000 neurons within the fruit fly brain, unlocking new frontiers in understanding complex neural networks and the intricacies of human cognition.</p>
+      <a class="read-more" href="#!" onclick="alert('Detailed discovery info coming soon!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay: 0.5s;">
+      <h3>Super-Earth Discovery</h3>
+      <p>NASA's latest detection of a super-Earth in the habitable zone has ignited exhilarating discussions on extraterrestrial life and the possibility of future human colonization in the vast reaches of our galaxy.</p>
+      <a class="read-more" href="#!" onclick="alert('Explore more about this astronomical finding soon!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay: 0.7s;">
+      <h3>Quantum Computing Leap</h3>
+      <p>A recent quantum advancement is set to revolutionize data processing speeds, paving the way for unprecedented AI applications and reimagining how we interact with technology on a granular level.</p>
+      <a class="read-more" href="#!" onclick="alert('Quantum details to be revealed shortly!')">Read More →</a>
+    </article>
   </section>
 
-  <!-- Historical Narratives Section -->
-  <section id="historical-narratives" class="section historical-narratives">
-    <div class="container">
-      <h2>Historical Narratives: Technology and Science of the Past</h2>
-      <p>Technology and science have been the backbone of human progress since the dawn of civilization.</p>
-      <div class="historical-images fade-in" style="animation-delay: 0.2s;">
-        <img src="images/history.jpg" alt="Ancient technology illustration">
-        <img src="images/history1.jpg" alt="Historic workshop on science">
-        <img src="images/history2.jpg" alt="Ancient manuscript showcasing scientific experiments">
-      </div>
-    </div>
+  <!-- HISTORICAL NARRATIVES SECTION -->
+  <section id="history">
+    <h2>Historical Narratives & Insights</h2>
+    <article class="fade-in" style="animation-delay: 0.3s;">
+      <h3>Aayi Mandapam: A Journey Through Time</h3>
+      <p>Step into the rich legacy of Aayi Mandapam—a monument of cultural heritage where tradition meets artistry. Discover the nuances of its history, its role in regional narratives, and how it continues to inspire creativity.</p>
+      <a class="read-more" href="#!" onclick="alert('Historical insights coming soon!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay: 0.5s;">
+      <h3>From the Archives: The Evolution of Scientific Thought</h3>
+      <p>Explore the transformative journey of scientific enquiry—from the early days of experimental discovery to today's cutting-edge research, illuminating the human spirit of curiosity and perseverance.</p>
+      <a class="read-more" href="#!" onclick="alert('Keep following for more archival treasures!')">Read More →</a>
+    </article>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="section contact-section">
-    <div class="container">
-      <h2>Contact Us</h2>
-      <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
-        <label for="fullname">Your Full Name</label>
-        <input type="text" id="fullname" name="fullname" required>
+  <!-- GITHUB PAGES TROUBLESHOOTING & TIPS -->
+  <section id="troubleshooting">
+    <h2>GitHub Pages Troubleshooting & Publishing Tips</h2>
+    <article class="fade-in" style="animation-delay: 0.3s;">
+      <h3>Overcoming Deployment Issues</h3>
+      <p>Deploying your website on GitHub Pages? Discover tips on resolving common issues like file case sensitivity, broken links, and cache-related hiccups that can keep your site hidden from eager viewers.</p>
+      <a class="read-more" href="#!" onclick="alert('Step-by-step deployment guide coming soon!')">Read More →</a>
+    </article>
+    <article class="fade-in" style="animation-delay: 0.5s;">
+      <h3>Advanced GitHub Pages Techniques</h3>
+      <p>Learn how to integrate modern design elements, animations, and responsive layouts with GitHub Pages. Whether you’re a beginner or a seasoned developer, these strategies will help elevate your web projects effectively.</p>
+      <a class="read-more" href="#!" onclick="alert('Advanced techniques will be detailed soon!')">Read More →</a>
+    </article>
+  </section>
 
-        <label for="email">Your Email Address</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="message">Your Message</label>
-        <textarea id="message" name="message" required></textarea>
-
-        <button type="submit" class="btn-primary">Send Message</button>
+  <!-- CONTACT SECTION -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>If you have questions, ideas, or feedback about our content, please feel free to get in touch using the form below. We love engaging with curious minds!</p>
+    <div class="contact-form fade-in" style="animation-delay: 0.3s;">
+      <form action="#!" method="post" onsubmit="handleFormSubmission(event)">
+        <input type="text" name="name" placeholder="Your Full Name" required>
+        <input type="email" name="email" placeholder="Your Email Address" required>
+        <textarea name="message" placeholder="Your Message..." rows="6" required></textarea>
+        <button type="submit">Send Message</button>
       </form>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
-    <div class="container">
-      <p>&copy; 2025 Science And FActs. All rights reserved.</p>
-    </div>
+    <p>&copy; 2025 Science & Facts. All rights reserved.</p>
+    <p>Designed and developed to inspire curiosity and fuel discovery. Thanks for visiting!</p>
   </footer>
 
-  <!-- JavaScript for Search Bar -->
-  <script>
-    const articles = [{ title: "Latest Science Discoveries", url: "https://www.nationalgeographic.com" }];
-    const searchInput = document.getElementById('searchInput');
-    const suggestionsDiv = document.getElementById('suggestions');
+  <!-- SCROLL TO TOP BUTTON -->
+  <div id="scrollToTop" onclick="scrollToTop()">↑</div>
 
-    searchInput.addEventListener("input", function() {
-      let query = this.value.toLowerCase();
-      suggestionsDiv.innerHTML = '';
-      if (query.length > 0) {
-        articles.forEach(article => {
-          if (article.title.toLowerCase().includes(query)) {
-            let suggestion = document.createElement("div");
-            suggestion.className = "suggestion-item";
-            suggestion.textContent = article.title;
-            suggestion.addEventListener("click", function() {
-              window.location.href = article.url;
-            });
-            suggestionsDiv.appendChild(suggestion);
-          }
-        });
+  <!-- Embedded JavaScript for Interactivity -->
+  <script>
+    // Trigger animations on scroll with a simple IntersectionObserver
+    const observerOptions = {
+      threshold: 0.2
+    };
+    const observerCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    document.querySelectorAll('.fade-in').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Simple form submission handler
+    function handleFormSubmission(event) {
+      event.preventDefault();
+      alert("Thank you for reaching out! We'll get back to you soon.");
+      event.target.reset();
+    }
+
+    // Scroll to top logic
+    window.addEventListener('scroll', () => {
+      const scrollButton = document.getElementById('scrollToTop');
+      if (window.pageYOffset > 300) {
+        scrollButton.style.display = 'block';
+      } else {
+        scrollButton.style.display = 'none';
       }
     });
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>
