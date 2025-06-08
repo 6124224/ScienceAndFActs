@@ -226,3 +226,76 @@ footer {
   color: #fff;
   margin-top: 40px;
 }
+/* Historical Narratives Section Styling */
+.historical-narratives {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+  margin: 20px auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  padding: 40px 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.historical-narratives h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.historical-narratives p {
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 1.1em;
+  line-height: 1.8;
+}
+
+.historical-images {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.historical-images img {
+  width: 300px;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.historical-images img:hover {
+  transform: scale(1.05);
+}
+/* Reset default list styling */
+header nav ul.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;              /* This aligns items horizontally */
+  justify-content: center;    /* Center the menu items (optional) */
+  align-items: center;        /* Vertically center if your nav has a height */
+}
+
+/* Add spacing between menu items */
+header nav ul.menu li {
+  margin: 0 15px;             /* Adjust spacing as needed */
+}
+
+/* Basic styling for the links */
+header nav ul.menu li a {
+  color: #fff;                /* Set the text color */
+  text-decoration: none;      /* Remove underline */
+  font-size: 16px;            /* Adjust font size if required */
+  padding: 8px 12px;          /* Adds some extra clickable area */
+  transition: background-color 0.3s ease;
+}
+
+/* Optional: Hover effect on links */
+header nav ul.menu li a:hover {
+  background-color: #575757;  /* Change to your preferred hover color */
+  border-radius: 4px;
+}
+
