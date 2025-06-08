@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Facts & Discoveries</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+    }
+    .options li {
+      background: #ddd;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options li:hover {
+      background: #bbb;
+    }
+    #submit {
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+      border-radius: 4px;
+    }
+    #submit:hover {
+      background: #575757;
+    }
+    #result {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Science Quiz - Facts & Discoveries</h1>
+  <div class="quiz-container">
+    <p class="question"></p>
+    <ul class="options"></ul>
+    <button id="submit">Submit Answer</button>
+    <p id="result"></p>
+    <p id="score"></p>
+  </div>
+
+  <script>
+    // Science Quiz Questions
+    const quizData = [
+      { question: "What is the chemical symbol for water?", options: ["H2O", "O2", "CO2", "HO"], answer: "H2O" },
+      { question: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], answer: "Mars" },
+      { question: "What is the speed of light in a vacuum?", options: ["3 × 10^8 m/s", "1 × 10^6 m/s", "5 × 10^7 m/s", "2 × 10^8 m/s"], answer: "3 × 10^8 m/s" },
+      { question: "Which gas is most abundant in Earth's atmosphere?", options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"], answer: "Nitrogen" },
+      { question: "Who proposed the theory of relativity?", options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Nikola Tesla"], answer: "Albert Einstein" },
+      { question: "What is the smallest unit of life?", options: ["Atom", "Molecule", "Cell", "Organ"], answer: "Cell" },
+      { question: "Which element is known as the 'King of Chemicals'?", options: ["Sulfuric acid", "Hydrochloric acid", "Nitric acid", "Acetic acid"], answer: "Sulfuric acid" },
+      { question: "What is the main source of energy for Earth?", options: ["The Moon", "The Sun", "Geothermal energy", "Wind energy"], answer: "The Sun" },
+      { question: "What is the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"], answer: "Mitochondria" },
+      { question: "Which planet has the most moons?", options: ["Earth", "Mars", "Jupiter", "Saturn"], answer: "Saturn" },
+      { question: "What is the primary component of natural gas?", options: ["Methane", "Propane", "Butane", "Ethane"], answer: "Methane" },
+      { question: "Which scientist discovered penicillin?", options: ["Alexander Fleming", "Marie Curie", "Louis Pasteur", "Gregor Mendel"], answer: "Alexander Fleming" },
+      { question: "What is the largest organ in the human body?", options: ["Heart", "Liver", "Skin", "Brain"], answer: "Skin" },
+      { question: "Which particle in an atom has a negative charge?", options: ["Proton", "Neutron", "Electron", "Nucleus"], answer: "Electron" },
+      { question: "What is the term for animals that eat both plants and meat?", options: ["Herbivores", "Carnivores", "Omnivores", "Detritivores"], answer: "Omnivores" }
+    ];
+
+    // Quiz Initialization
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.querySelector('.question');
+    const optionsEl = document.querySelector('.options');
+    const submitBtn = document.querySelector('#submit');
+    const resultEl = document.querySelector('#result');
+    const scoreEl = document.querySelector('#score');
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach(option => {
+        const li = document.createElement("li");
+        li.textContent = option;
+        li.onclick = () => selectOption(option);
+        optionsEl.appendChild(li);
+      });
+    }
+
+    let selectedAnswer = null;
+
+    function selectOption(option) {
+      selectedAnswer = option;
+      resultEl.textContent = "";
+    }
+
+    submitBtn.onclick = function () {
+      if (!selectedAnswer) {
+        resultEl.textContent = "Please select an answer.";
+        return;
+      }
+
+      const correctAnswer = quizData[currentQuestion].answer;
+      if (selectedAnswer === correctAnswer) {
+        score++;
+        resultEl.textContent = "✅ Correct!";
+      } else {
+        resultEl.textContent = `❌ Incorrect! The correct answer is: ${correctAnswer}`;
+      }
+
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        setTimeout(loadQuestion, 1500);
+      } else {
+        questionEl.textContent = "Quiz Completed!";
+        optionsEl.innerHTML = "";
+        submitBtn.style.display = "none";
+        scoreEl.textContent = `Your final score: ${score} / ${quizData.length}`;
+      }
+    };
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
