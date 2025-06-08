@@ -204,7 +204,6 @@
       <a href="#facts">Facts</a>
       <a href="#discoveries">Discoveries</a>
       <a href="#history">Historical Notes</a>
-      <a href="Quiz.html">Take the Quiz</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -225,27 +224,26 @@
       <h3>HIV Prevention Breakthrough</h3>
       <p>A revolutionary drug, Lenacapavir, shows unprecedented success in HIV prevention, promising a new era in global healthcare.</p>
       <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
-<img src="download.jpg" alt= download>
-
+<img src="OIP.jpg" alt=OIP>
     </article>
-    
+
+ <h2> HIV Prevention </h2>
     <!-- Fact 2: Climate Change Milestone -->
     <article class="fade-in" style="animation-delay:0.4s;">
       <h3>Climate Change Milestone</h3>
-      <p>Recent studies indicate a breakthrough in sustainable energy solutions, highlighting how renewable energy is scaling globally.</p>
+      <p>Recent studies indicate a breakthrough in sustainable energy solutions, highlighting how renewable energy is scaling 
+globally.</p>
       <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
 <img src="download.webp.jpg" alt= download.webp>
-
     </article>
-    
+
     <!-- Fact 3: Advancements in AI -->
     <article class="fade-in" style="animation-delay:0.6s;">
       <h3>Advancements in Artificial Intelligence</h3>
       <p>AI-powered algorithms now revolutionize how data is processed, leading to smarter and more efficient systems in healthcare and technology.</p>
       <a class="read-more" href="#!" onclick="alert('Detailed article coming soon!')">Read More →</a>
-<img src="AI.jpg" alt= AI >
-
     </article>
+<img src="AI.jpg" alt= AI >
   </section>
 
   <!-- DISCOVERIES SECTION -->
@@ -317,6 +315,7 @@
         console.log(`Navigating to ${e.target.getAttribute('href')}`);
       });
     });
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -615,11 +614,10 @@
   </section>
 
   <!-- FOOTER -->
- <footer>
-  <p>&copy; 2025 Science & Facts. All rights reserved.</p>
-  <p>Created by ISHAN PAL of Class IX G, DPS Ranipur.</p>
-  <p>Designed with passion to inspire curiosity and drive discovery.</p>
-</footer>
+  <footer>
+    <p>&copy; 2025 Science & Facts. All rights reserved.</p>
+    <p>Designed with passion to inspire curiosity and drive discovery.</p>
+  </footer>
 
   <!-- OPTIONAL: JavaScript for Additional Interactivity -->
   <script>
@@ -631,10 +629,135 @@
       });
     });
 <link rel="stylesheet" href="styles.css">
-<a href="quiz.html">Take the Quiz</a>
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Science And FActs</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Feel free to link any external fonts if desired -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header with animated logo and navigation -->
+  <header>
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Science<span>FActs</span></h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#articles" class="nav-link">Articles</a></li>
+          <li><a href="#discoveries" class="nav-link">Discoveries</a></li>
+          <li><a href="#quizzes" class="nav-link">Quizzes</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content area -->
+  <main>
+    <section id="home" class="section section-home">
+      <div class="container">
+        <h2>Welcome to Science And FActs</h2>
+        <p>Explore incredible scientific discoveries, read engaging articles, and test your knowledge with our interactive quizzes. Embrace the fusion of aesthetics and information through smooth transitions and dynamic animations.</p>
+        <a href="#articles" class="btn-primary">Explore Articles</a>
+      </div>
+    </section>
+
+    <!-- Search Section with custom animated search box -->
+    <section id="search-section" class="section search-section">
+      <div class="container">
+        <h2>Search Our Articles</h2>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Type to search for articles..." autocomplete="off">
+          <div id="suggestions"></div>
+        </div>
+        <p class="search-info">Click on any suggestion to visit the respective site for more detailed information.</p>
+      </div>
+    </section>
+
+    <!-- Articles Section (sample layout for featured articles) -->
+    <section id="articles" class="section articles-section">
+      <div class="container">
+        <h2>Featured Articles</h2>
+        <div class="articles-grid">
+          <article class="card">
+            <img src="https://via.placeholder.com/400x200?text=Science+Article+1" alt="Article Image">
+            <div class="card-content">
+              <h3>Latest Science Discoveries</h3>
+              <p>Learn about the newest breakthroughs in various fields of scientific research.</p>
+              <a href="https://www.nationalgeographic.com" class="btn-secondary" target="_blank">Read More</a>
+            </div>
+          </article>
+          <article class="card">
+            <img src="https://via.placeholder.com/400x200?text=Science+Article+2" alt="Article Image">
+            <div class="card-content">
+              <h3>Astounding Physics</h3>
+              <p>Explore the mysteries of the universe and unravel the secrets behind cosmic events.</p>
+              <a href="https://www.space.com" class="btn-secondary" target="_blank">Read More</a>
+            </div>
+          </article>
+          <article class="card">
+            <img src="https://via.placeholder.com/400x200?text=Science+Article+3" alt="Article Image">
+            <div class="card-content">
+              <h3>Innovative Chemistry</h3>
+              <p>Dive into the world of chemical reactions that power modern technology.</p>
+              <a href="https://www.chemistryworld.com" class="btn-secondary" target="_blank">Read More</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 Science And FActs. All rights reserved.</p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- JavaScript for the search functionality -->
+  <script>
+    // Sample article data; expand this list or integrate with an API as needed.
+    const articles = [
+      { title: "Latest Science Discoveries", url: "https://www.nationalgeographic.com" },
+      { title: "Astounding Physics", url: "https://www.space.com" },
+      { title: "Innovative Chemistry", url: "https://www.chemistryworld.com" },
+      { title: "Wildlife Facts", url: "https://www.nationalgeographic.com/animals" },
+      { title: "Exploring Biology", url: "https://www.livescience.com" },
+      { title: "Amazing Technology", url: "https://www.techradar.com" }
+    ];
+
+    // Get the search input and suggestions container
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsDiv = document.getElementById('suggestions');
+
+    // Listen for changes in the input
+    searchInput.addEventListener("input", function() {
+      let query = this.value.toLowerCase();
+      suggestionsDiv.innerHTML = '';  // Clear previous suggestions
+
+      if(query.length > 0){
+        articles.forEach(article => {
+          if(article.title.toLowerCase().includes(query)){
+            let suggestion = document.createElement("div");
+            suggestion.className = "suggestion-item";
+            suggestion.textContent = article.title;
+            suggestion.addEventListener("click", function() {
+              // Redirect to the article's URL on click
+              window.location.href = article.url;
+            });
+            suggestionsDiv.appendChild(suggestion);
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
-  </script>
-</body>
-</html>
+
