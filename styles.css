@@ -222,3 +222,32 @@ CSS ANIMATIONS
     transform: translateY(0);
   }
 }
+@keyframes backgroundAnimation {
+    from {
+        background-position: left;
+    }
+    to {
+        background-position: right;
+    }
+}
+
+section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Enhancing articles with a sleek card effect */
+article {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
