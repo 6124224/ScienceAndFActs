@@ -344,7 +344,41 @@ body.interface .splash button:hover {
   background: rgba(255,255,255,0.3);
 }
 
-/* ————————————————————————  
-   4) OTHER STYLES  
-   (e.g. your content sections, utilities…)  
-   ———————————————————————— */
+.main-heading {
+  text-align: center;
+  font-size: 3em;
+  margin-top: 30px;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+}
+.section-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 50px;
+  font-size: 1.5em;
+  color: white;
+}
+.section-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+}
+.explore-btn {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 15px 30px;
+  font-size: 1.3em;
+  color: white;
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  border: none;
+  border-radius: 30px;
+  text-decoration: none;
+  font-family: 'Segoe UI', sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.explore-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
