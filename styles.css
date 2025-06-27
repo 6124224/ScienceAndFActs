@@ -382,18 +382,3 @@ body.interface .splash button:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
-#touch-controls {
-  margin-top: 15px;
-}
-#touch-controls button {
-  padding: 10px 20px;
-  margin: 0 10px;
-  font-size: 18px;
-  border-radius: 5px;
-  border: none;
-  background-color: #e67e22;
-  color: white;
-}
-#touch-controls button:active {
-  background-color: #d35400;
-}
