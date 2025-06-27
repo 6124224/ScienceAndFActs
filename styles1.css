@@ -1,65 +1,68 @@
 :root {
   --color-cyan: #00FFFF;
   --color-magenta: #FF00FF;
+  --color-lime: #39FF14;
   --color-white: #FFFFFF;
-  --color-text: #E0F7FA;
   --font: 'Segoe UI', sans-serif;
 }
 
 body {
   font-family: var(--font);
   background: url('face.jpg') center/cover no-repeat;
-  color: var(--color-text);
-  text-align: center;
-  padding: 10vh 2rem;
+  color: var(--color-white);
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
   overflow-x: hidden;
-  animation: fadeIn 1.2s ease-out;
+  text-align: center;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.brand {
-  font-size: 2.5rem;
+/* Top-left "Science & Facts" */
+nav .brand {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-size: 2.2rem;
   font-weight: bold;
-  color: var(--color-cyan);
-  text-shadow: 0 0 15px var(--color-cyan);
-  animation: floatGlow 3s infinite ease-in-out alternate;
+  color: var(--color-lime);
+  text-shadow: 0 0 4px var(--color-lime); /* Softer glow */
+  z-index: 5;
+  animation: glowLime 2.5s infinite ease-in-out alternate;
 }
 
-@keyframes floatGlow {
-  from { transform: translateY(0); text-shadow: 0 0 10px var(--color-cyan); }
-  to   { transform: translateY(-5px); text-shadow: 0 0 25px var(--color-cyan); }
+@keyframes glowLime {
+  from { text-shadow: 0 0 3px #39FF14; }
+  to   { text-shadow: 0 0 8px #39FF14; }
 }
 
+/* Welcome Heading */
 h1 {
-  font-size: 4.5rem;
+  font-size: 4.2rem;
   font-weight: bold;
+  margin-top: 20vh;
   background: linear-gradient(to right, var(--color-cyan), var(--color-magenta));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: pulseGlow 2s infinite ease-in-out alternate;
-  margin: 1rem 0;
+  animation: softPulse 3s ease-in-out infinite alternate;
+  text-shadow: none;
 }
 
-@keyframes pulseGlow {
-  from { text-shadow: 0 0 15px #00FFFF; }
-  to   { text-shadow: 0 0 30px #FF00FF; }
+@keyframes softPulse {
+  from { text-shadow: 0 0 4px #00FFFF; }
+  to   { text-shadow: 0 0 10px #FF00FF; }
 }
 
+/* Paragraph style */
 p {
-  font-size: 1.4rem;
-  margin: 1rem auto 2rem;
+  font-size: 1.3rem;
   max-width: 700px;
   color: var(--color-white);
+  margin: 1.5rem auto 2rem;
 }
 
+/* Button style */
 .btn {
-  display: inline-block;
-  padding: 1rem 2.5rem;
+  padding: 1rem 2.2rem;
   background: linear-gradient(135deg, var(--color-cyan), var(--color-magenta));
   color: white;
   border: none;
@@ -67,16 +70,17 @@ p {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(0, 255, 255, 0.5);
-  transition: all 0.3s ease;
   text-decoration: none;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn:hover {
-  transform: scale(1.07) rotate(1deg);
-  box-shadow: 0 0 25px rgba(255, 0, 255, 0.8);
+  transform: scale(1.06);
+  box-shadow: 0 0 12px rgba(255, 0, 255, 0.4);
 }
 
+/* Footer */
 .footer {
   margin-top: 5rem;
   font-size: 0.95rem;
@@ -87,10 +91,12 @@ p {
   h1 {
     font-size: 2.8rem;
   }
-  p {
-    font-size: 1.1rem;
-  }
   .btn {
     width: 100%;
+  }
+  nav .brand {
+    font-size: 1.8rem;
+    left: 20px;
+    top: 15px;
   }
 }
