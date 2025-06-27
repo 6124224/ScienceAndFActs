@@ -1,7 +1,7 @@
 :root {
+  --color-skyblue: #00BFFF;
   --color-cyan: #00FFFF;
   --color-magenta: #FF00FF;
-  --color-lime: #39FF14;
   --color-white: #FFFFFF;
   --font: 'Segoe UI', sans-serif;
 }
@@ -17,27 +17,21 @@ body {
   text-align: center;
 }
 
-/* Top-left "Science & Facts" */
+/* 🧠 Top-left "Science & Facts" */
 nav .brand {
   position: absolute;
   top: 20px;
   left: 30px;
   font-size: 2.2rem;
   font-weight: bold;
-  color: var(--color-lime);
-  text-shadow: 0 0 4px var(--color-lime); /* Softer glow */
-  z-index: 5;
-  animation: glowLime 2.5s infinite ease-in-out alternate;
+  color: var(--color-skyblue);
+  text-shadow: 0 0 1px var(--color-skyblue); /* Least glow */
+  z-index: 10;
 }
 
-@keyframes glowLime {
-  from { text-shadow: 0 0 3px #39FF14; }
-  to   { text-shadow: 0 0 8px #39FF14; }
-}
-
-/* Welcome Heading */
+/* 🌟 Welcome Title */
 h1 {
-  font-size: 4.2rem;
+  font-size: 4rem;
   font-weight: bold;
   margin-top: 20vh;
   background: linear-gradient(to right, var(--color-cyan), var(--color-magenta));
@@ -47,20 +41,19 @@ h1 {
   text-shadow: none;
 }
 
+/* 🌀 Smooth light gradient animation */
 @keyframes softPulse {
-  from { text-shadow: 0 0 4px #00FFFF; }
-  to   { text-shadow: 0 0 10px #FF00FF; }
+  from { text-shadow: 0 0 1px #00FFFF; }
+  to   { text-shadow: 0 0 4px #FF00FF; }
 }
 
-/* Paragraph style */
 p {
   font-size: 1.3rem;
   max-width: 700px;
   color: var(--color-white);
-  margin: 1.5rem auto 2rem;
+  margin: 1.5rem auto 2.2rem;
 }
 
-/* Button style */
 .btn {
   padding: 1rem 2.2rem;
   background: linear-gradient(135deg, var(--color-cyan), var(--color-magenta));
@@ -71,16 +64,15 @@ p {
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
+  box-shadow: 0 0 6px rgba(0, 255, 255, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 12px rgba(255, 0, 255, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
 }
 
-/* Footer */
 .footer {
   margin-top: 5rem;
   font-size: 0.95rem;
