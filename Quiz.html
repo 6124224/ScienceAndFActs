@@ -59,43 +59,6 @@
   </style>
 </head>
 <body>
-<!-- Fact Frenzy Game -->
-<h1>Fact Frenzy 🧠</h1>
-<p><strong>Match terms with their definitions!</strong></p>
-<p>Time Left: <span id="time">60</span>s | Score: <span id="score">0</span></p>
-
-<div id="game">
-  <div class="term-box">
-    <h3>Term</h3>
-    <p id="term">Loading...</p>
-  </div>
-  <div class="options">
-    <h3>Definitions</h3>
-    <div id="choices"></div>
-  </div>
-</div>
-
-<button id="startBtn">Start Game</button>
-
-<style>
-  #game {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 20px;
-  }
-  .term-box, .options {
-    width: 45%;
-    min-width: 200px;
-  }
-  .options button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px;
-    width: 100%;
-  }
-</style>
-
   <h1>Science Quiz - Facts & Discoveries</h1>
   <div class="quiz-container">
     <p class="question"></p>
@@ -568,7 +531,6 @@
     // Start the Atom Catch Game automatically
     animateAtomGame();
 
-<script src="effects.js"></script>
   </script>
 </body>
 </html>
