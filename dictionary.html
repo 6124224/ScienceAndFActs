@@ -1,205 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>✨ Cool Interactive Dictionary ✨</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dictionary 2.0</title>
 
-  <!-- Google Font + Font Awesome for icons -->
+  <!-- Google Font + Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
 
-  <style>
-    /* ——— Theme Variables ——— */
-    :root {
-      --clr-bg: #f0f4ff;
-      --clr-card: rgba(255,255,255,0.6);
-      --clr-primary: #4e54c8;
-      --clr-accent: #ff6584;
-      --clr-text: #222;
-      --shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
-    [data-theme="dark"] {
-      --clr-bg: #1e1e2f;
-      --clr-card: rgba(30,30,47,0.6);
-      --clr-text: #f0f4ff;
-    }
-
-    /* ——— Global Reset & Body ——— */
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--clr-bg);
-      color: var(--clr-text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      transition: background .3s, color .3s;
-    }
-
-    /* ——— HEADER ——— */
-    header.hero {
-      position: relative;
-      height: 200px;
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    header.hero h1 {
-      color: #fff;
-      font-size: 2.4rem;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      z-index: 1;
-    }
-    .toggle-theme {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      font-size: 1.2rem;
-      color: #fff;
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    /* ——— SEARCH BAR ——— */
-    .search {
-      max-width: 600px;
-      margin: -40px auto 20px;
-      display: flex;
-      overflow: hidden;
-      border-radius: 50px;
-      box-shadow: var(--shadow);
-    }
-    .search input {
-      flex: 1;
-      padding: 14px 20px;
-      border: none;
-      font-size: 1rem;
-      outline: none;
-      background: #fff;
-    }
-    .search button {
-      width: 60px;
-      border: none;
-      background: var(--clr-accent);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform .2s;
-    }
-    .search button:hover {
-      transform: scale(1.1);
-    }
-
-    /* ——— RESULTS GRID ——— */
-    #results {
-      flex: 1;
-      width: 90%;
-      max-width: 1000px;
-      margin: 0 auto 40px;
-      display: grid;
-      gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-    .card {
-      background: var(--clr-card);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-      transition: transform .3s;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-    }
-    .card h2 {
-      font-size: 1.6rem;
-      margin-bottom: 8px;
-      color: var(--clr-primary);
-    }
-    .card .phonetic {
-      font-style: italic;
-      color: #555;
-      margin-bottom: 12px;
-    }
-    .card .pos {
-      font-weight: 600;
-      color: var(--clr-accent);
-      margin-top: 12px;
-      text-transform: capitalize;
-    }
-    .card .def {
-      margin: 8px 0;
-      line-height: 1.5;
-    }
-    .card .example {
-      font-style: italic;
-      color: #666;
-      margin-left: 12px;
-    }
-
-    /* ——— FOOTER ——— */
-    footer {
-      text-align: center;
-      padding: 12px 0;
-      font-size: .9rem;
-      color: #888;
-    }
-  </style>
+  <!-- Link to your new CSS -->
+  <link rel="stylesheet" href="styles3.css"/>
 </head>
-
 <body>
 
-  <!-- Header with Dark-Mode Toggle -->
-  <header class="hero">
+  <!-- Main navigation (copy from main.html if needed) -->
+  <header>
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="dictionary.html">Dictionary</a>
+    </nav>
+  </header>
+
+  <!-- Hero banner -->
+  <section class="hero">
+    <h1>Dictionary 2.0</h1>
     <div class="toggle-theme" id="themeToggle">
       <i class="fas fa-moon"></i>
     </div>
-    <h1>Dictionary 2.0</h1>
-  </header>
+  </section>
 
-  <!-- Search Input + Button -->
-  <div class="search">
-    <input id="wordInput" type="text" placeholder="Type any word…" />
-    <button id="searchBtn"><i class="fas fa-search"></i></button>
-  </div>
+  <!-- Search input + button -->
+  <section class="search-section">
+    <input id="wordInput" type="text" placeholder="Type any word…"/>
+    <button id="searchBtn">
+      <i class="fas fa-search"></i>
+    </button>
+  </section>
 
-  <!-- Definitions Will Appear Here -->
+  <!-- Definitions will appear here -->
   <div id="results"></div>
 
-  <footer>
-    © 2025 • Powered by DictionaryAPI.dev
-  </footer>
+  <footer>© 2025 • Powered by DictionaryAPI.dev</footer>
 
-  <!-- ——— JavaScript ——— -->
   <script>
-    const btn = document.getElementById('searchBtn');
-    const input = document.getElementById('wordInput');
-    const results = document.getElementById('results');
-    const themeToggle = document.getElementById('themeToggle');
+    const btn    = document.getElementById('searchBtn');
+    const input  = document.getElementById('wordInput');
+    const output = document.getElementById('results');
+    const toggle = document.getElementById('themeToggle');
 
-    // Dark/Light Mode Toggle
-    themeToggle.addEventListener('click', () => {
-      const isDark = document.body.dataset.theme === 'dark';
-      document.body.dataset.theme = isDark ? '' : 'dark';
-      themeToggle.innerHTML =
-        isDark
-          ? '<i class="fas fa-moon"></i>'
-          : '<i class="fas fa-sun"></i>';
+    // Dark/Light toggle
+    toggle.addEventListener('click', () => {
+      const dark = document.body.dataset.theme === 'dark';
+      document.body.dataset.theme = dark ? '' : 'dark';
+      toggle.innerHTML = dark
+        ? '<i class="fas fa-moon"></i>'
+        : '<i class="fas fa-sun"></i>';
     });
 
-    // Lookup & Render Definitions
+    // Fetch & render definitions
     async function lookup() {
       const word = input.value.trim();
-      results.innerHTML = '';
+      output.innerHTML = '';
       if (!word) return;
 
       try {
-        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-        if (!res.ok) throw new Error('Not found');
+        const res  = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        if (!res.ok) throw 0;
         const data = await res.json();
 
         data.forEach(entry => {
@@ -209,32 +77,31 @@
             <h2>${entry.word}</h2>
             ${entry.phonetic ? `<div class="phonetic">${entry.phonetic}</div>` : ''}
           `;
-
           entry.meanings.forEach(m => {
             card.innerHTML += `<div class="pos">${m.partOfSpeech}</div>`;
-            m.definitions.forEach((d, i) => {
+            m.definitions.forEach((d,i) => {
               card.innerHTML += `
                 <div class="def"><strong>${i+1}.</strong> ${d.definition}</div>
                 ${d.example ? `<div class="example">“${d.example}”</div>` : ''}
               `;
             });
           });
-
-          results.appendChild(card);
+          output.appendChild(card);
         });
       } catch {
-        results.innerHTML = `
+        output.innerHTML = `
           <div class="card">
             <h2>Oops!</h2>
-            <div class="def">No definition found for "<strong>${word}</strong>".</div>
+            <div class="def">
+              No definition found for "<strong>${word}</strong>".
+            </div>
           </div>`;
       }
     }
 
-    // Event Listeners
+    // Event listeners
     btn.addEventListener('click', lookup);
     input.addEventListener('keydown', e => e.key === 'Enter' && lookup());
   </script>
-
 </body>
 </html>
