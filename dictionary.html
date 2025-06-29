@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dictionary 2.0</title>
 
   <!-- Google Font + Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
 
-  <!-- Link to your new CSS -->
+  <!-- Your CSS -->
   <link rel="stylesheet" href="styles3.css"/>
 </head>
 <body>
 
-  <!-- Main navigation (copy from main.html if needed) -->
+  <!-- Navigation -->
   <header>
     <nav>
       <a href="main.html">Home</a>
@@ -22,26 +22,23 @@
     </nav>
   </header>
 
-  <!-- Hero banner -->
+  <!-- Hero + Dark/Light Toggle -->
   <section class="hero">
     <h1>Dictionary 2.0</h1>
     <div class="toggle-theme" id="themeToggle">
       <i class="fas fa-moon"></i>
     </div>
   </section>
-<section class="search-section">
-  <input id="wordInput" type="text" placeholder="Type any word…" />
-  <button id="searchBtn"><i class="fas fa-search"></i></button>
-</section>
-  <!-- Search input + button -->
+
+  <!-- ← Only one search bar here! → -->
   <section class="search-section">
-    <input id="wordInput" type="text" placeholder="Type any word…"/>
+    <input id="wordInput" type="text" placeholder="Type any word…" />
     <button id="searchBtn">
       <i class="fas fa-search"></i>
     </button>
   </section>
 
-  <!-- Definitions will appear here -->
+  <!-- Results -->
   <div id="results"></div>
 
   <footer>© 2025 • Powered by DictionaryAPI.dev</footer>
@@ -54,9 +51,9 @@
 
     // Dark/Light toggle
     toggle.addEventListener('click', () => {
-      const dark = document.body.dataset.theme === 'dark';
-      document.body.dataset.theme = dark ? '' : 'dark';
-      toggle.innerHTML = dark
+      const isDark = document.body.dataset.theme === 'dark';
+      document.body.dataset.theme = isDark ? '' : 'dark';
+      toggle.innerHTML = isDark
         ? '<i class="fas fa-moon"></i>'
         : '<i class="fas fa-sun"></i>';
     });
@@ -68,7 +65,9 @@
       if (!word) return;
 
       try {
-        const res  = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        const res  = await fetch(
+          `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+        );
         if (!res.ok) throw 0;
         const data = await res.json();
 
@@ -101,7 +100,6 @@
       }
     }
 
-    // Event listeners
     btn.addEventListener('click', lookup);
     input.addEventListener('keydown', e => e.key === 'Enter' && lookup());
   </script>
