@@ -68,7 +68,7 @@ header nav a:hover {
 
 /* ——— SEARCH SECTION ——— */
 .search-section {
-  margin: -40px auto 1.5rem;
+  margin: 20px auto 1.5rem;
   max-width: 600px;
   display: flex;
   box-shadow: var(--shadow);
