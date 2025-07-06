@@ -1,138 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="styles1.css" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Science & Facts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet"/>
   <style>
-    /* color palette pulled from face.jpg + footer tweak */
-    :root {
-      
-      --color-primary: #A35620;
-      --color-accent: #A35620;
-      --color-text: #FFFFFF;
-      --color-footer-bg: #15213D;    /* dark bluish-black sky */
-      --color-footer-text: #E0E6ED;  /* light contrast */
-      --font: 'Segoe UI', sans-serif;
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: var(--font);
-      color: var(--color-text);
-      background: url('face.jpg') center/cover no-repeat;
+      font-family: 'Poppins', sans-serif;
+      background: url("face.jpg") center/cover no-repeat fixed;
+      position: relative;
       min-height: 100vh;
-      position: relative;
+      color: #fff;
+      overflow-x: hidden;
     }
-    body::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--color-bg);
-      opacity: 0.85;
-      pointer-events: none;
+
+    /* Soft dark overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
     }
-    nav {
-      position: relative;
-      padding: 1rem 2rem;
-      z-index: 1;
-    }
-    .brand {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--color-accent);
-    }
-    header {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 4rem 2rem;
-      min-height: calc(100vh - 72px);
+
+    .container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-    }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      color: var(--color-accent);
-    }
-    p {
-      font-size: 1.125rem;
-      margin-bottom: 2rem;
-      max-width: 600px;
-      line-height: 1.5;
-    }
-    .btn {
-      padding: 0.75rem 2rem;
-      background-color: var(--color-primary);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: 600;
-      transition: background 0.3s;
-    }
-    .btn:hover {
-      background-color: var(--color-accent);
-    }
-
-    /* footer with website + creator + three words */
-    .footer {
-      position: relative;
-      z-index: 1;
-      background-color: var(--color-footer-bg);
-      color: var(--color-footer-text);
       text-align: center;
-      padding: 1.5rem 2rem;
-    }
-    .footer-content {
-      font-size: 1rem;
-      margin-bottom: 0.75rem;
-    }
-    .word-list {
-      display: flex;
-      justify-content: center;
-      gap: 2.5rem;
-    }
-    .word-list span {
-      font-size: 1.25rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      min-height: 100vh;
+      padding: 20px;
+      animation: fadeSlide 1s ease-out both;
     }
 
-    @media (max-width: 600px) {
-      h1 { font-size: 2.25rem; }
-      p  { font-size: 1rem; }
-      .btn { width: 100%; text-align: center; }
-      .word-list {
-        flex-direction: column;
-        gap: 1rem;
-      }
+    h1 {
+      font-size: 3.5rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+      animation: fadeDown 1.2s ease-out;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      max-width: 700px;
+      color: #f0f0f0;
+      line-height: 1.6;
+      animation: fadeUp 1.4s ease-out;
+    }
+
+    a.button {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 14px 30px;
+      font-size: 1rem;
+      border-radius: 30px;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #00f5a0, #0072ff);
+      box-shadow: 0 0 12px rgba(0, 114, 255, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.4s ease;
+      animation: fadeUp 1.6s ease-out;
+    }
+
+    a.button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 114, 255, 0.7);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.4);
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeDown {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2.4rem; }
+      p { font-size: 1rem; }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="brand">Science & Facts</div>
-  </nav>
+  <div class="container">
+    <h1>Welcome to Science & Facts</h1>
+    <p>Let’s build, explore, and learn together through interactive knowledge, creative experiments, and awesome games!</p>
+    <a href="#start" class="button">Get Started</a>
+  </div>
 
-  <header>
-    <h1>Welcome!</h1>
-    <p>Welcome to my corner of the web—let’s build, explore and learn together.</p>
-    <a href="main.html" class="btn">Get Started</a>
-  </header>
-
-  <footer class="footer">
-    <div class="footer-content">
-      Science & Facts | Created by Ishan Pal
-    </div>
-    <div class="word-list">
-      <span>LEARN</span>
-      <span>TEST</span>
-      <span>APPLY</span>
-    </div>
-  </footer>
+  <div class="footer">
+    Science & Facts | Created by Ishan Pal
+  </div>
 </body>
 </html>
