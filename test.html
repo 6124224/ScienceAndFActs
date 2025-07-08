@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Wonders | Amazing Facts & Discoveries</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite 1.5s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: #c0392b;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        .facts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 0 5%;
+            margin-bottom: 60px;
+        }
+        
+        .fact-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .fact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .fact-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .fact-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .fact-card:hover .fact-image img {
+            transform: scale(1.1);
+        }
+        
+        .fact-content {
+            padding: 25px;
+        }
+        
+        .fact-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .fact-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .fact-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .discoveries-timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 5%;
+        }
+        
+        .discoveries-timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: var(--secondary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+        
+        .discovery {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .discovery.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .discovery:nth-child(odd) {
+            left: 0;
+        }
+        
+        .discovery:nth-child(even) {
+            left: 50%;
+        }
+        
+        .discovery-content {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .discovery-content::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            top: 30px;
+            z-index: -1;
+            transform: rotate(45deg);
+            box-shadow: 5px -5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .discovery:nth-child(odd) .discovery-content::after {
+            right: -10px;
+        }
+        
+        .discovery:nth-child(even) .discovery-content::after {
+            left: -10px;
+        }
+        
+        .discovery-year {
+            position: absolute;
+            width: 100px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .discovery:nth-child(odd) .discovery-year {
+            right: -120px;
+            top: 20px;
+        }
+        
+        .discovery:nth-child(even) .discovery-year {
+            left: -120px;
+            top: 20px;
+        }
+        
+        .discovery h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .discovery p {
+            color: #666;
+        }
+        
+        .discovery-image {
+            height: 200px;
+            margin: 15px 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .discovery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .science-quote {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 80px 5%;
+            text-align: center;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .science-quote::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1352&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .quote-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .quote-content blockquote {
+            font-size: 2rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .quote-author {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #c0392b;
+            transform: translateY(-5px);
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .discoveries-timeline::after {
+                left: 31px;
+            }
+            
+            .discovery {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .discovery:nth-child(even) {
+                left: 0;
+            }
+            
+            .discovery:nth-child(odd) .discovery-year,
+            .discovery:nth-child(even) .discovery-year {
+                left: 15px;
+                right: auto;
+                top: 15px;
+            }
+            
+            .discovery:nth-child(odd) .discovery-content::after,
+            .discovery:nth-child(even) .discovery-content::after {
+                left: -10px;
+                right: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Science Wonders</h1>
+            <p>Explore the most fascinating discoveries and mind-blowing facts about our universe</p>
+            <a href="#facts" class="btn">Discover Now</a>
+        </div>
+    </section>
+    
+    <section id="facts" class="facts-section">
+        <h2 class="section-title">Amazing Science Facts</h2>
+        <div class="facts-container">
+            <div class="fact-card">
+                <span class="category-badge">Physics</span>
+                <div class="fact-image">
+                    <img src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&auto=format&fit=crop&w=1351&q=80" alt="Black Hole">
+                </div>
+                <div class="fact-content">
+                    <h3>Time Slows Near Black Holes</h3>
+                    <p>Due to extreme gravitational forces, time moves slower near black holes. An hour near a black hole could be equivalent to years on Earth, a phenomenon predicted by Einstein's theory of relativity.</p>
+                    <div class="fact-meta">
+                        <span><i class="fas fa-atom"></i> Quantum Physics</span>
+                        <span><i class="fas fa-calendar-alt"></i> 1915</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fact-card">
+                <span class="category-badge">Biology</span>
+                <div class="fact-image">
+                    <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="DNA">
+                </div>
+                <div class="fact-content">
+                    <h3>Human DNA in Every Cell</h3>
+                    <p>If you unraveled all the DNA molecules in your body and placed them end to end, it would stretch from Earth to Pluto and back — about 10 billion miles! Each cell contains about 2 meters of DNA.</p>
+                    <div class="fact-meta">
+                        <span><i class="fas fa-dna"></i> Genetics</span>
+                        <span><i class="fas fa-calendar-alt"></i> 1953</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fact-card">
+                <span class="category-badge">Astronomy</span>
+                <div class="fact-image">
+                    <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&auto=format&fit=crop&w=1351&q=80" alt="Milky Way">
+                </div>
+                <div class="fact-content">
+                    <h3>Galactic Collision Coming</h3>
+                    <p>Our Milky Way galaxy is on a collision course with the Andromeda galaxy. But don't worry — this cosmic event won't happen for about 4 billion years, and stars are so far apart that direct collisions are unlikely.</p>
+                    <div class="fact-meta">
+                        <span><i class="fas fa-star"></i> Astrophysics</span>
+                        <span><i class="fas fa-calendar-alt"></i> 2012</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fact-card">
+                <span class="category-badge">Chemistry</span>
+                <div class="fact-image">
+                    <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Diamond">
+                </div>
+                <div class="fact-content">
+                    <h3>Diamonds from Space</h3>
+                    <p>Scientists have discovered planets that may be composed largely of diamond. One such planet, 55 Cancri e, is twice Earth's size and may have a surface of graphite and diamond rather than water and granite.</p>
+                    <div class="fact-meta">
+                        <span><i class="fas fa-gem"></i> Mineralogy</span>
+                        <span><i class="fas fa-calendar-alt"></i> 2011</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fact-card">
+                <span class="category-badge">Neuroscience</span>
+                <div class="fact-image">
+                    <img src="https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Brain">
+                </div>
+                <div class="fact-content">
+                    <h3>Brain's Storage Capacity</h3>
+                    <p>The human brain's memory capacity is estimated to be around 2.5 petabytes (or a million gigabytes). For comparison, this is about the same amount needed to store 3 million hours of TV shows.</p>
+                    <div class="fact-meta">
+                        <span><i class="fas fa-brain"></i> Cognitive Science</span>
+                        <span><i class="fas fa-calendar-alt"></i> 2016</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fact-card">
+                <span class="category-badge">Quantum Physics</span>
+                <div class="fact-image">
+                    <img src="https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1352&q=80" alt="Quantum">
+                </div>
+                <div class="fact-content">
+                    <h3>Quantum Entanglement</h3>
+                    <p>Quantum particles can become "entangled," meaning the state of one instantly influences another, no matter how far apart they are. Einstein called this "spooky action at a distance," and it's been experimentally verified.</p>
+                    <div class="fact-meta">
+                        <span><i class="fas fa-atom"></i> Quantum Mechanics</span>
+                        <span><i class="fas fa-calendar-alt"></i> 1935</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="discoveries-section">
+        <h2 class="section-title">Historic Scientific Discoveries</h2>
+        <div class="discoveries-timeline">
+            <div class="discovery">
+                <div class="discovery-content">
+                    <div class="discovery-year">1543</div>
+                    <h3>Heliocentric Model</h3>
+                    <div class="discovery-image">
+                        <img src="https://images.unsplash.com/photo-1462332420958-ab05b6c7c1eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Solar System">
+                    </div>
+                    <p>Nicolaus Copernicus published his theory that the Earth revolves around the Sun, revolutionizing our understanding of the solar system and challenging the geocentric model that had dominated for centuries.</p>
+                </div>
+            </div>
+            
+            <div class="discovery">
+                <div class="discovery-content">
+                    <div class="discovery-year">1687</div>
+                    <h3>Laws of Motion</h3>
+                    <div class="discovery-image">
+                        <img src="https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Newton's Laws">
+                    </div>
+                    <p>Isaac Newton published "Philosophiæ Naturalis Principia Mathematica," formulating the laws of motion and universal gravitation, laying the foundation for classical mechanics.</p>
+                </div>
+            </div>
+            
+            <div class="discovery">
+                <div class="discovery-content">
+                    <div class="discovery-year">1859</div>
+                    <h3>Theory of Evolution</h3>
+                    <div class="discovery-image">
+                        <img src="https://images.unsplash.com/photo-1542407535-7e1e8fa5d44b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Evolution">
+                    </div>
+                    <p>Charles Darwin published "On the Origin of Species," presenting compelling evidence for evolution by natural selection, fundamentally changing our understanding of life's diversity.</p>
+                </div>
+            </div>
+            
+            <div class="discovery">
+                <div class="discovery-content">
+                    <div class="discovery-year">1905</div>
+                    <h3>Theory of Relativity</h3>
+                    <div class="discovery-image">
+                        <img src="https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Einstein">
+                    </div>
+                    <p>Albert Einstein published his special theory of relativity, introducing the famous equation E=mc² and revolutionizing our concepts of space, time, and energy.</p>
+                </div>
+            </div>
+            
+            <div class="discovery">
+                <div class="discovery-content">
+                    <div class="discovery-year">1953</div>
+                    <h3>DNA Structure</h3>
+                    <div class="discovery-image">
+                        <img src="https://images.unsplash.com/photo-1559479081-fb96d8f3462e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="DNA">
+                    </div>
+                    <p>James Watson and Francis Crick discovered the double helix structure of DNA, the molecule that carries genetic information in all living organisms, opening the door to modern genetics.</p>
+                </div>
+            </div>
+            
+            <div class="discovery">
+                <div class="discovery-content">
+                    <div class="discovery-year">2012</div>
+                    <h3>Higgs Boson</h3>
+                    <div class="discovery-image">
+                        <img src="https://images.unsplash.com/photo-1519999482648-25049ddd37b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Higgs Boson">
+                    </div>
+                    <p>Scientists at CERN confirmed the discovery of the Higgs boson, the particle that gives other particles mass, completing the Standard Model of particle physics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="science-quote">
+        <div class="quote-content">
+            <blockquote>
+                "Somewhere, something incredible is waiting to be known."
+            </blockquote>
+            <div class="quote-author">— Carl Sagan</div>
+        </div>
+    </section>
+    
+    <footer>
+        <h3>Science Wonders</h3>
+        <p>Exploring the marvels of our universe, one discovery at a time</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>&copy; 2023 Science Wonders. All rights reserved.</p>
+    </footer>
+    
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <script>
+        // Back to top button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('active');
+            } else {
+                backToTopBtn.classList.remove('active');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Animate timeline items on scroll
+        const discoveries = document.querySelectorAll('.discovery');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        discoveries.forEach(discovery => {
+            observer.observe(discovery);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
