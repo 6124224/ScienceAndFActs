@@ -2,132 +2,190 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Science & Facts — Official Portal</title>
+  <title>Science & Facts Portal</title>
+
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css2?
+    family=Orbitron:wght@400;700&
+    family=Rubik:wght@300;400;500;600&
+    display=swap" rel="stylesheet"/>
+
+  <!-- MAIN STYLESHEET -->
   <link rel="stylesheet" href="styles.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rubik:wght@300;400;600&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-  <!-- NAVIGATION -->
-  <nav class="navbar">
-    <div class="logo neon-glow">🔬 Science & Facts</div>
-    <div class="hamburger"><span></span><span></span><span></span></div>
-    <ul class="nav-menu">
-      <li><a href="#" class="active">Home</a></li>
-      <li><a href="discoveries-facts.html">Discoveries & Facts</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="quizzes-games.html">Quizzes & Games</a></li>
-      <li><a href="dictionary.html">Dictionary</a></li>
-    </ul>
-  </nav>
+  <!-- DARK MODE TOGGLE -->
+  <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="theme-checkbox">
+      <input type="checkbox" id="theme-checkbox"/>
+      <span class="slider round"></span>
+    </label>
+    <em>Enable Dark Mode</em>
+  </div>
 
-  <!-- HERO BANNER -->
-  <header class="hero">
-    <div class="blob"></div>
-    <h1 class="hero-title typewriter">Welcome to Science & Facts</h1>
-    <p class="hero-subtitle flicker">Curiosity is your compass. Let's explore!</p>
-    <a href="#about" class="btn neon-button">Get Started ↓</a>
-  </header>
-
-  <!-- ABOUT SECTION -->
-  <section id="about" class="section">
-    <h2 class="section-title glitch" data-text="About Science & Facts">About Science & Facts</h2>
-    <p class="section-desc">Our portal is dedicated to making science inspiring, interactive, and wildly imaginative. We merge technology, design, and curiosity into one immersive platform. With animations, quizzes, discoveries, history timelines, and a dictionary all powered by you and AI—this is where logic meets magic.</p>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="section features">
-    <div class="feature">
-      <img src="https://source.unsplash.com/400x300/?ai,neon" alt="AI Illustration"/>
-      <h3>Animated Experience</h3>
-      <p>Every scroll, every button, every pixel—brought to life with smooth animations.</p>
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Science & Facts</h2>
+      <button class="close-btn" aria-label="Close sidebar">&times;</button>
     </div>
-    <div class="feature">
-      <img src="https://source.unsplash.com/400x300/?hologram,data" alt="Visualization"/>
-      <h3>Glassmorphism UI</h3>
-      <p>Modern design with blur, light effects, and glowing textures that feel alive.</p>
-    </div>
-    <div class="feature">
-      <img src="https://source.unsplash.com/400x300/?science,future" alt="Futuristic Science"/>
-      <h3>AI Content Power</h3>
-      <p>From content to quizzes, everything is dynamic, creative, and editable by AI.</p>
-    </div>
-  </section>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="discoveries-facts.html">Facts & Discoveries</a></li>
+        <li><a href="quizzes-games.html">Quizzes & Games</a></li>
+        <li><a href="dictionary.html">Dictionary</a></li>
+      </ul>
+    </nav>
+  </aside>
 
-  <!-- PARALLAX SPOT -->
-  <section class="parallax" style="background-image:url('https://source.unsplash.com/1600x900/?universe');">
-    <div class="overlay">
-      <h2>Explore the Universe</h2>
-      <p>Zoom out and think bigger. The answers to our biggest questions start with wonder.</p>
-    </div>
-  </section>
+  <!-- HAMBURGER FOR MOBILE -->
+  <button class="hamburger" aria-label="Open sidebar">
+    <span></span><span></span><span></span>
+  </button>
 
-  <!-- COUNTERS -->
-  <section class="section counters">
-    <h2 class="section-title neon">Portal Impact</h2>
-    <div class="counter-grid">
-      <div class="counter-box">
-        <span class="counter" data-target="130">0</span>
-        <p>Published Facts</p>
+  <!-- MAIN CONTENT WRAPPER -->
+  <div class="main-container">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="blob"></div>
+      <h1 class="hero-title typewriter" data-text="Welcome to Science & Facts">
+        Welcome to Science & Facts
+      </h1>
+      <p class="hero-subtitle">
+        Ignite your curiosity with interactive facts, quizzes, and more.
+      </p>
+      <button class="btn start-btn">Get Started &darr;</button>
+    </section>
+
+    <!-- CAROUSEL SECTION -->
+    <section class="carousel-section section">
+      <h2 class="section-heading neon">AI-Powered Gallery</h2>
+      <div class="carousel">
+        <button class="prev-btn" aria-label="Previous image">&lsaquo;</button>
+        <div class="slides">
+          <img src="https://source.unsplash.com/collection/928423/800x600" alt="Science image 1"/>
+          <img src="https://source.unsplash.com/collection/928424/800x600" alt="Science image 2"/>
+          <img src="https://source.unsplash.com/collection/928425/800x600" alt="Science image 3"/>
+          <img src="https://source.unsplash.com/collection/928426/800x600" alt="Science image 4"/>
+        </div>
+        <button class="next-btn" aria-label="Next image">&rsaquo;</button>
       </div>
-      <div class="counter-box">
-        <span class="counter" data-target="75">0</span>
-        <p>Historic Breakthroughs</p>
-      </div>
-      <div class="counter-box">
-        <span class="counter" data-target="52">0</span>
-        <p>Interactive Games</p>
-      </div>
-      <div class="counter-box">
-        <span class="counter" data-target="1024">0</span>
-        <p>Student Explorers</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SIGNUP -->
-  <section class="section signup">
-    <h2 class="section-title glitch" data-text="Get Notified">Get Notified</h2>
-    <form class="signup-form">
-      <input type="email" placeholder="Enter your email…" required/>
-      <button type="submit" class="btn neon-button">Notify Me</button>
-    </form>
-  </section>
+    <!-- RANDOM FACT GENERATOR -->
+    <section class="random-fact section">
+      <h2 class="section-heading glitch" data-text="Random Fact">Random Fact</h2>
+      <div class="fact-box">
+        <p id="fact-text">Click the button for a mind-blowing fact!</p>
+        <button id="new-fact-btn" class="btn">Surprise Me!</button>
+      </div>
+    </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2025 Science & Facts. Made with neurons & electrons.</p>
-  </footer>
+    <!-- PARALLAX INFO SECTION -->
+    <section class="parallax-section" id="parallax">
+      <div class="parallax-bg"></div>
+      <div class="parallax-content">
+        <h2>Scroll into Deep Space</h2>
+        <p>Experience immersive parallax imagery—no extra plugins needed.</p>
+      </div>
+    </section>
 
-  <!-- SCRIPT -->
+    <!-- IMAGE GALLERY WITH SCROLL REVEAL -->
+    <section class="gallery section">
+      <h2 class="section-heading">Science in Focus</h2>
+      <div class="gallery-grid">
+        <figure class="reveal"><img src="https://source.unsplash.com/400x300/?microscope" alt="Microscope"/><figcaption>Microscope</figcaption></figure>
+        <figure class="reveal"><img src="https://source.unsplash.com/400x300/?telescope" alt="Telescope"/><figcaption>Telescope</figcaption></figure>
+        <figure class="reveal"><img src="https://source.unsplash.com/400x300/?lab" alt="Laboratory"/><figcaption>Lab Work</figcaption></figure>
+        <figure class="reveal"><img src="https://source.unsplash.com/400x300/?robotics" alt="Robotics"/><figcaption>Robotics</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>© 2025 Science & Facts. Crafted with ❤️ and endless curiosity.</p>
+      <div class="socials">
+        <a href="#" aria-label="Twitter">🐦</a>
+        <a href="#" aria-label="Facebook">📘</a>
+        <a href="#" aria-label="Instagram">📸</a>
+      </div>
+    </footer>
+
+  </div><!-- .main-container -->
+
+  <!-- MAIN JAVASCRIPT -->
   <script>
-    // Hamburger Menu
-    const ham = document.querySelector('.hamburger');
-    const menu = document.querySelector('.nav-menu');
-    ham.onclick = () => {
-      ham.classList.toggle('active');
-      menu.classList.toggle('open');
+    /* SIDEBAR TOGGLE */
+    const sidebar = document.querySelector('.sidebar');
+    const hamburger = document.querySelector('.hamburger');
+    const closeBtn = document.querySelector('.close-btn');
+    hamburger.addEventListener('click', ()=> sidebar.classList.add('open'));
+    closeBtn.addEventListener('click', ()=> sidebar.classList.remove('open'));
+
+    /* DARK MODE TOGGLE */
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    themeCheckbox.addEventListener('change', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+    });
+    if(localStorage.getItem('darkMode') === 'true') {
+      document.documentElement.classList.add('dark');
+      themeCheckbox.checked = true;
+    }
+
+    /* TYPEWRITER EFFECT */
+    const typewriter = document.querySelector('.typewriter');
+    const text = typewriter.dataset.text;
+    let idx=0;
+    function type() {
+      if(idx < text.length) {
+        typewriter.textContent += text.charAt(idx++);
+        setTimeout(type, 100);
+      }
+    }
+    window.addEventListener('load', type);
+
+    /* CAROUSEL LOGIC */
+    const slides = document.querySelector('.slides');
+    const imgs = slides.querySelectorAll('img');
+    let current = 0;
+    document.querySelector('.next-btn').onclick = () => {
+      current = (current + 1) % imgs.length;
+      slides.style.transform = `translateX(-${current * 100}%)`;
+    };
+    document.querySelector('.prev-btn').onclick = () => {
+      current = (current - 1 + imgs.length) % imgs.length;
+      slides.style.transform = `translateX(-${current * 100}%)`;
     };
 
-    // Counter Logic
-    const counters = document.querySelectorAll('.counter');
-    counters.forEach(counter => {
-      const animate = () => {
-        const target = +counter.dataset.target;
-        const count = +counter.innerText;
-        const increment = Math.ceil(target / 200);
-        if(count < target) {
-          counter.innerText = count + increment;
-          setTimeout(animate, 10);
-        } else {
-          counter.innerText = target;
+    /* RANDOM FACTS */
+    const facts = [
+      "Bananas are radioactive.",
+      "Octopuses have three hearts.",
+      "Honey never spoils.",
+      "There’s a planet made of diamonds.",
+      "Metal expands when heated."
+    ];
+    document.getElementById('new-fact-btn').onclick = () => {
+      const rnd = Math.floor(Math.random()*facts.length);
+      document.getElementById('fact-text').textContent = facts[rnd];
+    };
+
+    /* SCROLL REVEAL */
+    const reveals = document.querySelectorAll('.reveal, .parallax-content');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
         }
-      };
-      new IntersectionObserver(([e]) => {
-        if(e.isIntersecting) animate();
-      }, {threshold:0.5}).observe(counter);
-    });
+      });
+    }, { threshold: 0.2 });
+    reveals.forEach(el=> observer.observe(el));
   </script>
 </body>
 </html>
