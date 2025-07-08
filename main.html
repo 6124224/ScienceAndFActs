@@ -1,485 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Science & Facts – Ultimate Single Page Experience</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Embedded CSS -->
-  <style>
-    /* --------------------------------------------------------------
-       RESET & GENERAL STYLES
-    -------------------------------------------------------------- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
-      scroll-behavior: smooth;
-      line-height: 1.6;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    /* --------------------------------------------------------------
-       NAVIGATION & HEADER
-    -------------------------------------------------------------- */
-    header {
-      background-color: #333;
-      color: #fff;
-      position: sticky;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 1rem;
-      flex-wrap: wrap;
-    }
-    nav a {
-      background-color: transparent;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      transition: background-color 0.3s linear;
-    }
-    nav a:hover {
-      background-color: #575757;
-    }
-    /* --------------------------------------------------------------
-       HERO / HOME SECTION
-    -------------------------------------------------------------- */
-    .hero {
-      position: relative;
-      background: url('https://via.placeholder.com/1920x600?text=Science+%26+Facts') no-repeat center center/cover;
-      height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #fff;
-    }
-    .hero::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.65);
-    }
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
-      padding: 20px;
-    }
-    .hero h1 {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-    }
-    .hero p {
-      font-size: 1.2rem;
-    }
-    /* --------------------------------------------------------------
-       SECTION BASE STYLES
-    -------------------------------------------------------------- */
-    section {
-      padding: 60px 20px;
-      max-width: 1200px;
-      margin: 40px auto;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    section h2 {
-      margin-bottom: 30px;
-      font-size: 2.8rem;
-      border-bottom: 2px solid #333;
-      padding-bottom: 10px;
-    }
-    /* --------------------------------------------------------------
-       ARTICLE STYLES - FACTS, DISCOVERIES & MORE
-    -------------------------------------------------------------- */
-    article {
-      margin-bottom: 40px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #ddd;
-    }
-    article:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    article h3 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      color: #444;
-    }
-    article p {
-      margin-bottom: 10px;
-      font-size: 1rem;
-      text-align: justify;
-    }
-    article a.read-more {
-      display: inline-block;
-      background-color: #333;
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
-    article a.read-more:hover {
-      background-color: #575757;
-    }
-    /* --------------------------------------------------------------
-       HISTORICAL, TUTORIAL & EXTRA CONTENT STYLES
-    -------------------------------------------------------------- */
-    .extra-content {
-      background-color: #eef;
-      border: 1px dashed #444;
-      padding: 20px;
-      border-radius: 4px;
-      margin-top: 20px;
-    }
-    .extra-content h4 {
-      margin-bottom: 10px;
-      font-size: 1.5rem;
-    }
-    /* --------------------------------------------------------------
-       CONTACT FORM STYLES
-    -------------------------------------------------------------- */
-    .contact-form {
-      max-width: 700px;
-      margin: auto;
-    }
-    .contact-form input,
-    .contact-form textarea {
-      width: 100%;
-      padding: 12px 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-    .contact-form button {
-      background-color: #333;
-      border: none;
-      color: #fff;
-      padding: 12px 20px;
-      font-size: 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .contact-form button:hover {
-      background-color: #575757;
-    }
-    /* --------------------------------------------------------------
-       FOOTER STYLES
-    -------------------------------------------------------------- */
-    footer {
-      background-color: #333;
-      color: #fff;
-      text-align: center;
-      padding: 25px;
-      font-size: 0.9rem;
-    }
-    /* --------------------------------------------------------------
-       RESPONSIVE DESIGN
-    -------------------------------------------------------------- */
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.8rem;
-      }
-      nav {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      section {
-        padding: 40px 10px;
-      }
-    }
-    /* --------------------------------------------------------------
-       CSS ANIMATIONS
-    -------------------------------------------------------------- */
-    .fade-in {
-      opacity: 0;
-      animation: fadeInAppear 1s forwards;
-    }
-    @keyframes fadeInAppear {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    /* --------------------------------------------------------------
-       SCROLL TO TOP BUTTON
-    -------------------------------------------------------------- */
-    #scrollToTop {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background-color: #333;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 50%;
-      display: none;
-      cursor: pointer;
-      z-index: 1001;
-      transition: background-color 0.3s ease;
-    }
-    #scrollToTop:hover {
-      background-color: #575757;
-    }
-  </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Science &amp; Facts — Portal</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rubik:wght@300;400;600&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-  <!-- HEADER & NAVIGATION -->
-  <header>
-  <nav>
-    <ul style="display: flex; justify-content: center; list-style: none; padding: 0; margin: 0;">
-      <li style="margin: 0 15px;">
-        <a href="#home" style="text-decoration: none; color: #fff; font-size: 16px;">Home</a>
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="logo neon-glow">🔬 Science &amp; Facts</div>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+    <ul class="nav-menu">
+      <li class="nav-item"><a href="#" class="active">Home</a></li>
+      <li class="nav-item">
+        <a href="discoveries-facts.html">Discoveries &amp; Facts</a>
+        <ul class="dropdown">
+          <li><a href="#">All Facts</a></li>
+          <li><a href="#">Top Discoveries</a></li>
+          <li><a href="#">Submit Your Fact</a></li>
+        </ul>
       </li>
-      <li style="margin: 0 15px;">
-        <a href="#facts" style="text-decoration: none; color: #fff; font-size: 16px;">Facts</a>
+      <li class="nav-item">
+        <a href="history.html">History</a>
+        <ul class="dropdown">
+          <li><a href="#">Ancient Science</a></li>
+          <li><a href="#">Medieval Labs</a></li>
+          <li><a href="#">Modern Milestones</a></li>
+        </ul>
       </li>
-      <li style="margin: 0 15px;">
-        <a href="#discoveries" style="text-decoration: none; color: #fff; font-size: 16px;">Discoveries</a>
+      <li class="nav-item">
+        <a href="quizzes-games.html">Quizzes &amp; Games</a>
+        <ul class="dropdown">
+          <li><a href="#">Take a Quiz</a></li>
+          <li><a href="#">Mini-Games</a></li>
+          <li><a href="#">Leaderboard</a></li>
+        </ul>
       </li>
-      <li style="margin: 0 15px;">
-        <a href="Quiz.html" style="text-decoration: none; color: #fff; font-size: 16px;">Quizzes And Games</a>
+      <li class="nav-item">
+        <a href="dictionary.html">Dictionary</a>
+        <ul class="dropdown">
+          <li><a href="#">Search Term</a></li>
+          <li><a href="#">Random Word</a></li>
+          <li><a href="#">Top 100</a></li>
+        </ul>
       </li>
-      <li style="margin: 0 15px;">
-        <a href="dictionary.html" style="text-decoration: none; color: #fff; font-size: 16px;">Dictionary</a>
-      </li>
-<li style="margin: 0 15px;">
-        <a href="#history" style="text-decoration: none; color: #fff; font-size: 16px;">Historical Narratives and Insights</a>
-      </li>
+      <li class="nav-item theme-toggle"><a href="#">🌙</a></li>
     </ul>
   </nav>
-</header>
-  <!-- HERO / HOME SECTION -->
-  <section id="home" class="hero fade-in">
-    <div class="hero-content">
-      <h1>Science & Facts</h1>
-      <p>Welcome to the ultimate hub combining groundbreaking discoveries, fascinating facts, and historical narratives—all in one immersive experience.</p>
-    </div>
-  </section>
 
-  <!-- FACTS SECTION -->
-  <section id="facts">
-    <h2>Latest Facts</h2>
-    <article class="fade-in" style="animation-delay: 0.3s;">
-      <h3>HIV Prevention Breakthrough</h3>
-      <p>The innovative drug, Lenacapavir, is leading the charge in HIV prevention, showcasing unprecedented success and opening doors to a revolution in global healthcare practices.</p>
-       <a class="read-more" href="https://hivinfo.nih.gov/understanding-hiv/fact-sheets/basics-hiv-prevention" target="_blank" rel="noopener noreferrer">
-      Read More →
-    </a>
-<img src="OIP.jpg" alt="OIP">
-    </article>
-    <article class="fade-in" style="animation-delay: 0.5s;">
-      <h3>Climate Change Milestone</h3>
-      <p>Scientists have recently celebrated a milestone in renewable energy—demonstrating that innovation in sustainable technologies is rapidly transforming our approach to climate change.</p>
-     <a class="read-more" 
-       href="https://sciencebasedtargets.org/blog/climate-action-milestone-6-000-companies-adopt-science-based-targets" 
-       target="_blank" 
-       rel="noopener noreferrer">
-      Read More →
-    </a>
-<img src="download.webp.jpg" alt="download.webp">
-    </article>
-    <article class="fade-in" style="animation-delay: 0.7s;">
-      <h3>Advancements in Artificial Intelligence</h3>
-      <p>Modern AI is revolutionizing industries; from healthcare to transport, breakthrough algorithms now drive smarter, more efficient systems across the globe.</p>
-     <a class="read-more" 
-       href="https://www.fastcompany.com/91269023/artificial-intelligence-most-innovative-companies-2025" 
-       target="_blank" 
-       rel="noopener noreferrer">
-      Read More →
-    </a>
-<img src="AI.jpg" alt= "AI">
-    </article>
-    <!-- Additional fact content can be appended here -->
-    <div class="extra-content fade-in" style="animation-delay: 0.9s;">
-      <h4>Deep Dive: The Science Behind the Facts</h4>
-      <p>Dive deep into the methodologies of modern research, uncovering experimental designs, statistical breakthroughs, and future projections that paint the next decade of scientific progress.</p>
-    </div>
-  </section>
+  <!-- HERO/BANNER -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="blob"></div>
+    <h1 class="hero-title typewriter">Welcome to Science &amp; Facts</h1>
+    <p class="hero-subtitle flicker">Your gateway to mind-bending wonders.</p>
+    <a href="#features" class="btn explore-btn glow-on-hover">Explore Portal ↓</a>
+  </header>
 
-  <!-- DISCOVERIES SECTION -->
-  <section id="discoveries">
-    <h2>Latest Discoveries</h2>
-    <article class="fade-in" style="animation-delay: 0.3s;">
-      <h3>Fruit Fly Brain Connectome</h3>
-      <p>Researchers have successfully mapped 140,000 neurons within the fruit fly brain, unlocking new frontiers in understanding complex neural networks and the intricacies of human cognition.</p>
-      <a 
-      class="read-more" 
-      href="https://www.sciencenews.org/article/fruit-fly-brain-connections-traced" 
-      target="_blank" 
-      rel="noopener noreferrer">
-      Read More →
-    </a>
-  </article>
-    <article class="fade-in" style="animation-delay: 0.5s;">
-      <h3>Super-Earth Discovery</h3>
-      <p>NASA's latest detection of a super-Earth in the habitable zone has ignited exhilarating discussions on extraterrestrial life and the possibility of future human colonization in the vast reaches of our galaxy.</p>
-     <a 
-      class="read-more" 
-      href="https://www.msn.com/en-gb/news/techandscience/is-this-where-aliens-are-hiding-scientists-discover-a-habitable-super-earth/ar-AA1G4i8n" 
-      target="_blank" 
-      rel="noopener noreferrer">
-      Read More →
-    </a>
-  </article>
-    <article class="fade-in" style="animation-delay: 0.7s;">
-      <h3>Quantum Computing Leap</h3>
-      <p>A recent quantum advancement is set to revolutionize data processing speeds, paving the way for unprecedented AI applications and reimagining how we interact with technology on a granular level.</p>
-       <a class="read-more" href="https://www.nature.com/news/quantum-computing" target="_blank" rel="noopener noreferrer">
-      Read More →
-    </a>
-  </article>
-  </section>
+  <main>
 
-  <!-- HISTORICAL NARRATIVES SECTION -->
-  <section id="history">
-    <h2>Historical Narratives & Insights</h2>
-    <article class="fade-in" style="animation-delay: 0.3s;">
-      <h3>Aayi Mandapam: A Journey Through Time</h3>
-      <p>Step into the rich legacy of Aayi Mandapam—a monument of cultural heritage where tradition meets artistry. Discover the nuances of its history, its role in regional narratives, and how it continues to inspire creativity.</p>
-      <a 
-      class="read-more" 
-      href="https://wanderon.in/blogs/aayi-mandapam-in-pondicherry" 
-      target="_blank" 
-      rel="noopener noreferrer">
-      Read More →
-    </a>
-  </article>
+    <!-- FEATURES / PLACEHOLDER SECTIONS -->
+    <section id="features" class="features-section">
+      <h2 class="section-heading glitch" data-text="Portal Features">Portal Features</h2>
+      <div class="features-grid">
+        <div class="feature-card animate-in">
+          <div class="icon">📚</div>
+          <h3>Discoveries &amp; Facts</h3>
+          <p>Deep dive into curated facts & landmark discoveries. (Coming Soon)</p>
+          <a class="card-btn" href="discoveries-facts.html">View →</a>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="icon">⏳</div>
+          <h3>History Timeline</h3>
+          <p>Traverse scientific epochs from antiquity to today. (Coming Soon)</p>
+          <a class="card-btn" href="history.html">View →</a>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="icon">🎮</div>
+          <h3>Quizzes &amp; Games</h3>
+          <p>Test your knowledge & challenge friends. (Coming Soon)</p>
+          <a class="card-btn" href="quizzes-games.html">Play →</a>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="icon">📖</div>
+          <h3>Science Dictionary</h3>
+          <p>Quickly look up terms & concepts. (Coming Soon)</p>
+          <a class="card-btn" href="dictionary.html">Lookup →</a>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="icon">🔭</div>
+          <h3>Explorer’s Lab</h3>
+          <p>Interactive experiments & simulations. (Coming Soon)</p>
+          <a class="card-btn" href="#">Prepare →</a>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="icon">📺</div>
+          <h3>Video Gallery</h3>
+          <p>Watch documentaries, lectures & demos. (Coming Soon)</p>
+          <a class="card-btn" href="#">Watch →</a>
+        </div>
+      </div>
+    </section>
 
-    <article class="fade-in" style="animation-delay: 0.5s;">
-      <section id="historical-technology" class="section historical-narratives">
-  <div class="container">
-    <h2>The Role of Technology in Ancient Civilizations</h2>
-    <p>
-      Since the dawn of human civilization, technology has played a pivotal role in shaping societies, improving daily life, and advancing scientific knowledge. From the earliest tools crafted from stone to the architectural marvels that still stand today, historical technological developments laid the foundation for modern innovation.
-    </p>
+    <!-- PARALLAX SECTIONS -->
+    <section class="parallax-section" id="parallax1">
+      <div class="parallax-bg" style="background-image:url('https://source.unsplash.com/1600x900/?galaxy,stars')"></div>
+      <div class="parallax-content">
+        <h2>Vast Cosmos</h2>
+        <p>Feel the infinite reach of space as you scroll.</p>
+      </div>
+    </section>
 
-    <div class="historical-images">
-      <img src="Ur_chariot.jpg" alt="Ancient technology illustration">
-      <img src="history2.jpg.jpg" alt="Historical advancements in science">
-    </div>
+    <section class="parallax-section" id="parallax2">
+      <div class="parallax-bg" style="background-image:url('https://source.unsplash.com/1600x900/?ocean,depth')"></div>
+      <div class="parallax-content">
+        <h2>Ocean Depths</h2>
+        <p>Dive into the mysteries beneath the waves.</p>
+      </div>
+    </section>
 
-    <h3>Engineering and Infrastructure</h3>
-    <p>
-      Ancient civilizations such as the Egyptians, Romans, and Mesopotamians mastered engineering techniques that enabled the construction of massive architectural wonders. The Egyptians developed pulley systems to transport enormous stones for pyramids, while the Romans pioneered aqueducts and road networks that facilitated urban expansion and trade.
-    </p>
+    <section class="parallax-section" id="parallax3">
+      <div class="parallax-bg" style="background-image:url('https://source.unsplash.com/1600x900/?forest,mist')"></div>
+      <div class="parallax-content">
+        <h2>Living Earth</h2>
+        <p>Explore the web of life in vibrant detail.</p>
+      </div>
+    </section>
 
-    <h3>Scientific Discoveries</h3>
-    <p>
-      Early scholars explored astronomy, mathematics, and medicine, applying their findings to practical innovations. The Babylonians devised one of the first numerical systems, the Greeks contributed advancements in geometry and physics, and ancient Indian scholars developed extensive medical texts that informed early surgical techniques.
-    </p>
+    <!-- STATISTICS / COUNTERS -->
+    <section class="stats-section">
+      <h2 class="section-heading neon">Portal Stats (Beta)</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" data-target="150">0</div>
+          <div class="stat-label">Articles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="48">0</div>
+          <div class="stat-label">Discoveries</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="12">0</div>
+          <div class="stat-label">Quizzes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="1024">0</div>
+          <div class="stat-label">Users</div>
+        </div>
+      </div>
+    </section>
 
-    <h3>Technology and Communication</h3>
-    <p>
-      The invention of written language transformed human communication, leading to the development of scrolls, manuscripts, and early printing techniques. The Chinese pioneered paper and early printing methods, which later influenced global literacy and the preservation of historical records.
-    </p>
-
-    <h3>Legacy and Impact</h3>
-    <p>
-      These ancient technological advancements formed the foundation of modern civilization. Engineering principles used in ancient structures still inspire architects today, scientific discoveries laid the groundwork for contemporary research, and communication technologies evolved to shape the digital world we now inhabit.
-    </p>
-  </div>
-</section>
-
-
-  <!-- GITHUB PAGES TROUBLESHOOTING & TIPS -->
-  <section id="troubleshooting">
-    <h2>GitHub Pages Troubleshooting & Publishing Tips</h2>
-    <article class="fade-in" style="animation-delay: 0.3s;">
-      <h3>Overcoming Deployment Issues</h3>
-      <p>Deploying your website on GitHub Pages? Discover tips on resolving common issues like file case sensitivity, broken links, and cache-related hiccups that can keep your site hidden from eager viewers.</p>
-      <a class="read-more" href="#!" onclick="alert('Step-by-step deployment guide coming soon!')">Read More →</a>
-    </article>
-    <article class="fade-in" style="animation-delay: 0.5s;">
-      <h3>Advanced GitHub Pages Techniques</h3>
-      <p>Learn how to integrate modern design elements, animations, and responsive layouts with GitHub Pages. Whether you’re a beginner or a seasoned developer, these strategies will help elevate your web projects effectively.</p>
-      <a class="read-more" href="#!" onclick="alert('Advanced techniques will be detailed soon!')">Read More →</a>
-    </article>
-  </section>
-
-  <!-- CONTACT SECTION -->
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <p>If you have questions, ideas, or feedback about our content, please feel free to get in touch using the form below. We love engaging with curious minds!</p>
-    <div class="contact-form fade-in" style="animation-delay: 0.3s;">
-      <form action="#!" method="post" onsubmit="handleFormSubmission(event)">
-        <input type="text" name="name" placeholder="Your Full Name" required>
-        <input type="email" name="email" placeholder="Your Email Address" required>
-        <textarea name="message" placeholder="Your Message..." rows="6" required></textarea>
-        <button type="submit">Send Message</button>
+    <!-- SUBSCRIBE / CONTACT -->
+    <section class="subscribe-section">
+      <h2 class="section-heading glitch" data-text="Stay Updated">Stay Updated</h2>
+      <p>Sign up to be notified when each section goes live.</p>
+      <form class="subscribe-form">
+        <input type="email" placeholder="Enter your email…" required/>
+        <button type="submit" class="btn submit-btn">Notify Me</button>
       </form>
-    </div>
-  </section>
+    </section>
+
+  </main>
 
   <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 Science & Facts. All rights reserved.</p>
-    <p>Designed and developed to inspire curiosity and fuel discovery. Thanks for visiting!</p>
-<p> Created with Passion by Ishan Pal, From class IX G (Subject Enrichment) </p>
-<p>
-  <a href="Data Science Holdiay Homework.docx" download>📄 Download Project Overview</a>
-</p>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2025 Science &amp; Facts — All rights reserved.</p>
+      <div class="socials">
+        <a href="#" class="social-icon">🐦</a>
+        <a href="#" class="social-icon">📘</a>
+        <a href="#" class="social-icon">📸</a>
+        <a href="#" class="social-icon">🎥</a>
+      </div>
+    </div>
   </footer>
 
-  <!-- SCROLL TO TOP BUTTON -->
-  <div id="scrollToTop" onclick="scrollToTop()">↑</div>
-
-  <!-- Embedded JavaScript for Interactivity -->
+  <!-- SCRIPTS -->
   <script>
-    // Trigger animations on scroll with a simple IntersectionObserver
-    const observerOptions = {
-      threshold: 0.2
+    // NAV TOGGLE
+    const ham = document.querySelector('.hamburger');
+    const menu = document.querySelector('.nav-menu');
+    ham.onclick = () => {
+      ham.classList.toggle('active');
+      menu.classList.toggle('open');
     };
-    const observerCallback = (entries, observer) => {
+
+    // THEME TOGGLE
+    document.querySelector('.theme-toggle a').onclick = e => {
+      e.preventDefault();
+      document.body.classList.toggle('dark-mode');
+    };
+
+    // SCROLL-REVEAL ANIMATIONS
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
           observer.unobserve(entry.target);
         }
       });
-    };
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    document.querySelectorAll('.fade-in').forEach(el => {
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.animate-in, .parallax-content, .stat-card').forEach(el => {
       observer.observe(el);
     });
 
-    // Simple form submission handler
-    function handleFormSubmission(event) {
-      event.preventDefault();
-      alert("Thank you for reaching out! We'll get back to you soon.");
-      event.target.reset();
-    }
-
-    // Scroll to top logic
-    window.addEventListener('scroll', () => {
-      const scrollButton = document.getElementById('scrollToTop');
-      if (window.pageYOffset > 300) {
-        scrollButton.style.display = 'block';
-      } else {
-        scrollButton.style.display = 'none';
-      }
+    // COUNTERS
+    const counters = document.querySelectorAll('.stat-number');
+    counters.forEach(counter => {
+      const update = () => {
+        const target = +counter.dataset.target;
+        const count = +counter.innerText;
+        const step = Math.ceil(target / 200);
+        if (count < target) {
+          counter.innerText = count + step;
+          setTimeout(update, 10);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      const parent = counter.closest('.stat-card');
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) update();
+      }, { threshold: 0.5 }).observe(parent);
     });
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
   </script>
-<script src="effects.js"></script>
 </body>
 </html>
