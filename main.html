@@ -1,276 +1,894 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Science & Facts Portal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Science Explorer</title>
+  <meta name="description" content="Explore fascinating science facts and discoveries" />
+  <meta name="keywords" content="science, facts, discoveries, education" />
+  <link rel="icon" href="https://emoji.gg/assets/emoji/9098_silly_face.png" />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?
-    family=Orbitron:wght@400;700&
-    family=Rubik:wght@300;400;500;600&
-    display=swap" rel="stylesheet"/>
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Montserrat:400,600&display=swap" rel="stylesheet" />
 
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="styles.css"/>
-</head>
-<body>
+  <!-- ICONS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- DARK MODE TOGGLE -->
-  <div class="theme-switch-wrapper">
-    <label class="theme-switch" for="theme-checkbox">
-      <input type="checkbox" id="theme-checkbox"/>
-      <span class="slider round"></span>
-    </label>
-    <em>Dark Mode</em>
-  </div>
+  <!-- SWIPER.JS FOR CAROUSELS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
-  <!-- SIDEBAR NAVIGATION -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h2>🔬 Science & Facts</h2>
-      <button class="close-btn" aria-label="Close sidebar">&times;</button>
-    </div>
-    <nav class="sidebar-nav">
-      <ul>
-        <li><a href="discoveries-facts.html">Facts & Discoveries</a></li>
-        <li><a href="quizzes-games.html">Quizzes & Games</a></li>
-        <li><a href="dictionary.html">Dictionary</a></li>
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- HAMBURGER FOR MOBILE -->
-  <button class="hamburger" aria-label="Open sidebar">
-    <span></span><span></span><span></span>
-  </button>
-
-  <!-- OVERLAY (for sidebar/mobile) -->
-  <div class="overlay"></div>
-
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
-
-    <!-- HERO SECTION -->
-    <section id="hero" class="hero">
-      <div class="blob"></div>
-      <h1 class="hero-title typewriter" data-text="Welcome to Science & Facts"></h1>
-      <p class="hero-subtitle">Your portal to mind-bending wonders and interactive learning.</p>
-      <button class="btn start-btn">Let’s Explore ↓</button>
-    </section>
-
-    <!-- AI IMAGE CAROUSEL -->
-    <section id="carousel" class="section carousel-section">
-      <h2 class="section-heading neon">AI-Powered Gallery</h2>
-      <div class="carousel">
-        <button class="carousel-btn prev-btn" aria-label="Previous">&lsaquo;</button>
-        <div class="slides">
-          <img src="https://source.unsplash.com/collection/928423/800x600" alt="Science 1"/>
-          <img src="https://source.unsplash.com/collection/928424/800x600" alt="Science 2"/>
-          <img src="https://source.unsplash.com/collection/928425/800x600" alt="Science 3"/>
-          <img src="https://source.unsplash.com/collection/928426/800x600" alt="Science 4"/>
-        </div>
-        <button class="carousel-btn next-btn" aria-label="Next">&rsaquo;</button>
-      </div>
-    </section>
-
-    <!-- RANDOM FACT GENERATOR -->
-    <section id="random-fact" class="section random-fact">
-      <h2 class="section-heading glitch" data-text="Random Fact">Random Fact</h2>
-      <div class="fact-box">
-        <p id="fact-text">Click below to uncover a crazy science fact!</p>
-        <button id="new-fact-btn" class="btn">Surprise Me</button>
-      </div>
-    </section>
-
-    <!-- FEATURES GRID -->
-    <section id="features" class="section features">
-      <h2 class="section-heading">Portal Features</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="icon">🌌</div>
-          <h3>Immersive Design</h3>
-          <p>Glassmorphism, neon accents, and morphing effects blend seamlessly.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">🧠</div>
-          <h3>AI-Driven Content</h3>
-          <p>Facts, images, and quizzes generated dynamically via AI and APIs.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">⚙️</div>
-          <h3>Interactive Tools</h3>
-          <p>Random fact generator, carousel, FAQ accordion, contact forms.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">📱</div>
-          <h3>Fully Responsive</h3>
-          <p>Optimized for desktop, tablet, and mobile with smooth animations.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- PARALLAX INFO SECTION -->
-    <section id="parallax" class="parallax-section">
-      <div class="parallax-bg"></div>
-      <div class="parallax-content">
-        <h2>Scroll into Deep Space</h2>
-        <p>Experience seamless parallax backgrounds without plugins.</p>
-      </div>
-    </section>
-
-    <!-- FAQ ACCORDION -->
-    <section id="faq" class="section faq">
-      <h2 class="section-heading neon">Frequently Asked Questions</h2>
-      <div class="accordion">
-        <div class="accordion-item">
-          <button class="accordion-header">How do I submit a new fact?</button>
-          <div class="accordion-body">
-            <p>Use the “Submit Fact” form on the Facts & Discoveries page. We review and publish community submissions weekly.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">Can I track my quiz scores?</button>
-          <div class="accordion-body">
-            <p>Yes—once quizzes go live, you’ll be able to create an account and view your leaderboard stats in real time.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">What’s in the dictionary?</button>
-          <div class="accordion-body">
-            <p>The Science Dictionary includes over 1,000 terms, complete with definitions, images, and pronunciation guides.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- NEWSLETTER SIGNUP -->
-    <section id="newsletter" class="section newsletter">
-      <h2 class="section-heading glitch" data-text="Stay Updated">Stay Updated</h2>
-      <p>Subscribe for launch notifications, new features, and exclusive content.</p>
-      <form class="newsletter-form">
-        <input type="email" placeholder="Your email address…" required/>
-        <button type="submit" class="btn">Subscribe</button>
-      </form>
-    </section>
-
-    <!-- CONTACT FORM -->
-    <section id="contact" class="section contact">
-      <h2 class="section-heading">Get in Touch</h2>
-      <form class="contact-form">
-        <div class="form-row">
-          <input type="text" placeholder="Your Name" required/>
-          <input type="email" placeholder="Your Email" required/>
-        </div>
-        <textarea placeholder="Your Message…" rows="5" required></textarea>
-        <button type="submit" class="btn">Send Message</button>
-      </form>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div class="footer-content">
-        <p>© 2025 Science & Facts. Crafted with passion and curiosity.</p>
-        <div class="socials">
-          <a href="#" aria-label="Twitter">🐦</a>
-          <a href="#" aria-label="Facebook">📘</a>
-          <a href="#" aria-label="Instagram">📸</a>
-        </div>
-      </div>
-    </footer>
-
-  </div><!-- /.main-content -->
-
-  <!-- SCRIPTS -->
-  <script>
-    // Sidebar toggle
-    const sidebar = document.querySelector('.sidebar');
-    const hamburger = document.querySelector('.hamburger');
-    const closeBtn = document.querySelector('.close-btn');
-    const overlay = document.querySelector('.overlay');
-    hamburger.addEventListener('click', ()=> {
-      sidebar.classList.add('open');
-      overlay.classList.add('active');
-    });
-    closeBtn.addEventListener('click', ()=> {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    });
-    overlay.addEventListener('click', ()=> {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    });
-
-    // Dark mode toggle
-    const themeCheckbox = document.getElementById('theme-checkbox');
-    themeCheckbox.addEventListener('change', () => {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
-    });
-    if(localStorage.getItem('darkMode')==='true'){
-      document.documentElement.classList.add('dark');
-      themeCheckbox.checked = true;
+  <style>
+    /* =====================================================================
+       RESET + BOX-SIZING + BASE TYPOGRAPHY
+       ===================================================================== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #fafafa;
+      transition: background 0.3s, color 0.3s;
+    }
+    img, picture, video {
+      max-width: 100%;
+      display: block;
+    }
+    ul {
+      list-style: none;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
     }
 
-    // Typewriter effect
-    const typeEl = document.querySelector('.typewriter');
-    const fullText = typeEl.dataset.text;
-    let idx = 0;
-    function type() {
-      if(idx < fullText.length) {
-        typeEl.textContent += fullText.charAt(idx++);
-        setTimeout(type, 100);
+    /* =====================================================================
+       PRELOADER
+       ===================================================================== */
+    #preloader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 10px solid #ddd;
+      border-top: 10px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* =====================================================================
+       NAVIGATION / HEADER
+       ===================================================================== */
+    header {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+    .navbar .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #3498db;
+    }
+    .navbar ul {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .navbar li a {
+      font-weight: 500;
+      padding: 0.5rem;
+      transition: color 0.2s;
+    }
+    .navbar li a:hover {
+      color: #3498db;
+    }
+    .navbar .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+    }
+
+    /* =====================================================================
+       HERO SLIDER (SWIPER)
+       ===================================================================== */
+    .hero-slider {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-wrapper {
+      height: 100%;
+    }
+    .swiper-slide {
+      position: relative;
+      background-position: center;
+      background-size: cover;
+    }
+    .slide-content {
+      position: absolute;
+      bottom: 20%;
+      left: 10%;
+      color: #fff;
+      max-width: 500px;
+    }
+    .slide-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
+    }
+    .slide-content p {
+      font-size: 1.2rem;
+      line-height: 1.4;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 8px rgba(0,0,0,0.6);
+      animation: fadeInUp 1.2s ease forwards;
+      opacity: 0;
+    }
+    .slide-content button {
+      padding: 0.8rem 2rem;
+      background: #3498db;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 50px;
+      animation: fadeInUp 1.4s ease forwards;
+      opacity: 0;
+    }
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #fff;
+    }
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0);      opacity: 1; }
+    }
+
+    /* =====================================================================
+       TYPED EFFECT
+       ===================================================================== */
+    .typed {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+
+    /* =====================================================================
+       SECTION STYLES
+       ===================================================================== */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+    }
+    h2.section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+    h2.section-title::after {
+      content: '';
+      width: 60px;
+      height: 4px;
+      background: #3498db;
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .grid {
+      display: grid;
+      gap: 2rem;
+    }
+    /* Responsive grid defaults */
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* =====================================================================
+       FEATURES CARDS
+       ===================================================================== */
+    .feature-card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .feature-card i {
+      font-size: 2.5rem;
+      color: #3498db;
+      margin-bottom: 1rem;
+    }
+    .feature-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+    }
+
+    /* =====================================================================
+       SERVICES SECTION
+       ===================================================================== */
+    .services {
+      background: #f0f8ff;
+      border-radius: 12px;
+      padding: 4rem 2rem;
+    }
+    .services .service-item {
+      display: flex;
+      gap: 1.5rem;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+    .services .service-item:hover {
+      background: #e8f6ff;
+    }
+    .service-icon {
+      font-size: 2.2rem;
+      color: #3498db;
+    }
+    .service-content h4 {
+      margin-bottom: 0.5rem;
+    }
+
+    /* =====================================================================
+       PORTFOLIO GALLERY + FILTER BUTTONS
+       ===================================================================== */
+    .portfolio-filter {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .portfolio-filter button {
+      background: #fff;
+      color: #3498db;
+      padding: 0.6rem 1.2rem;
+      margin: 0.2rem;
+      border: 2px solid #3498db;
+      border-radius: 50px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .portfolio-filter button.active,
+    .portfolio-filter button:hover {
+      background: #3498db;
+      color: #fff;
+    }
+    .portfolio-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .portfolio-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s;
+    }
+    .portfolio-item:hover img {
+      transform: scale(1.1);
+    }
+    .portfolio-item .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .portfolio-item:hover .overlay {
+      opacity: 1;
+    }
+
+    /* =====================================================================
+       TEAM SECTION
+       ===================================================================== */
+    .team {
+      text-align: center;
+    }
+    .team-members {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    .team-member {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .team-member:hover {
+      transform: translateY(-8px);
+    }
+    .team-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    .team-member h4 {
+      margin-bottom: 0.3rem;
+    }
+    .team-member span {
+      color: #777;
+      font-size: 0.9rem;
+    }
+    .team-socials a {
+      margin: 0 0.3rem;
+      color: #3498db;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+    .team-socials a:hover {
+      color: #2c3e50;
+    }
+
+    /* =====================================================================
+       TESTIMONIAL CAROUSEL
+       ===================================================================== */
+    .testimonials {
+      background: #fdfaf6;
+      padding: 4rem 2rem;
+      border-radius: 12px;
+    }
+    .swiper-slide .testimonial-card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    .testimonial-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+    .testimonial-card p {
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .testimonial-card h5 {
+      font-weight: 600;
+    }
+
+    /* =====================================================================
+       FAQ ACCORDION
+       ===================================================================== */
+    .faq-item {
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .faq-question {
+      padding: 1rem;
+      cursor: pointer;
+      position: relative;
+      font-weight: 500;
+    }
+    .faq-question::after {
+      content: '\f107';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 1rem;
+      transition: transform 0.3s;
+    }
+    .faq-question.active::after {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      padding: 0 1rem;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 500px; /* big enough for content */
+      padding: 1rem;
+    }
+
+    /* =====================================================================
+       BLOG PREVIEW
+       ===================================================================== */
+    .blog-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .blog-card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .blog-card:hover {
+      transform: translateY(-8px);
+    }
+    .blog-card img {
+      height: 200px;
+      object-fit: cover;
+    }
+    .blog-content {
+      padding: 1.5rem;
+    }
+    .blog-content h4 {
+      margin-bottom: 0.8rem;
+    }
+    .blog-content p {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    /* =====================================================================
+       NEWSLETTER SUBSCRIBE
+       ===================================================================== */
+    .newsletter {
+      background: #3498db;
+      padding: 4rem 2rem;
+      border-radius: 12px;
+      text-align: center;
+      color: #fff;
+    }
+    .newsletter input[type="email"] {
+      padding: 1rem;
+      width: 50%;
+      max-width: 400px;
+      border: none;
+      border-radius: 50px;
+      margin-right: 0.5rem;
+    }
+    .newsletter button {
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      background: #2ecc71;
+      color: #fff;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      .newsletter input[type="email"] {
+        width: 80%;
+        margin-bottom: 1rem;
+      }
+      .newsletter button {
+        width: 80%;
       }
     }
-    window.addEventListener('load', type);
 
-    // Carousel logic
-    const slides = document.querySelector('.slides');
-    const imgs = slides.querySelectorAll('img');
-    let current = 0;
-    document.querySelector('.next-btn').onclick = () => {
-      current = (current+1)%imgs.length;
-      slides.style.transform = `translateX(-${current*100}%)`;
-    };
-    document.querySelector('.prev-btn').onclick = () => {
-      current = (current-1+imgs.length)%imgs.length;
-      slides.style.transform = `translateX(-${current*100}%)`;
-    };
+    /* =====================================================================
+       CONTACT FORM + MAP
+       ===================================================================== */
+    .contact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .contact-form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .contact-form button {
+      padding: 0.8rem 2rem;
+      background: #3498db;
+      color: #fff;
+      border-radius: 50px;
+    }
+    .contact-map iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px;
+    }
+    @media (max-width: 900px) {
+      .contact {
+        grid-template-columns: 1fr;
+      }
+    }
 
-    // Random fact generator
-    const facts = [
-      "Bananas are radioactive due to potassium-40.",
-      "Octopuses have three hearts.",
-      "Honey never spoils—edible in 3,000-year-old tombs.",
-      "There's a planet made of diamond.",
-      "Hot water can freeze faster than cold (Mpemba effect)."
-    ];
-    document.getElementById('new-fact-btn').addEventListener('click', ()=>{
-      const fact = facts[Math.floor(Math.random()*facts.length)];
-      document.getElementById('fact-text').textContent = fact;
+    /* =====================================================================
+       BACK-TO-TOP BUTTON
+       ===================================================================== */
+    #backToTop {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      background: #3498db;
+      color: #fff;
+      padding: 0.8rem 1rem;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      display: none;
+      z-index: 1000;
+      transition: background 0.3s;
+    }
+    #backToTop:hover {
+      background: #2980b9;
+    }
+
+    /* =====================================================================
+       COOKIE CONSENT BANNER
+       ===================================================================== */
+    #cookieConsent {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideInUp 0.5s ease forwards;
+      transform: translateY(100%);
+    }
+    #cookieConsent.show {
+      transform: translateY(0%);
+    }
+    #cookieConsent button {
+      background: #2ecc71;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+    }
+    @keyframes slideInUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0%);   }
+    }
+
+    /* =====================================================================
+       DARK MODE
+       ===================================================================== */
+    body.dark {
+      background: #121212;
+      color: #eee;
+    }
+    body.dark .navbar {
+      background: rgba(0,0,0,0.8);
+    }
+    body.dark .feature-card,
+    body.dark .service-item,
+    body.dark .blog-card,
+    body.dark .contact-form {
+      background: #1e1e1e;
+      color: #ccc;
+    }
+    body.dark .newsletter {
+      background: #2c3e50;
+    }
+    body.dark .newsletter button {
+      background: #16a085;
+    }
+    body.dark #cookieConsent {
+      background: rgba(0,0,0,0.9);
+    }
+
+    /* =====================================================================
+       RESPONSIVE NAVIGATION (MOBILE)
+       ===================================================================== */
+    @media (max-width: 768px) {
+      .navbar ul {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        background: rgba(255,255,255,0.95);
+        height: calc(100vh - 70px);
+        width: 200px;
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1rem;
+        transition: right 0.3s;
+      }
+      .navbar ul.show {
+        right: 0;
+      }
+      .navbar .menu-toggle {
+        display: block;
+        color: #333;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">Science Explorer</div>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#facts">Facts & Discoveries</a></li>
+        <li><a href="#dictionary">Dictionary</a></li>
+        <li><a href="#quizzes">Quizzes</a></li>
+        <li><a href="#games">Games</a></li>
+      </ul>
+      <i class="fas fa-bars menu-toggle"></i>
+      <button class="theme-toggler"><i class="fas fa-moon"></i></button>
+    </nav>
+
+    <!-- HERO SLIDER -->
+    <div class="hero-slider swiper">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide" style="background-image:url('https://picsum.photos/id/1015/1600/900')">
+          <div class="slide-content">
+            <h1>Explore the <span class="typed"></span></h1>
+            <p>Discover amazing science facts and fascinating discoveries from around the world.</p>
+            <button onclick="location.href='#facts'">Explore Facts</button>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="swiper-slide" style="background-image:url('https://picsum.photos/id/1022/1600/900')">
+          <div class="slide-content">
+            <h1>Science is <span class="typed"></span></h1>
+            <p>Learn about the wonders of our universe through interactive content.</p>
+            <button onclick="location.href='#quizzes'">Try Quizzes</button>
+          </div>
+        </div>
+      </div>
+      <!-- Slider controls -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </header>
+
+  <!-- FACTS SECTION -->
+  <section id="facts">
+    <h2 class="section-title">Science Facts</h2>
+    <div class="portfolio-gallery container">
+      <!-- Fact 1 -->
+      <div class="portfolio-item">
+        <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Human Body">
+        <div class="overlay">
+          <h4>Human Body</h4>
+          <p>Your body produces 25 million new cells each second.</p>
+        </div>
+      </div>
+      <!-- Fact 2 -->
+      <div class="portfolio-item">
+        <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Space">
+        <div class="overlay">
+          <h4>Space</h4>
+          <p>There are more stars in the universe than grains of sand on all Earth's beaches.</p>
+        </div>
+      </div>
+      <!-- Fact 3 -->
+      <div class="portfolio-item">
+        <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Animals">
+        <div class="overlay">
+          <h4>Animals</h4>
+          <p>A blue whale's heart is so big, a human could swim through its arteries.</p>
+        </div>
+      </div>
+      <!-- Fact 4 -->
+      <div class="portfolio-item">
+        <img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Physics">
+        <div class="overlay">
+          <h4>Physics</h4>
+          <p>If you could fold a piece of paper 42 times, it would reach the moon.</p>
+        </div>
+      </div>
+      <!-- Fact 5 -->
+      <div class="portfolio-item">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Technology">
+        <div class="overlay">
+          <h4>Technology</h4>
+          <p>The first computer mouse was made of wood.</p>
+        </div>
+      </div>
+      <!-- Fact 6 -->
+      <div class="portfolio-item">
+        <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Chemistry">
+        <div class="overlay">
+          <h4>Chemistry</h4>
+          <p>Helium is the only element that cannot be solidified by cooling.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM SECTION -->
+  <section id="team">
+    <h2 class="section-title">Creator</h2>
+    <div class="team-members container">
+      <div class="team-member">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ishan Pal" class="team-photo">
+        <h4>Ishan Pal</h4>
+        <span>IX F Student</span>
+        <div class="team-socials">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ ACCORDION -->
+  <section id="faq">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="container">
+      <div class="faq-item">
+        <div class="faq-question">What is this site about?</div>
+        <div class="faq-answer">
+          <p>This site is dedicated to sharing interesting science facts and discoveries.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Who created this website?</div>
+        <div class="faq-answer">
+          <p>This website was created by Ishan Pal, a student in class IX F.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER SUBSCRIBE -->
+  <section id="newsletter" class="newsletter">
+    <h2 class="section-title">Stay Updated</h2>
+    <p>Subscribe for new science facts and discoveries delivered to your inbox.</p>
+    <form onsubmit="event.preventDefault(); alert('Subscribed! 🎉');">
+      <input type="email" placeholder="Your Email Address" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <!-- COOKIE CONSENT -->
+  <div id="cookieConsent">
+    <p>We use cookies for a better experience. By continuing, you agree.</p>
+    <button id="acceptCookies">Accept</button>
+  </div>
+
+  <!-- BACK TO TOP -->
+  <button id="backToTop"><i class="fas fa-chevron-up"></i></button>
+
+  <!-- FOOTER -->
+  <footer style="background:#333;color:#fff;text-align:center;padding:2rem;">
+    <p>&copy; 2025 Science Explorer. All Rights Reserved.</p>
+    <p>Created with 💖 by Ishan Pal</p>
+  </footer>
+
+  <!-- ===================================================================
+       JAVASCRIPT INCLUDES & INITIALIZATION
+       =================================================================== -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script>
+    // PRELOADER DISMISS
+    window.addEventListener('load', () => {
+      document.getElementById('preloader').style.display = 'none';
     });
 
-    // FAQ accordion
-    document.querySelectorAll('.accordion-header').forEach(header=>{
-      header.addEventListener('click', ()=>{
-        const body = header.nextElementSibling;
-        header.classList.toggle('active');
-        body.style.maxHeight = body.style.maxHeight ? null : body.scrollHeight+'px';
+    // MOBILE NAV TOGGLE
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navUL = document.querySelector('.navbar ul');
+    menuToggle.addEventListener('click', () => navUL.classList.toggle('show'));
+
+    // THEME TOGGLER
+    const themeBtn = document.querySelector('.theme-toggler');
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      themeBtn.innerHTML = document.body.classList.contains('dark')
+        ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    });
+
+    // BACK TO TOP
+    const backBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backBtn.style.display = window.scrollY > 500 ? 'block' : 'none';
+    });
+    backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // SWIPER HERO
+    new Swiper('.hero-slider', {
+      loop: true,
+      speed: 1000,
+      autoplay: { delay: 5000 },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    });
+
+    // TYPED.JS EFFECT
+    new Typed('.typed', {
+      strings: ['Wonderful.', 'Amazing.', 'Fascinating.'],
+      typeSpeed: 80,
+      backSpeed: 50,
+      loop: true
+    });
+
+    // FAQ ACCORDION
+    const faqs = document.querySelectorAll('.faq-item');
+    faqs.forEach(item => {
+      item.querySelector('.faq-question').addEventListener('click', () => {
+        item.classList.toggle('open');
+        item.querySelector('.faq-question').classList.toggle('active');
       });
     });
 
-    // Scroll reveal (parallax & gallery)
-    const revealEls = document.querySelectorAll('.parallax-content, .gallery-grid figure, .counter-box');
-    const obs = new IntersectionObserver(entries=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('visible');
-          obs.unobserve(e.target);
-        }
-      });
-    }, {threshold:0.2});
-    revealEls.forEach(el=>obs.observe(el));
+    // COOKIE CONSENT
+    const cookieBanner = document.getElementById('cookieConsent');
+    const acceptBtn = document.getElementById('acceptCookies');
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'true');
+      cookieBanner.classList.remove('show');
+    });
+    window.addEventListener('load', () => {
+      if (!localStorage.getItem('cookiesAccepted')) {
+        cookieBanner.classList.add('show');
+      }
+    });
   </script>
 </body>
 </html>
