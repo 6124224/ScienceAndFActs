@@ -3,185 +3,106 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Science &amp; Facts — Portal</title>
+  <title>Science & Facts — Official Portal</title>
   <link rel="stylesheet" href="styles.css"/>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rubik:wght@300;400;600&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
   <!-- NAVIGATION -->
   <nav class="navbar">
-    <div class="logo neon-glow">🔬 Science &amp; Facts</div>
+    <div class="logo neon-glow">🔬 Science & Facts</div>
     <div class="hamburger"><span></span><span></span><span></span></div>
     <ul class="nav-menu">
-      <li class="nav-item"><a href="#" class="active">Home</a></li>
-      <li class="nav-item">
-        <a href="discoveries-facts.html">Discoveries &amp; Facts</a>
-        <ul class="dropdown">
-          <li><a href="#">All Facts</a></li>
-          <li><a href="#">Top Discoveries</a></li>
-          <li><a href="#">Submit Your Fact</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a href="history.html">History</a>
-        <ul class="dropdown">
-          <li><a href="#">Ancient Science</a></li>
-          <li><a href="#">Medieval Labs</a></li>
-          <li><a href="#">Modern Milestones</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a href="quizzes-games.html">Quizzes &amp; Games</a>
-        <ul class="dropdown">
-          <li><a href="#">Take a Quiz</a></li>
-          <li><a href="#">Mini-Games</a></li>
-          <li><a href="#">Leaderboard</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a href="dictionary.html">Dictionary</a>
-        <ul class="dropdown">
-          <li><a href="#">Search Term</a></li>
-          <li><a href="#">Random Word</a></li>
-          <li><a href="#">Top 100</a></li>
-        </ul>
-      </li>
-      <li class="nav-item theme-toggle"><a href="#">🌙</a></li>
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="discoveries-facts.html">Discoveries & Facts</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="quizzes-games.html">Quizzes & Games</a></li>
+      <li><a href="dictionary.html">Dictionary</a></li>
     </ul>
   </nav>
 
-  <!-- HERO/BANNER -->
+  <!-- HERO BANNER -->
   <header class="hero">
-    <div class="hero-bg"></div>
     <div class="blob"></div>
-    <h1 class="hero-title typewriter">Welcome to Science &amp; Facts</h1>
-    <p class="hero-subtitle flicker">Your gateway to mind-bending wonders.</p>
-    <a href="#features" class="btn explore-btn glow-on-hover">Explore Portal ↓</a>
+    <h1 class="hero-title typewriter">Welcome to Science & Facts</h1>
+    <p class="hero-subtitle flicker">Curiosity is your compass. Let's explore!</p>
+    <a href="#about" class="btn neon-button">Get Started ↓</a>
   </header>
 
-  <main>
+  <!-- ABOUT SECTION -->
+  <section id="about" class="section">
+    <h2 class="section-title glitch" data-text="About Science & Facts">About Science & Facts</h2>
+    <p class="section-desc">Our portal is dedicated to making science inspiring, interactive, and wildly imaginative. We merge technology, design, and curiosity into one immersive platform. With animations, quizzes, discoveries, history timelines, and a dictionary all powered by you and AI—this is where logic meets magic.</p>
+  </section>
 
-    <!-- FEATURES / PLACEHOLDER SECTIONS -->
-    <section id="features" class="features-section">
-      <h2 class="section-heading glitch" data-text="Portal Features">Portal Features</h2>
-      <div class="features-grid">
-        <div class="feature-card animate-in">
-          <div class="icon">📚</div>
-          <h3>Discoveries &amp; Facts</h3>
-          <p>Deep dive into curated facts & landmark discoveries. (Coming Soon)</p>
-          <a class="card-btn" href="discoveries-facts.html">View →</a>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="icon">⏳</div>
-          <h3>History Timeline</h3>
-          <p>Traverse scientific epochs from antiquity to today. (Coming Soon)</p>
-          <a class="card-btn" href="history.html">View →</a>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="icon">🎮</div>
-          <h3>Quizzes &amp; Games</h3>
-          <p>Test your knowledge & challenge friends. (Coming Soon)</p>
-          <a class="card-btn" href="quizzes-games.html">Play →</a>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="icon">📖</div>
-          <h3>Science Dictionary</h3>
-          <p>Quickly look up terms & concepts. (Coming Soon)</p>
-          <a class="card-btn" href="dictionary.html">Lookup →</a>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="icon">🔭</div>
-          <h3>Explorer’s Lab</h3>
-          <p>Interactive experiments & simulations. (Coming Soon)</p>
-          <a class="card-btn" href="#">Prepare →</a>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="icon">📺</div>
-          <h3>Video Gallery</h3>
-          <p>Watch documentaries, lectures & demos. (Coming Soon)</p>
-          <a class="card-btn" href="#">Watch →</a>
-        </div>
+  <!-- FEATURES -->
+  <section class="section features">
+    <div class="feature">
+      <img src="https://source.unsplash.com/400x300/?ai,neon" alt="AI Illustration"/>
+      <h3>Animated Experience</h3>
+      <p>Every scroll, every button, every pixel—brought to life with smooth animations.</p>
+    </div>
+    <div class="feature">
+      <img src="https://source.unsplash.com/400x300/?hologram,data" alt="Visualization"/>
+      <h3>Glassmorphism UI</h3>
+      <p>Modern design with blur, light effects, and glowing textures that feel alive.</p>
+    </div>
+    <div class="feature">
+      <img src="https://source.unsplash.com/400x300/?science,future" alt="Futuristic Science"/>
+      <h3>AI Content Power</h3>
+      <p>From content to quizzes, everything is dynamic, creative, and editable by AI.</p>
+    </div>
+  </section>
+
+  <!-- PARALLAX SPOT -->
+  <section class="parallax" style="background-image:url('https://source.unsplash.com/1600x900/?universe');">
+    <div class="overlay">
+      <h2>Explore the Universe</h2>
+      <p>Zoom out and think bigger. The answers to our biggest questions start with wonder.</p>
+    </div>
+  </section>
+
+  <!-- COUNTERS -->
+  <section class="section counters">
+    <h2 class="section-title neon">Portal Impact</h2>
+    <div class="counter-grid">
+      <div class="counter-box">
+        <span class="counter" data-target="130">0</span>
+        <p>Published Facts</p>
       </div>
-    </section>
-
-    <!-- PARALLAX SECTIONS -->
-    <section class="parallax-section" id="parallax1">
-      <div class="parallax-bg" style="background-image:url('https://source.unsplash.com/1600x900/?galaxy,stars')"></div>
-      <div class="parallax-content">
-        <h2>Vast Cosmos</h2>
-        <p>Feel the infinite reach of space as you scroll.</p>
+      <div class="counter-box">
+        <span class="counter" data-target="75">0</span>
+        <p>Historic Breakthroughs</p>
       </div>
-    </section>
-
-    <section class="parallax-section" id="parallax2">
-      <div class="parallax-bg" style="background-image:url('https://source.unsplash.com/1600x900/?ocean,depth')"></div>
-      <div class="parallax-content">
-        <h2>Ocean Depths</h2>
-        <p>Dive into the mysteries beneath the waves.</p>
+      <div class="counter-box">
+        <span class="counter" data-target="52">0</span>
+        <p>Interactive Games</p>
       </div>
-    </section>
-
-    <section class="parallax-section" id="parallax3">
-      <div class="parallax-bg" style="background-image:url('https://source.unsplash.com/1600x900/?forest,mist')"></div>
-      <div class="parallax-content">
-        <h2>Living Earth</h2>
-        <p>Explore the web of life in vibrant detail.</p>
+      <div class="counter-box">
+        <span class="counter" data-target="1024">0</span>
+        <p>Student Explorers</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- STATISTICS / COUNTERS -->
-    <section class="stats-section">
-      <h2 class="section-heading neon">Portal Stats (Beta)</h2>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number" data-target="150">0</div>
-          <div class="stat-label">Articles</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-target="48">0</div>
-          <div class="stat-label">Discoveries</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-target="12">0</div>
-          <div class="stat-label">Quizzes</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-target="1024">0</div>
-          <div class="stat-label">Users</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SUBSCRIBE / CONTACT -->
-    <section class="subscribe-section">
-      <h2 class="section-heading glitch" data-text="Stay Updated">Stay Updated</h2>
-      <p>Sign up to be notified when each section goes live.</p>
-      <form class="subscribe-form">
-        <input type="email" placeholder="Enter your email…" required/>
-        <button type="submit" class="btn submit-btn">Notify Me</button>
-      </form>
-    </section>
-
-  </main>
+  <!-- SIGNUP -->
+  <section class="section signup">
+    <h2 class="section-title glitch" data-text="Get Notified">Get Notified</h2>
+    <form class="signup-form">
+      <input type="email" placeholder="Enter your email…" required/>
+      <button type="submit" class="btn neon-button">Notify Me</button>
+    </form>
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-content">
-      <p>© 2025 Science &amp; Facts — All rights reserved.</p>
-      <div class="socials">
-        <a href="#" class="social-icon">🐦</a>
-        <a href="#" class="social-icon">📘</a>
-        <a href="#" class="social-icon">📸</a>
-        <a href="#" class="social-icon">🎥</a>
-      </div>
-    </div>
+    <p>© 2025 Science & Facts. Made with neurons & electrons.</p>
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPT -->
   <script>
-    // NAV TOGGLE
+    // Hamburger Menu
     const ham = document.querySelector('.hamburger');
     const menu = document.querySelector('.nav-menu');
     ham.onclick = () => {
@@ -189,44 +110,23 @@
       menu.classList.toggle('open');
     };
 
-    // THEME TOGGLE
-    document.querySelector('.theme-toggle a').onclick = e => {
-      e.preventDefault();
-      document.body.classList.toggle('dark-mode');
-    };
-
-    // SCROLL-REVEAL ANIMATIONS
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('.animate-in, .parallax-content, .stat-card').forEach(el => {
-      observer.observe(el);
-    });
-
-    // COUNTERS
-    const counters = document.querySelectorAll('.stat-number');
+    // Counter Logic
+    const counters = document.querySelectorAll('.counter');
     counters.forEach(counter => {
-      const update = () => {
+      const animate = () => {
         const target = +counter.dataset.target;
         const count = +counter.innerText;
-        const step = Math.ceil(target / 200);
-        if (count < target) {
-          counter.innerText = count + step;
-          setTimeout(update, 10);
+        const increment = Math.ceil(target / 200);
+        if(count < target) {
+          counter.innerText = count + increment;
+          setTimeout(animate, 10);
         } else {
           counter.innerText = target;
         }
       };
-      const parent = counter.closest('.stat-card');
       new IntersectionObserver(([e]) => {
-        if (e.isIntersecting) update();
-      }, { threshold: 0.5 }).observe(parent);
+        if(e.isIntersecting) animate();
+      }, {threshold:0.5}).observe(counter);
     });
   </script>
 </body>
