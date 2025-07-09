@@ -232,40 +232,65 @@
        FEATURES CARDS
        ===================================================================== */
 .features {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  color: #ffffff;
-  padding: 60px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-  font-family: 'Poppins', sans-serif;
-  margin-top: 40px;
-  transition: all 0.3s ease;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-.features h3 {
-  font-size: 1.8em;
-  color: #00ffee;
-  margin-bottom: 20px;
-  text-shadow: 0 0 8px #00ffee;
+.features h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  color: #333;
 }
 
-.features ul {
-  list-style: none;
-  padding: 0;
+.feature-item {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: #f9f9f9;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.features li {
-  margin-bottom: 15px;
-  font-size: 1.05em;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: transform 0.2s ease;
+.feature-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.features li:hover {
-  transform: scale(1.03);
+.feature-item .emoji {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.feature-item h2 {
+  display: inline;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  vertical-align: middle;
+}
+
+.feature-item p {
+  margin-top: 0.5rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Dark mode styles */
+.dark-mode .features h1 {
+  color: #f0f0f0;
+}
+
+.dark-mode .feature-item {
+  background: #2d3748;
+}
+
+.dark-mode .feature-item h2 {
+  color: #e2e8f0;
+}
+
+.dark-mode .feature-item p {
+  color: #cbd5e0;
 }
     /* =====================================================================
        SERVICES SECTION
