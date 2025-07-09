@@ -231,29 +231,41 @@
     /* =====================================================================
        FEATURES CARDS
        ===================================================================== */
-#site-features {
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  padding: 60px 20px;
-}
-
-.feature-card {
+.features {
   background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  color: #ffffff;
+  padding: 60px 30px;
   border-radius: 12px;
-  color: white;
-  width: 250px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  font-family: 'Poppins', sans-serif;
+  margin-top: 40px;
+  transition: all 0.3s ease;
 }
 
-.feature-card:hover {
-  transform: scale(1.05);
+.features h3 {
+  font-size: 1.8em;
+  color: #00ffee;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px #00ffee;
 }
 
-.feature-card .icon {
-  font-size: 36px;
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features li {
   margin-bottom: 15px;
+  font-size: 1.05em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.2s ease;
+}
+
+.features li:hover {
+  transform: scale(1.03);
 }
     /* =====================================================================
        SERVICES SECTION
@@ -413,6 +425,7 @@
       font-weight: 600;
     }
 
+ =====================================================================
     /* =====================================================================
        FAQ ACCORDION
        ===================================================================== */
@@ -768,16 +781,16 @@
         </div>
       </div>
 <!-- Fact 7 -->
-<div class="mini-fact-card" style="background-image: url('https://images.unsplash.com/photo-1580250642511-1660fe42ad58?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
-  <div class="fact-overlay">
+<div class="portfolio-item" style="background-image: url('https://images.unsplash.com/photo-1580250642511-1660fe42ad58?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
+  <div class="overlay">
     <h3>Volcanic Energy</h3>
     <p>Earth’s core produces enough heat to power entire cities—if only we could tap it.</p>
   </div>
 </div>
 
 <!-- Fact 8 -->
-<div class="mini-fact-card" style="background-image: url('https://images.unsplash.com/photo-1439405326854-014607f694d7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
-  <div class="fact-overlay">
+<div class="portfolio-item" style="background-image: url('https://images.unsplash.com/photo-1439405326854-014607f694d7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
+  <div class="overlay">
     <h3>Deep Ocean Secrets</h3>
     <p>Over 80% of our oceans remain unexplored, holding alien-like creatures and mysteries.</p>
   </div>
