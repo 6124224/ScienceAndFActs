@@ -231,67 +231,61 @@
     /* =====================================================================
        FEATURES CARDS
        ===================================================================== */
-.features {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+.features-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-.features h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
-  color: #333;
-}
+        .features-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
 
-.feature-item {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  border-radius: 8px;
-  background: #f9f9f9;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .feature-item {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-.feature-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
+        .feature-item h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
 
-.feature-item .emoji {
-  font-size: 1.5rem;
-  margin-right: 0.5rem;
-  vertical-align: middle;
-}
+        .feature-item p {
+            margin: 0;
+            color: #555;
+            line-height: 1.6;
+            padding-left: 2rem;
+        }
 
-.feature-item h2 {
-  display: inline;
-  font-size: 1.5rem;
-  color: #2c3e50;
-  vertical-align: middle;
-}
+        /* Dark mode styles */
+        .dark-mode .features-title {
+            color: #f8f9fa;
+        }
 
-.feature-item p {
-  margin-top: 0.5rem;
-  color: #555;
-  line-height: 1.6;
-}
+        .dark-mode .feature-item {
+            background-color: #2d3748;
+        }
 
-/* Dark mode styles */
-.dark-mode .features h1 {
-  color: #f0f0f0;
-}
+        .dark-mode .feature-item h2 {
+            color: #e2e8f0;
+        }
 
-.dark-mode .feature-item {
-  background: #2d3748;
-}
-
-.dark-mode .feature-item h2 {
-  color: #e2e8f0;
-}
-
-.dark-mode .feature-item p {
-  color: #cbd5e0;
-}
+        .dark-mode .feature-item p {
+            color: #cbd5e0;
+        }
     /* =====================================================================
        SERVICES SECTION
        ===================================================================== */
@@ -826,48 +820,35 @@
   <h2 style="text-align:center; font-size:3rem; margin-bottom:40px; color:#fff;">Features</h2>
   <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; padding:20px;">
 
-    <!-- Feature 1: Facts -->
-    <div class="feature-card">
-      <div class="icon">📘</div>
-      <h3>Facts</h3>
-      <p>Scientific truths and odd observations you won’t believe are real.</p>
-    </div>
+  <div class="features-container">
+        <h1 class="features-title">Facts</h1>
+        <p>Scientific truths and odd observations you won't believe are real.</p>
 
-    <!-- Feature 2: Discoveries -->
-    <div class="feature-card">
-      <div class="icon">🔍</div>
-      <h3>Discoveries</h3>
-      <p>Groundbreaking insights and technological leaps across science fields.</p>
-    </div>
+        <div class="feature-item">
+            <h2>🌗 Dark & Light Mode</h2>
+            <p>Choose your vibe—ominous dark or cheerful light, with one toggle.</p>
+        </div>
 
-    <!-- Feature 3: Dark/Light Mode -->
-    <div class="feature-card">
-      <div class="icon">🌗</div>
-      <h3>Dark & Light Mode</h3>
-      <p>Choose your vibe—ominous dark or cheerful light, with one toggle.</p>
-    </div>
+        <div class="feature-item">
+            <h2>🎮 Games</h2>
+            <p>Play mini science games that combine curiosity with entertainment.</p>
+        </div>
 
-    <!-- Feature 4: Quizzes -->
-    <div class="feature-card">
-      <div class="icon">❓</div>
-      <h3>Quizzes</h3>
-      <p>Level-based science and grammar challenges to test your wits.</p>
-    </div>
+        <div class="feature-item">
+            <h2>🔍 Discoveries</h2>
+            <p>Groundbreaking insights and technological leaps across science fields.</p>
+        </div>
 
-    <!-- Feature 5: Games -->
-    <div class="feature-card">
-      <div class="icon">🎮</div>
-      <h3>Games</h3>
-      <p>Play mini science games that combine curiosity with entertainment.</p>
-    </div>
+        <div class="feature-item">
+            <h2>❓ Quizzes</h2>
+            <p>Level-based science and grammar challenges to test your wits.</p>
+        </div>
 
-    <!-- Feature 6: Dictionary -->
-    <div class="feature-card">
-      <div class="icon">📖</div>
-      <h3>Dictionary</h3>
-      <p>Look up science terms with clear definitions and surprising depth.</p>
+        <div class="feature-item">
+            <h2>📖 Dictionary</h2>
+            <p>Look up science terms with clear definitions and surprising depth.</p>
+        </div>
     </div>
-
   </div>
 </section>
   <!-- TEAM SECTION -->
