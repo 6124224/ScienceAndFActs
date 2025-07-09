@@ -231,52 +231,80 @@
     /* =====================================================================
        FEATURES CARDS
        ===================================================================== */
-.features-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
+body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 0;
+            margin: 0;
+        }
+
+        .features-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
         }
 
         .features-title {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #2c3e50;
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            color: #222;
+            position: relative;
+        }
+
+        .features-title:after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            margin: 15px auto;
+            border-radius: 2px;
         }
 
         .feature-item {
-            margin-bottom: 2.5rem;
-            padding: 1.5rem;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #4ecdc4;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .feature-item h2 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-size: 1.5rem;
-            color: #2c3e50;
             margin-top: 0;
-            margin-bottom: 0.5rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
         }
 
         .feature-item p {
             margin: 0;
             color: #555;
-            line-height: 1.6;
-            padding-left: 2rem;
+            font-size: 1.05rem;
         }
 
         /* Dark mode styles */
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+
         .dark-mode .features-title {
-            color: #f8f9fa;
+            color: #f0f0f0;
         }
 
         .dark-mode .feature-item {
-            background-color: #2d3748;
+            background-color: #2d2d2d;
+            border-left-color: #ff6b6b;
         }
 
         .dark-mode .feature-item h2 {
@@ -821,32 +849,36 @@
   <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; padding:20px;">
 
   <div class="features-container">
-        <h1 class="features-title">Facts</h1>
-        <p>Scientific truths and odd observations you won't believe are real.</p>
+        <h1 class="features-title">Features</h1>
 
         <div class="feature-item">
-            <h2>🌗 Dark & Light Mode</h2>
-            <p>Choose your vibe—ominous dark or cheerful light, with one toggle.</p>
+            <h2>Dark & Light Mode</h2>
+            <p>Toggle between brilliant light and sinister dark with a click.</p>
         </div>
 
         <div class="feature-item">
-            <h2>🎮 Games</h2>
-            <p>Play mini science games that combine curiosity with entertainment.</p>
+            <h2>Live Clock</h2>
+            <p>Real-time clock that tracks your scrolling speed. Maybe.</p>
         </div>
 
         <div class="feature-item">
-            <h2>🔍 Discoveries</h2>
-            <p>Groundbreaking insights and technological leaps across science fields.</p>
+            <h2>Google Map</h2>
+            <p>Map of your hometown or anywhere you please—no reason required.</p>
         </div>
 
         <div class="feature-item">
-            <h2>❓ Quizzes</h2>
-            <p>Level-based science and grammar challenges to test your wits.</p>
+            <h2>Contact Form</h2>
+            <p>Get in touch—if you dare—to send messages I won't read.</p>
         </div>
 
         <div class="feature-item">
-            <h2>📖 Dictionary</h2>
-            <p>Look up science terms with clear definitions and surprising depth.</p>
+            <h2>Latest Blog Posts</h2>
+            <p>Preview articles on topics that don't exist—yet they do.</p>
+        </div>
+
+        <div class="feature-item">
+            <h2>Testimonial Slider</h2>
+            <p>Hear from satisfied users who barely exist.</p>
         </div>
     </div>
   </div>
