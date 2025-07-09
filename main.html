@@ -231,28 +231,30 @@
     /* =====================================================================
        FEATURES CARDS
        ===================================================================== */
-    .feature-card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .feature-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-    .feature-card i {
-      font-size: 2.5rem;
-      color: #3498db;
-      margin-bottom: 1rem;
-    }
-    .feature-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.8rem;
-    }
+    #site-features {
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  padding: 60px 20px;
+}
 
+.feature-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: white;
+  width: 280px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: scale(1.05);
+}
+
+.feature-card .icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
     /* =====================================================================
        SERVICES SECTION
        ===================================================================== */
@@ -765,9 +767,71 @@
           <p>Helium is the only element that cannot be solidified by cooling.</p>
         </div>
       </div>
+<!-- Fact 7 -->
+<div class="mini-fact-card" style="background-image: url('images/volcano.jpg'); background-size: cover; background-position: center;">
+  <div class="fact-overlay">
+    <h3>Volcanic Energy</h3>
+    <p>Earth’s core produces enough heat to power entire cities—if only we could tap it.</p>
+  </div>
+</div>
+
+<!-- Fact 8 -->
+<div class="mini-fact-card" style="background-image: url('images/deep-ocean.jpg'); background-size: cover; background-position: center;">
+  <div class="fact-overlay">
+    <h3>Deep Ocean Secrets</h3>
+    <p>Over 80% of our oceans remain unexplored, holding alien-like creatures and mysteries.</p>
+  </div>
+</div>
     </div>
   </section>
+<section id="site-features">
+  <h2 style="text-align:center; font-size:3rem; margin-bottom:40px; color:#fff;">Features</h2>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; padding:20px;">
 
+    <!-- Feature 1: Facts -->
+    <div class="feature-card">
+      <div class="icon">📘</div>
+      <h3>Facts</h3>
+      <p>Scientific truths, quirky observations, and curiosity-driven data.</p>
+    </div>
+
+    <!-- Feature 2: Discoveries -->
+    <div class="feature-card">
+      <div class="icon">🔍</div>
+      <h3>Discoveries</h3>
+      <p>Explore breakthroughs in science, tech, and mysterious phenomena.</p>
+    </div>
+
+    <!-- Feature 3: Dark/Light Mode -->
+    <div class="feature-card">
+      <div class="icon">🌗</div>
+      <h3>Dark & Light Mode</h3>
+      <p>Toggle between radiant light and dramatic dark with style.</p>
+    </div>
+
+    <!-- Feature 4: Quizzes -->
+    <div class="feature-card">
+      <div class="icon">❓</div>
+      <h3>Quizzes</h3>
+      <p>Interactive challenges to test your science, logic, and grammar skills.</p>
+    </div>
+
+    <!-- Feature 5: Games -->
+    <div class="feature-card">
+      <div class="icon">🎮</div>
+      <h3>Games</h3>
+      <p>Play educational games that merge fun with brainy discoveries.</p>
+    </div>
+
+    <!-- Feature 6: Dictionary -->
+    <div class="feature-card">
+      <div class="icon">📖</div>
+      <h3>Dictionary</h3>
+      <p>Understand complex scientific terms with clarity and examples.</p>
+    </div>
+
+  </div>
+</section>
   <!-- TEAM SECTION -->
   <section id="team">
     <h2 class="section-title">Creator</h2>
