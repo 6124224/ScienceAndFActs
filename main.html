@@ -638,35 +638,6 @@ body {
     }
 
     /* =====================================================================
-       COOKIE CONSENT BANNER
-       ===================================================================== */
-    #cookieConsent {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.8);
-      color: #fff;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      animation: slideInUp 0.5s ease forwards;
-      transform: translateY(100%);
-    }
-    #cookieConsent.show {
-      transform: translateY(0%);
-    }
-    #cookieConsent button {
-      background: #2ecc71;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-    }
-    @keyframes slideInUp {
-      from { transform: translateY(100%); }
-      to   { transform: translateY(0%);   }
-    }
-
-    /* =====================================================================
        DARK MODE
        ===================================================================== */
     body.dark {
@@ -960,12 +931,6 @@ body {
     </form>
   </section>
 
-  <!-- COOKIE CONSENT -->
-  <div id="cookieConsent">
-    <p>We use cookies for a better experience. By continuing, you agree.</p>
-    <button id="acceptCookies">Accept</button>
-  </div>
-
   <!-- BACK TO TOP -->
   <button id="backToTop"><i class="fas fa-chevron-up"></i></button>
 
@@ -1029,19 +994,6 @@ body {
         item.classList.toggle('open');
         item.querySelector('.faq-question').classList.toggle('active');
       });
-    });
-
-    // COOKIE CONSENT
-    const cookieBanner = document.getElementById('cookieConsent');
-    const acceptBtn = document.getElementById('acceptCookies');
-    acceptBtn.addEventListener('click', () => {
-      localStorage.setItem('cookiesAccepted', 'true');
-      cookieBanner.classList.remove('show');
-    });
-    window.addEventListener('load', () => {
-      if (!localStorage.getItem('cookiesAccepted')) {
-        cookieBanner.classList.add('show');
-      }
     });
   </script>
 </body>
