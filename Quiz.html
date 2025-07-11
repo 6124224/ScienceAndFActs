@@ -15,11 +15,27 @@
     </header>
 
     <div id="topic-selection" class="section">
-      <button onclick="startQuiz('physics')">Physics</button>
-      <button onclick="startQuiz('chemistry')">Chemistry</button>
-      <button onclick="startQuiz('biology')">Biology</button>
-      <button onclick="startQuiz('astronomy')">Astronomy</button>
-      <button onclick="startQuiz('earth')">Earth Science</button>
+      <!-- Quiz Cards -->
+      <div class="quiz-card" onclick="startQuiz('physics')">
+        <h2>Physics</h2>
+        <p>The study of matter and energy.</p>
+      </div>
+      <div class="quiz-card" onclick="startQuiz('chemistry')">
+        <h2>Chemistry</h2>
+        <p>The study of substances and their properties.</p>
+      </div>
+      <div class="quiz-card" onclick="startQuiz('biology')">
+        <h2>Biology</h2>
+        <p>The study of living organisms.</p>
+      </div>
+      <div class="quiz-card" onclick="startQuiz('astronomy')">
+        <h2>Astronomy</h2>
+        <p>The study of celestial objects.</p>
+      </div>
+      <div class="quiz-card" onclick="startQuiz('earth')">
+        <h2>Earth Science</h2>
+        <p>The study of Earth and its processes.</p>
+      </div>
     </div>
 
     <div id="quiz-container" class="section hidden">
