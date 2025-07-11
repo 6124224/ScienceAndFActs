@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const playBtn = front.querySelector('.play-btn');
         const flipBackBtn = back.querySelector('.flip-back-btn');
 
+        // Flip card when clicking anywhere except the play button
         front.addEventListener('click', (e) => {
             if (!e.target.classList.contains('play-btn')) {
                 card.classList.add('flipped');
@@ -23,16 +24,24 @@ document.addEventListener('DOMContentLoaded', function() {
             card.classList.remove('flipped');
         });
 
-        // Start game
-        playBtn.addEventListener('click', () => {
+        // Start game when play button is clicked
+        playBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent the card flip from happening
             const gameId = card.getAttribute('data-game');
             openGameModal(gameId);
         });
     });
 
-    // Close modals
+    // Close modals when clicking X button
     closeModalBtns.forEach(btn => {
         btn.addEventListener('click', closeAllModals);
+    });
+
+    // Close modals when clicking outside the modal content
+    window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('game-modal')) {
+            closeAllModals();
+        }
     });
 
     // Open specific game modal
@@ -43,18 +52,19 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'solar-builder':
                 initSolarSystemBuilder();
                 solarBuilderModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
                 break;
             case 'atom-explorer':
                 initAtomExplorer();
                 atomExplorerModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
                 break;
             case 'dna-puzzle':
                 initDNAPuzzle();
                 dnaPuzzleModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
                 break;
         }
-        
-        document.body.style.overflow = 'hidden';
     }
 
     function closeAllModals() {
@@ -78,19 +88,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const resetBtn = document.querySelector('#solarBuilderModal .reset-btn');
         const simulateBtn = document.querySelector('#solarBuilderModal .simulate-btn');
         
+        // Initialize planet selection
+        planetOptions[0].classList.add('selected');
         let selectedPlanetType = 'rocky';
         let planets = [];
         let isSimulating = false;
         let animationId = null;
 
         // Update displayed values
-        planetDistance.addEventListener('input', () => {
-            distanceValue.textContent = (planetDistance.value / 100).toFixed(1) + ' AU';
-        });
+        planetDistance.addEventListener('input', updateDistanceValue);
+        planetMass.addEventListener('input', updateMassValue);
 
-        planetMass.addEventListener('input', () => {
+        // Set initial values
+        updateDistanceValue();
+        updateMassValue();
+
+        function updateDistanceValue() {
+            distanceValue.textContent = (planetDistance.value / 100).toFixed(1) + ' AU';
+        }
+
+        function updateMassValue() {
             massValue.textContent = planetMass.value + ' Earths';
-        });
+        }
 
         // Select planet type
         planetOptions.forEach(option => {
@@ -120,10 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
             planet.setAttribute('data-mass', mass);
             planet.setAttribute('data-distance', distance);
             
-            // Make planet draggable
-            planet.draggable = true;
-            planet.addEventListener('dragstart', dragStart);
-            
             planetContainer.appendChild(planet);
             planets.push({
                 element: planet,
@@ -141,12 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
             planetContainer.appendChild(orbit);
         }
 
-        function dragStart(e) {
-            e.dataTransfer.setData('text/plain', e.target.id);
-        }
-
         // Reset solar system
-        resetBtn.addEventListener('click', function() {
+        resetBtn.addEventListener('click', resetSystem);
+
+        function resetSystem() {
             if (isSimulating) {
                 cancelAnimationFrame(animationId);
                 isSimulating = false;
@@ -155,11 +168,16 @@ document.addEventListener('DOMContentLoaded', function() {
             
             planetContainer.innerHTML = '';
             planets = [];
-        });
+        }
 
         // Simulate orbits
-        simulateBtn.addEventListener('click', function() {
-            if (planets.length === 0) return;
+        simulateBtn.addEventListener('click', toggleSimulation);
+
+        function toggleSimulation() {
+            if (planets.length === 0) {
+                alert('Add at least one planet to simulate!');
+                return;
+            }
             
             isSimulating = !isSimulating;
             
@@ -170,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cancelAnimationFrame(animationId);
                 simulateBtn.textContent = 'Start Simulation';
             }
-        });
+        }
 
         function simulateOrbits() {
             planets.forEach(planet => {
@@ -221,6 +239,12 @@ document.addEventListener('DOMContentLoaded', function() {
             47: { name: 'Silver', symbol: 'Ag', mass: 107.87, type: 'Metal' },
             79: { name: 'Gold', symbol: 'Au', mass: 196.97, type: 'Metal' }
         };
+        
+        // Initialize with Hydrogen atom
+        protons = 1;
+        neutrons = 0;
+        electrons = 1;
+        updateAtom();
         
         // Add particles
         particleBtns.forEach(btn => {
@@ -435,6 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
         createDNAStrand();
         
         // Select base
+        baseOptions[0].classList.add('selected');
         baseOptions.forEach(option => {
             option.addEventListener('click', function() {
                 currentBase = this.getAttribute('data-base');
@@ -505,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const bottomBase = document.createElement('div');
             bottomBase.className = 'base empty';
             bottomBase.addEventListener('click', function() {
-                if (this.classList.contains('empty') {
+                if (this.classList.contains('empty')) {
                     checkBasePair(this, base);
                 }
             });
