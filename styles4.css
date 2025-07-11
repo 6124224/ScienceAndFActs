@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  color: #00d2ff;
+  text-shadow: 0 0 10px #00d2ff;
+  margin-bottom: 1rem;
+}
+
+.section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-in-out;
+}
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  background: #00c9ff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  margin: 0.5rem;
+  border-radius: 25px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+button:hover {
+  background: #0052d4;
+  color: white;
+  transform: scale(1.05);
+}
+
+#question-box {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+#options-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.option-btn {
+  background-color: #1e1e2f;
+  border: 1px solid #444;
+  padding: 0.7rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.option-btn:hover {
+  background-color: #2a2a40;
+}
+
+.option-btn.selected {
+  background-color: #00c9ff;
+  color: #000;
+}
+
+#navigation {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#progress {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+#next-btn {
+  background: #00ff94;
+  color: #000;
+  font-weight: bold;
+}
+#next-btn:disabled {
+  background: #444;
+  cursor: not-allowed;
+}
