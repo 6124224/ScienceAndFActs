@@ -1,79 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Science Quiz</title>
-  <link rel="stylesheet" href="styles4.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Quizzes | ScienceAndFacts</title>
+    <link rel="stylesheet" href="styles4.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div class="quiz-container">
+        <!-- Header Section -->
+        <header class="quiz-header">
+            <h1><i class="fas fa-rocket"></i> Science Quizzes</h1>
+            <p>Test your knowledge about the universe and beyond!</p>
+        </header>
 
-  <div class="container">
-    <header>
-      <h1>🧠 Science Quiz</h1>
-      <p>Test your knowledge with these fun quizzes!</p>
-    </header>
+        <!-- Quiz Cards Section -->
+        <div class="quiz-cards-container">
+            <!-- Solar System Quiz -->
+            <div class="quiz-card" data-quiz="solar-system">
+                <div class="quiz-card-inner">
+                    <div class="quiz-card-front">
+                        <div class="quiz-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <h2>Solar System Quiz</h2>
+                        <p>How well do you know our cosmic neighborhood?</p>
+                        <div class="quiz-stats">
+                            <span><i class="fas fa-question-circle"></i> 10 Questions</span>
+                            <span><i class="fas fa-clock"></i> 5 min</span>
+                        </div>
+                        <button class="start-btn">Start Quiz</button>
+                    </div>
+                    <div class="quiz-card-back">
+                        <h3>Topics Covered:</h3>
+                        <ul>
+                            <li>Planets and Moons</li>
+                            <li>Asteroids and Comets</li>
+                            <li>Solar Phenomena</li>
+                            <li>Space Exploration</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
 
-    <div id="topic-selection" class="section">
-      <!-- Quiz Cards -->
-      <div class="quiz-card" onclick="startQuiz('physics')">
-        <div class="card-icon">
-          <img src="https://via.placeholder.com/50?text=?">
+            <!-- Galaxy Challenge -->
+            <div class="quiz-card" data-quiz="galaxies">
+                <div class="quiz-card-inner">
+                    <div class="quiz-card-front">
+                        <div class="quiz-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h2>Galaxy Challenge</h2>
+                        <p>Prove your knowledge of galaxies and cosmic phenomena!</p>
+                        <div class="quiz-stats">
+                            <span><i class="fas fa-question-circle"></i> 10 Questions</span>
+                            <span><i class="fas fa-clock"></i> 5 min</span>
+                        </div>
+                        <button class="start-btn">Start Quiz</button>
+                    </div>
+                    <div class="quiz-card-back">
+                        <h3>Topics Covered:</h3>
+                        <ul>
+                            <li>Types of Galaxies</li>
+                            <li>Black Holes</li>
+                            <li>Nebulae</li>
+                            <li>Cosmic Expansion</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Astronomy History -->
+            <div class="quiz-card" data-quiz="astronomy-history">
+                <div class="quiz-card-inner">
+                    <div class="quiz-card-front">
+                        <div class="quiz-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h2>Astronomy History</h2>
+                        <p>Test your knowledge of astronomical discoveries!</p>
+                        <div class="quiz-stats">
+                            <span><i class="fas fa-question-circle"></i> 10 Questions</span>
+                            <span><i class="fas fa-clock"></i> 5 min</span>
+                        </div>
+                        <button class="start-btn">Start Quiz</button>
+                    </div>
+                    <div class="quiz-card-back">
+                        <h3>Topics Covered:</h3>
+                        <ul>
+                            <li>Ancient Astronomy</li>
+                            <li>Famous Astronomers</li>
+                            <li>Major Discoveries</li>
+                            <li>Space Race</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Space Technology -->
+            <div class="quiz-card" data-quiz="space-tech">
+                <div class="quiz-card-inner">
+                    <div class="quiz-card-front">
+                        <div class="quiz-icon">
+                            <i class="fas fa-satellite"></i>
+                        </div>
+                        <h2>Space Technology</h2>
+                        <p>How much do you know about space exploration tech?</p>
+                        <div class="quiz-stats">
+                            <span><i class="fas fa-question-circle"></i> 10 Questions</span>
+                            <span><i class="fas fa-clock"></i> 5 min</span>
+                        </div>
+                        <button class="start-btn">Start Quiz</button>
+                    </div>
+                    <div class="quiz-card-back">
+                        <h3>Topics Covered:</h3>
+                        <ul>
+                            <li>Rockets & Propulsion</li>
+                            <li>Space Telescopes</li>
+                            <li>Satellites</li>
+                            <li>Future Technologies</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exoplanets -->
+            <div class="quiz-card" data-quiz="exoplanets">
+                <div class="quiz-card-inner">
+                    <div class="quiz-card-front">
+                        <div class="quiz-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h2>Exoplanets Explorer</h2>
+                        <p>Discover how much you know about planets beyond our solar system!</p>
+                        <div class="quiz-stats">
+                            <span><i class="fas fa-question-circle"></i> 10 Questions</span>
+                            <span><i class="fas fa-clock"></i> 5 min</span>
+                        </div>
+                        <button class="start-btn">Start Quiz</button>
+                    </div>
+                    <div class="quiz-card-back">
+                        <h3>Topics Covered:</h3>
+                        <ul>
+                            <li>Detection Methods</li>
+                            <li>Habitable Zones</li>
+                            <li>Notable Exoplanets</li>
+                            <li>Search for Life</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h2>Solar System Quiz</h2>
-        <p>How well do you know our cosmic neighborhood? Take this quiz to find out!</p>
-        <button class="start-btn">Start Quiz</button>
-      </div>
-      <div class="quiz-card" onclick="startQuiz('chemistry')">
-        <div class="card-icon">
-          <img src=" https://via.placeholder.com/50?text=C">
+
+        <!-- Quiz Modal -->
+        <div class="quiz-modal" id="quizModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="quizTitle">Quiz Title</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">Question 1 of 10</span>
+                    </div>
+                    <div class="question-container">
+                        <h3 class="question-text">Question text goes here?</h3>
+                        <div class="options-container">
+                            <!-- Options will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="quiz-feedback">
+                        <div class="feedback-content">
+                            <i class="fas fa-check-circle correct-icon"></i>
+                            <i class="fas fa-times-circle incorrect-icon"></i>
+                            <p class="feedback-text"></p>
+                            <p class="fact-text"></p>
+                        </div>
+                        <button class="next-btn">Next Question</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="score-container">
+                        <span class="score-text">Score: <span class="score-value">0</span>/<span class="total-questions">10</span></span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h2>Chemistry Challenge</h2>
-        <p>Prove your mastery of elements, compounds, and reactions!</p>
-        <button class="start-btn">Start Quiz</button>
-      </div>
-      <div class="quiz-card" onclick="startQuiz('biology')">
-        <div class="card-icon">
-          <img src=" https://via.placeholder.com/50?text=B">
+
+        <!-- Results Modal -->
+        <div class="results-modal" id="resultsModal">
+            <div class="results-content">
+                <div class="results-header">
+                    <h2>Quiz Completed!</h2>
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="results-body">
+                    <div class="score-circle">
+                        <svg class="circle-chart" viewBox="0 0 36 36">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle-fill" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="score-percent">0%</div>
+                    </div>
+                    <p class="results-text">You scored <span class="final-score">0</span> out of <span class="final-total">10</span></p>
+                    <p class="results-message"></p>
+                    <div class="badge-earned">
+                        <i class="fas fa-award"></i>
+                        <span class="badge-text"></span>
+                    </div>
+                </div>
+                <div class="results-footer">
+                    <button class="retry-btn">Retry Quiz</button>
+                    <button class="quit-btn">Back to Quizzes</button>
+                </div>
+            </div>
         </div>
-        <h2>Biology Basics</h2>
-        <p>Explore the wonders of living organisms and ecosystems.</p>
-        <button class="start-btn">Start Quiz</button>
-      </div>
-      <div class="quiz-card" onclick="startQuiz('astronomy')">
-        <div class="card-icon">
-          <img src=" https://via.placeholder.com/50?text=G">
-        </div>
-        <h2>Galaxy Challenge</h2>
-        <p>Prove your knowledge of galaxies, nebulae, and cosmic phenomena!</p>
-        <button class="start-btn">Start Quiz</button>
-      </div>
-      <div class="quiz-card" onclick="startQuiz('earth')">
-        <div class="card-icon">
-          <img src=" https://via.placeholder.com/50?text=E">
-        </div>
-        <h2>Earth Science Quest</h2>
-        <p>Discover the mysteries of Earth's geology, climate, and natural processes.</p>
-        <button class="start-btn">Start Quiz</button>
-      </div>
     </div>
 
-    <div id="quiz-container" class="section hidden">
-      <div id="question-box"></div>
-      <div id="options-box"></div>
-      <div id="navigation">
-        <span id="progress">Question 1 of 10</span>
-        <button id="next-btn" onclick="nextQuestion()">Next →</button>
-      </div>
-    </div>
-
-    <div id="result-container" class="section hidden">
-      <h2>🎉 Quiz Completed!</h2>
-      <p id="score-message"></p>
-      <button onclick="restartQuiz()">Try Again</button>
-    </div>
-  </div>
-
-  <script src="alba.js"></script>
+    <script src="alba.js"></script>
 </body>
 </html>
