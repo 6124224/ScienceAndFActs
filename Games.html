@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Games | ScienceAndFacts</title>
+    <link rel="stylesheet" href="styles2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="games-container">
+        <!-- Header Section -->
+        <header class="games-header">
+            <h1><i class="fas fa-gamepad"></i> Science Games</h1>
+            <p>Learn scientific concepts through fun, interactive games!</p>
+        </header>
+
+        <!-- Games Cards Section -->
+        <div class="games-cards-container">
+            <!-- Solar System Builder -->
+            <div class="game-card" data-game="solar-builder">
+                <div class="game-card-inner">
+                    <div class="game-card-front">
+                        <div class="game-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h2>Solar System Builder</h2>
+                        <p>Construct your own planetary system and learn about orbital mechanics</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-brain"></i> Astronomy</span>
+                            <span><i class="fas fa-clock"></i> 5-10 min</span>
+                        </div>
+                        <button class="play-btn">Play Game</button>
+                    </div>
+                    <div class="game-card-back">
+                        <h3>Learning Objectives:</h3>
+                        <ul>
+                            <li>Understand planetary orbits</li>
+                            <li>Learn about gravitational forces</li>
+                            <li>Explore habitable zones</li>
+                            <li>Discover planet composition</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atom Explorer -->
+            <div class="game-card" data-game="atom-explorer">
+                <div class="game-card-inner">
+                    <div class="game-card-front">
+                        <div class="game-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <h2>Atom Explorer</h2>
+                        <p>Build atoms and molecules while learning about atomic structure</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-brain"></i> Chemistry</span>
+                            <span><i class="fas fa-clock"></i> 5-15 min</span>
+                        </div>
+                        <button class="play-btn">Play Game</button>
+                    </div>
+                    <div class="game-card-back">
+                        <h3>Learning Objectives:</h3>
+                        <ul>
+                            <li>Understand atomic structure</li>
+                            <li>Learn about electron configuration</li>
+                            <li>Explore chemical bonding</li>
+                            <li>Discover element properties</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DNA Puzzle -->
+            <div class="game-card" data-game="dna-puzzle">
+                <div class="game-card-inner">
+                    <div class="game-card-front">
+                        <div class="game-icon">
+                            <i class="fas fa-dna"></i>
+                        </div>
+                        <h2>DNA Puzzle</h2>
+                        <p>Solve genetic puzzles while learning about DNA structure and replication</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-brain"></i> Biology</span>
+                            <span><i class="fas fa-clock"></i> 5-10 min</span>
+                        </div>
+                        <button class="play-btn">Play Game</button>
+                    </div>
+                    <div class="game-card-back">
+                        <h3>Learning Objectives:</h3>
+                        <ul>
+                            <li>Understand DNA structure</li>
+                            <li>Learn base pairing rules</li>
+                            <li>Explore replication process</li>
+                            <li>Discover genetic coding</li>
+                        </ul>
+                        <button class="flip-back-btn"><i class="fas fa-undo"></i> Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Modals -->
+        <!-- Solar System Builder Modal -->
+        <div class="game-modal" id="solarBuilderModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-globe-americas"></i> Solar System Builder</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="game-description">
+                        <p>Drag planets into orbit around your star. Adjust mass and distance to create a stable system. Watch how gravity affects your planets!</p>
+                    </div>
+                    <div class="game-area">
+                        <div class="solar-system-container">
+                            <div class="star" id="star"></div>
+                            <div class="habitable-zone"></div>
+                            <div class="planet-container" id="planetContainer"></div>
+                        </div>
+                        <div class="game-controls">
+                            <div class="planet-selector">
+                                <h3>Add Planet</h3>
+                                <div class="planet-options">
+                                    <div class="planet-option" data-type="rocky" data-mass="1" data-size="1">
+                                        <div class="planet-preview rocky"></div>
+                                        <span>Rocky</span>
+                                    </div>
+                                    <div class="planet-option" data-type="gas" data-mass="10" data-size="2">
+                                        <div class="planet-preview gas"></div>
+                                        <span>Gas Giant</span>
+                                    </div>
+                                    <div class="planet-option" data-type="ice" data-mass="5" data-size="1.5">
+                                        <div class="planet-preview ice"></div>
+                                        <span>Ice Giant</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planet-settings">
+                                <h3>Planet Settings</h3>
+                                <div class="setting">
+                                    <label for="planetDistance">Distance from Star:</label>
+                                    <input type="range" id="planetDistance" min="50" max="400" value="150">
+                                    <span id="distanceValue">1.5 AU</span>
+                                </div>
+                                <div class="setting">
+                                    <label for="planetMass">Planet Mass:</label>
+                                    <input type="range" id="planetMass" min="1" max="20" value="5">
+                                    <span id="massValue">5 Earths</span>
+                                </div>
+                                <button class="add-planet-btn">Add Planet</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="science-facts">
+                        <h3><i class="fas fa-lightbulb"></i> Did You Know?</h3>
+                        <p class="fact-text">The habitable zone (green ring) is where liquid water could exist. In our solar system, only Earth orbits within this zone!</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="reset-btn">Reset System</button>
+                    <button class="simulate-btn">Start Simulation</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Atom Explorer Modal -->
+        <div class="game-modal" id="atomExplorerModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-atom"></i> Atom Explorer</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="game-description">
+                        <p>Build atoms by adding protons, neutrons and electrons. Create different elements and see their properties!</p>
+                    </div>
+                    <div class="game-area">
+                        <div class="atom-container">
+                            <div class="nucleus" id="nucleus"></div>
+                            <div class="electron-shells" id="electronShells"></div>
+                        </div>
+                        <div class="element-info">
+                            <h3 id="elementName">Element: Hydrogen</h3>
+                            <p id="elementSymbol">Symbol: H</p>
+                            <p id="atomicNumber">Atomic Number: 1</p>
+                            <p id="atomicMass">Atomic Mass: 1.008</p>
+                            <p id="elementType">Type: Non-metal</p>
+                        </div>
+                        <div class="atom-controls">
+                            <div class="particle-controls">
+                                <h3>Add Particles</h3>
+                                <div class="particle-buttons">
+                                    <button class="particle-btn" data-particle="proton">
+                                        <i class="fas fa-plus-circle proton"></i> Proton
+                                    </button>
+                                    <button class="particle-btn" data-particle="neutron">
+                                        <i class="fas fa-plus-circle neutron"></i> Neutron
+                                    </button>
+                                    <button class="particle-btn" data-particle="electron">
+                                        <i class="fas fa-plus-circle electron"></i> Electron
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="element-selector">
+                                <h3>Quick Select</h3>
+                                <select id="elementSelector">
+                                    <option value="1">Hydrogen (H)</option>
+                                    <option value="2">Helium (He)</option>
+                                    <option value="6">Carbon (C)</option>
+                                    <option value="7">Nitrogen (N)</option>
+                                    <option value="8">Oxygen (O)</option>
+                                    <option value="11">Sodium (Na)</option>
+                                    <option value="13">Aluminum (Al)</option>
+                                    <option value="17">Chlorine (Cl)</option>
+                                    <option value="20">Calcium (Ca)</option>
+                                    <option value="26">Iron (Fe)</option>
+                                    <option value="29">Copper (Cu)</option>
+                                    <option value="47">Silver (Ag)</option>
+                                    <option value="79">Gold (Au)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="science-facts">
+                        <h3><i class="fas fa-lightbulb"></i> Did You Know?</h3>
+                        <p class="fact-text">The number of protons determines the element, while the number of neutrons determines the isotope. Electrons determine how atoms bond with each other!</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="reset-btn">Reset Atom</button>
+                    <button class="bond-btn">Show Chemical Bonds</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DNA Puzzle Modal -->
+        <div class="game-modal" id="dnaPuzzleModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-dna"></i> DNA Puzzle</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="game-description">
+                        <p>Complete the DNA strand by matching base pairs. Learn about DNA structure and replication!</p>
+                    </div>
+                    <div class="game-area">
+                        <div class="dna-container">
+                            <div class="dna-strand" id="dnaStrand">
+                                <div class="backbone left-backbone"></div>
+                                <div class="backbone right-backbone"></div>
+                                <div class="base-pairs" id="basePairs"></div>
+                            </div>
+                        </div>
+                        <div class="dna-controls">
+                            <div class="base-selector">
+                                <h3>Select Base</h3>
+                                <div class="base-options">
+                                    <div class="base-option" data-base="A">
+                                        <div class="base-preview adenine"></div>
+                                        <span>Adenine (A)</span>
+                                    </div>
+                                    <div class="base-option" data-base="T">
+                                        <div class="base-preview thymine"></div>
+                                        <span>Thymine (T)</span>
+                                    </div>
+                                    <div class="base-option" data-base="C">
+                                        <div class="base-preview cytosine"></div>
+                                        <span>Cytosine (C)</span>
+                                    </div>
+                                    <div class="base-option" data-base="G">
+                                        <div class="base-preview guanine"></div>
+                                        <span>Guanine (G)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dna-info">
+                                <h3>DNA Replication</h3>
+                                <p>Match each base with its complementary pair:</p>
+                                <ul class="base-pair-rules">
+                                    <li>A (Adenine) pairs with T (Thymine)</li>
+                                    <li>C (Cytosine) pairs with G (Guanine)</li>
+                                </ul>
+                                <div class="puzzle-stats">
+                                    <p>Correct pairs: <span id="correctPairs">0</span></p>
+                                    <p>Incorrect pairs: <span id="incorrectPairs">0</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="science-facts">
+                        <h3><i class="fas fa-lightbulb"></i> Did You Know?</h3>
+                        <p class="fact-text">If you stretched out all the DNA in your body, it would reach to the Sun and back over 600 times! That's about 67 billion miles of DNA.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="reset-btn">New DNA Strand</button>
+                    <button class="replicate-btn">Replicate DNA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="aks.js"></script>
+</body>
+</html>
