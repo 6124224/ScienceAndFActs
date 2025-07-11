@@ -1,0 +1,421 @@
+:root {
+  --primary: #4fc3f7;
+  --primary-dark: #039be5;
+  --primary-light: #b3e5fc;
+  --white: #ffffff;
+  --accent: #ffab00;
+  --text-dark: #212121;
+  --text-light: #757575;
+  --bg-gradient: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 50%, #81d4fa 100%);
+  --card-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.05);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: var(--bg-gradient); min-height: 100vh;
+  color: var(--text-dark); line-height: 1.6; padding: 20px;
+}
+
+.games-container {
+  max-width: 1200px; margin: 0 auto; padding: 20px;
+}
+
+/* Header */
+.games-header {
+  text-align: center; margin-bottom: 40px;
+  animation: fadeIn 0.8s ease-out;
+}
+.games-header h1 {
+  font-size: 2.5rem; color: var(--primary-dark); 
+  margin-bottom: 10px; display: flex; 
+  align-items: center; justify-content: center;
+}
+.games-header h1 i { margin-right: 15px; color: var(--accent); }
+.games-header p {
+  font-size: 1.1rem; color: var(--text-light);
+  max-width: 600px; margin: 0 auto;
+}
+
+/* Game Cards */
+.games-cards-container {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px; margin-bottom: 40px;
+}
+.game-card { perspective: 1000px; height: 320px; }
+.game-card-inner {
+  position: relative; width: 100%; height: 100%;
+  transition: transform 0.6s; transform-style: preserve-3d;
+  box-shadow: var(--card-shadow); border-radius: 15px; overflow: hidden;
+}
+.game-card:hover .game-card-inner { transform: translateY(-5px); }
+.game-card.flipped .game-card-inner { transform: rotateY(180deg); }
+
+.game-card-front, .game-card-back {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; padding: 25px;
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--white); border-radius: 15px;
+}
+.game-card-back { transform: rotateY(180deg); justify-content: space-between; }
+
+.game-icon {
+  width: 70px; height: 70px; background: var(--primary);
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; margin-bottom: 20px;
+  color: var(--white); font-size: 1.8rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: var(--transition);
+}
+.game-card:hover .game-icon {
+  transform: scale(1.1); background: var(--primary-dark);
+}
+
+.game-card h2 {
+  font-size: 1.4rem; margin-bottom: 10px;
+  color: var(--primary-dark); text-align: center;
+}
+.game-card p {
+  font-size: 0.9rem; color: var(--text-light);
+  text-align: center; margin-bottom: 20px;
+}
+
+.game-stats {
+  display: flex; justify-content: space-between;
+  width: 100%; margin-bottom: 25px;
+  font-size: 0.8rem; color: var(--text-light);
+}
+.game-stats span { display: flex; align-items: center; }
+.game-stats i { margin-right: 5px; color: var(--primary); }
+
+.game-card-back h3 { color: var(--primary-dark); margin-bottom: 15px; font-size: 1.2rem; }
+.game-card-back ul { list-style-type: none; width: 100%; margin-bottom: 20px; }
+.game-card-back li {
+  padding: 8px 0; border-bottom: 1px solid var(--primary-light);
+  font-size: 0.9rem; color: var(--text-light);
+}
+.game-card-back li:last-child { border-bottom: none; }
+
+/* Buttons */
+.play-btn, .flip-back-btn, .add-planet-btn, .simulate-btn, 
+.reset-btn, .particle-btn, .bond-btn, .replicate-btn {
+  padding: 12px 25px; border: none; border-radius: 50px;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: var(--transition); display: flex;
+  align-items: center; justify-content: center;
+}
+.play-btn {
+  background: var(--primary); color: var(--white);
+  margin-top: auto; width: 100%;
+}
+.play-btn:hover {
+  background: var(--primary-dark); transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.flip-back-btn {
+  background: transparent; color: var(--primary);
+  border: 1px solid var(--primary); width: 100%;
+}
+.flip-back-btn:hover { background: var(--primary); color: var(--white); }
+.flip-back-btn i { margin-right: 8px; }
+
+/* Modals */
+.game-modal {
+  display: none; position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%; background: rgba(0,0,0,0.7);
+  z-index: 1000; align-items: center; justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+.modal-content {
+  background: var(--white); border-radius: 15px;
+  width: 90%; max-width: 800px; max-height: 90vh;
+  overflow-y: auto; box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  transform: translateY(0); transition: transform 0.3s ease-out;
+}
+.game-modal.show .modal-content { transform: translateY(0); }
+
+.modal-header {
+  padding: 20px; border-bottom: 1px solid var(--primary-light);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h2 {
+  color: var(--primary-dark); font-size: 1.5rem;
+  display: flex; align-items: center;
+}
+.modal-header h2 i { margin-right: 10px; }
+.close-modal {
+  font-size: 1.8rem; color: var(--text-light);
+  cursor: pointer; transition: var(--transition);
+}
+.close-modal:hover {
+  color: var(--primary-dark); transform: rotate(90deg);
+}
+
+.modal-body { padding: 20px; }
+.game-description {
+  background: var(--primary-light); padding: 15px;
+  border-radius: 8px; margin-bottom: 20px;
+  color: var(--text-dark);
+}
+.game-description p { font-size: 0.95rem; }
+.game-area {
+  display: flex; flex-direction: column;
+  gap: 20px; margin-bottom: 20px;
+}
+
+/* Solar System Game */
+.solar-system-container {
+  position: relative; width: 100%; height: 300px;
+  background: #0a0e17; border-radius: 8px;
+  overflow: hidden; margin-bottom: 20px;
+}
+.star {
+  position: absolute; width: 50px; height: 50px;
+  background: #ffeb3b; border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  box-shadow: 0 0 40px #ff9800, 0 0 80px #ff5722;
+  z-index: 1;
+}
+.habitable-zone {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); width: 200px;
+  height: 200px; border: 2px dashed rgba(76,175,80,0.5);
+  border-radius: 50%;
+}
+.planet-container { position: relative; width: 100%; height: 100%; }
+.planet {
+  position: absolute; border-radius: 50%; cursor: move;
+  z-index: 2; transition: transform 0.2s ease;
+}
+.planet.rocky { background: linear-gradient(135deg, #795548, #9e9e9e); }
+.planet.gas { background: linear-gradient(135deg, #ffcc80, #ffab40); }
+.planet.ice { background: linear-gradient(135deg, #81d4fa, #4fc3f7); }
+.planet:hover { transform: scale(1.1); z-index: 3; }
+.orbit {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 50%;
+}
+
+.game-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.planet-selector, .planet-settings {
+  background: var(--primary-light); padding: 15px; border-radius: 8px;
+}
+.planet-selector h3, .planet-settings h3 {
+  margin-bottom: 15px; color: var(--primary-dark);
+}
+.planet-options { display: flex; gap: 15px; margin-bottom: 15px; }
+.planet-option {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; padding: 10px; border-radius: 8px;
+  transition: var(--transition);
+}
+.planet-option:hover { background: rgba(255,255,255,0.5); }
+.planet-preview {
+  width: 40px; height: 40px; border-radius: 50%;
+  margin-bottom: 5px;
+}
+.planet-preview.rocky { background: linear-gradient(135deg, #795548, #9e9e9e); }
+.planet-preview.gas { background: linear-gradient(135deg, #ffcc80, #ffab40); }
+.planet-preview.ice { background: linear-gradient(135deg, #81d4fa, #4fc3f7); }
+
+.setting { margin-bottom: 15px; }
+.setting label {
+  display: block; margin-bottom: 5px;
+  font-size: 0.9rem; color: var(--text-dark);
+}
+.setting input[type="range"] { width: 100%; margin-bottom: 5px; }
+.add-planet-btn {
+  background: var(--primary); color: var(--white); width: 100%;
+}
+.add-planet-btn:hover { background: var(--primary-dark); }
+
+/* Atom Explorer */
+.atom-container {
+  position: relative; width: 300px; height: 300px;
+  margin: 0 auto;
+}
+.nucleus {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); width: 60px; height: 60px;
+  background: linear-gradient(135deg, #f44336, #e91e63);
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; color: white; font-weight: bold;
+  box-shadow: 0 0 20px rgba(233,30,99,0.5);
+}
+.electron-shells { position: relative; width: 100%; height: 100%; }
+.electron-shell {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: 50%;
+}
+.electron {
+  position: absolute; width: 12px; height: 12px;
+  background: #2196f3; border-radius: 50%;
+  transform: translate(-50%, -50%); box-shadow: 0 0 10px #2196f3;
+}
+.particle {
+  position: absolute; width: 20px; height: 20px;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; color: white; font-size: 0.7rem;
+  font-weight: bold;
+}
+.proton { background: #f44336; }
+.neutron { background: #9e9e9e; }
+
+.element-info {
+  background: var(--primary-light); padding: 15px;
+  border-radius: 8px; margin-bottom: 20px;
+}
+.element-info h3 { color: var(--primary-dark); margin-bottom: 10px; }
+.element-info p { margin-bottom: 5px; font-size: 0.9rem; }
+
+.atom-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.particle-controls, .element-selector {
+  background: var(--primary-light); padding: 15px; border-radius: 8px;
+}
+.particle-controls h3, .element-selector h3 {
+  margin-bottom: 15px; color: var(--primary-dark);
+}
+.particle-buttons { display: flex; flex-direction: column; gap: 10px; }
+.particle-btn {
+  background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--primary); display: flex;
+  align-items: center; justify-content: center; padding: 8px 15px;
+}
+.particle-btn i { margin-right: 8px; }
+.particle-btn .proton { color: #f44336; }
+.particle-btn .neutron { color: #9e9e9e; }
+.particle-btn .electron { color: #2196f3; }
+.particle-btn:hover {
+  background: var(--primary); color: var(--white);
+}
+#elementSelector {
+  width: 100%; padding: 8px; border-radius: 4px;
+  border: 1px solid var(--primary); background: var(--white);
+}
+
+/* DNA Puzzle */
+.dna-container {
+  position: relative; width: 100%; min-height: 200px;
+  margin-bottom: 20px;
+}
+.dna-strand {
+  position: relative; width: 100%; height: 150px;
+  margin: 30px auto;
+}
+.backbone {
+  position: absolute; width: 4px; height: 100%;
+  background: #795548; top: 0;
+}
+.left-backbone { left: 40%; transform: rotate(10deg); }
+.right-backbone { right: 40%; transform: rotate(-10deg); }
+.base-pairs { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+
+.base-pair {
+  position: absolute; display: flex; flex-direction: column;
+  align-items: center; cursor: pointer; transition: var(--transition);
+}
+.base {
+  width: 30px; height: 60px; display: flex;
+  align-items: center; justify-content: center;
+  color: white; font-weight: bold; position: relative;
+}
+.base::after {
+  content: ''; position: absolute; width: 2px; height: 100%;
+  background: rgba(0,0,0,0.2); left: 50%; transform: translateX(-50%);
+}
+.base.adenine { background: #4caf50; }
+.base.thymine { background: #ff9800; }
+.base.cytosine { background: #2196f3; }
+.base.guanine { background: #9c27b0; }
+.base-connector { width: 2px; height: 20px; background: #795548; }
+
+.dna-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.base-selector, .dna-info {
+  background: var(--primary-light); padding: 15px; border-radius: 8px;
+}
+.base-selector h3, .dna-info h3 {
+  margin-bottom: 15px; color: var(--primary-dark);
+}
+.base-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.base-option {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; padding: 10px; border-radius: 8px;
+  transition: var(--transition);
+}
+.base-option:hover { background: rgba(255,255,255,0.5); }
+.base-preview {
+  width: 40px; height: 60px; margin-bottom: 5px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: bold;
+}
+.base-preview.adenine { background: #4caf50; }
+.base-preview.thymine { background: #ff9800; }
+.base-preview.cytosine { background: #2196f3; }
+.base-preview.guanine { background: #9c27b0; }
+
+.base-pair-rules {
+  margin: 10px 0; padding-left: 20px; font-size: 0.9rem;
+}
+.base-pair-rules li { margin-bottom: 5px; }
+.puzzle-stats { margin-top: 15px; font-size: 0.9rem; }
+
+/* Science Facts */
+.science-facts {
+  background: var(--primary-light); padding: 15px;
+  border-radius: 8px; margin-top: 20px;
+}
+.science-facts h3 {
+  color: var(--primary-dark); margin-bottom: 10px;
+  display: flex; align-items: center;
+}
+.science-facts h3 i { margin-right: 10px; color: var(--accent); }
+.fact-text { font-size: 0.9rem; line-height: 1.5; }
+
+/* Modal Footer */
+.modal-footer {
+  padding: 15px 20px; border-top: 1px solid var(--primary-light);
+  display: flex; justify-content: space-between;
+}
+.reset-btn {
+  background: transparent; color: var(--primary);
+  border: 1px solid var(--primary);
+}
+.reset-btn:hover { background: var(--primary); color: var(--white); }
+.simulate-btn, .bond-btn, .replicate-btn {
+  background: var(--primary); color: var(--white);
+}
+.simulate-btn:hover, .bond-btn:hover, .replicate-btn:hover {
+  background: var(--primary-dark);
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideIn { 
+  from { transform: translateY(20px); opacity: 0; } 
+  to { transform: translateY(0); opacity: 1; } 
+}
+@keyframes orbit { 
+  from { transform: rotate(0deg); } 
+  to { transform: rotate(360deg); } 
+}
+@keyframes electronSpin { 
+  from { transform: translate(-50%, -50%) rotate(0deg) translateX(100px) rotate(0deg); } 
+  to { transform: translate(-50%, -50%) rotate(360deg) translateX(100px) rotate(-360deg); } 
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .games-cards-container { grid-template-columns: 1fr; }
+  .games-header h1 { font-size: 2rem; }
+  .modal-content { width: 95%; }
+  .game-controls, .atom-controls, .dna-controls { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .game-card { height: 300px; }
+  .modal-footer { flex-direction: column; gap: 10px; }
+}
