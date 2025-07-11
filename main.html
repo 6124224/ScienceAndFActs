@@ -232,65 +232,71 @@
        FEATURES CARDS
        ===================================================================== */
 body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-            padding: 0;
-            margin: 0;
-        }
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+  padding: 0;
+  margin: 0;
+}
 
-        .features-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+.features-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three cards per row */
+  grid-gap: 30px; /* Space between cards */
+}
 
-        .features-title {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 40px;
-            color: #222;
-            position: relative;
-        }
+.features-title {
+  text-align: center;
+  font-size: 2.8rem;
+  margin-bottom: 40px;
+  color: #222;
+  position: relative;
+}
 
-        .features-title:after {
-            content: "";
-            display: block;
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-            margin: 15px auto;
-            border-radius: 2px;
-        }
+.features-title:after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+  margin: 15px auto;
+  border-radius: 2px;
+}
 
-        .feature-item {
-            background: white;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 4px solid #4ecdc4;
-        }
+.feature-item {
+  background: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #4ecdc4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
 
-        .feature-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
+.feature-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
 
-        .feature-item h2 {
-            font-size: 1.5rem;
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
+.feature-item h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
 
-        .feature-item p {
-            margin: 0;
-            color: #555;
-            font-size: 1.05rem;
-        }
+.feature-item p {
+  margin: 0;
+  color: #555;
+  font-size: 1.05rem;
+}
 
         /* Dark mode styles */
         .dark-mode {
@@ -829,28 +835,28 @@ body {
         </div>
 
         <div class="feature-item">
-            <h2>Live Clock</h2>
-            <p>Real-time clock that tracks your scrolling speed. Maybe.</p>
+            <h2>Quiz</h2>
+            <p>Test your knowledge with interactive challenges.</p>
         </div>
 
         <div class="feature-item">
-            <h2>Google Map</h2>
-            <p>Map of your hometown or anywhere you please—no reason required.</p>
+            <h2>Games</h2>
+            <p>Play brainy and fun science-based games.</p>
         </div>
 
         <div class="feature-item">
-            <h2>Contact Form</h2>
-            <p>Get in touch—if you dare—to send messages I won't read.</p>
+            <h2>Facts</h2>
+            <p>Bite-sized wonders from the world of science.</p>
         </div>
 
         <div class="feature-item">
-            <h2>Latest Blog Posts</h2>
-            <p>Preview articles on topics that don't exist—yet they do.</p>
+            <h2>Discoveries</h2>
+            <p>Reveal breakthroughs that shaped our understanding.</p>
         </div>
 
         <div class="feature-item">
-            <h2>Testimonial Slider</h2>
-            <p>Hear from satisfied users who barely exist.</p>
+            <h2>Dictionary</h2>
+            <p>Look up scientific terms and meanings quickly.</p>
         </div>
     </div>
   </div>
