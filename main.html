@@ -761,57 +761,92 @@ body.dark .theme-toggler i {
   /* =====================================================================
    BACK TO TOP BUTTON
    ===================================================================== */
+/* BACK TO TOP BUTTON - ANIMATED VERSION */
 #backToTop {
   position: fixed;
-  right: 2rem;
-  bottom: 2rem;
-  background: linear-gradient(135deg, var(--light-speed), var(--quantum-teal));
-  color: var(--stellar-white);
-  width: 50px;
-  height: 50px;
+  right: 30px;
+  bottom: 30px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #3498db, #4ecdc4);
+  color: white;
+  border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+  font-size: 22px;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(52, 152, 219, 0.4);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 999;
-  border: none;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 1000;
+  overflow: hidden;
 }
 
 #backToTop.visible {
   opacity: 1;
   visibility: visible;
+  transform: translateY(0);
+}
+
+#backToTop::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #4ecdc4, #3498db);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 #backToTop:hover {
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(52, 152, 219, 0.6);
 }
 
-/* Animation for Back to Top */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+#backToTop:hover::before {
+  opacity: 1;
 }
 
-#backToTop {
-  animation: float 3s ease-in-out infinite;
+#backToTop i {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
 }
 
-/* Dark mode back to top button */
+#backToTop:hover i {
+  transform: translateY(-3px);
+}
+
+/* Pulsing animation when visible */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(52, 152, 219, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+}
+
+#backToTop.visible {
+  animation: pulse 2s infinite;
+}
+
+/* Dark mode styles */
 body.dark #backToTop {
-  box-shadow: 0 5px 20px rgba(52, 152, 219, 0.6);
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-body.dark #backToTop:hover {
-  box-shadow: 0 10px 25px rgba(52, 152, 219, 0.8);
+body.dark #backToTop::before {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
 }
 
+body.dark #backToTop.visible {
+  animation: pulse 2s infinite alternate;
+}
 /* Color Variables */
 :root {
   --cosmic-blue: #87CEEB;
@@ -1207,5 +1242,40 @@ footer a:hover::after {
       });
     });
   </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const backToTopBtn = document.getElementById('backToTop');
+  
+  // Show/hide button on scroll
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 300) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  });
+  
+  // Smooth scroll to top
+  backToTopBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+  
+  // Touch support for mobile devices
+  backToTopBtn.addEventListener('touchstart', function() {
+    this.classList.add('active');
+  });
+  
+  backToTopBtn.addEventListener('touchend', function() {
+    this.classList.remove('active');
+  });
+});
+</script>
+<button id="backToTop" aria-label="Back to Top">
+  <i class="fas fa-chevron-up"></i>
+</button>
 </body>
 </html>
