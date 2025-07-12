@@ -6,8 +6,203 @@
     <title>Science Games | ScienceAndFacts</title>
     <link rel="stylesheet" href="styles2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(135deg, #87CEEB, #E0F7FA);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        
+        .sidebar-header h3 {
+            color: #333;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            position: relative;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu li:hover {
+            background: rgba(255, 255, 255, 0.2);
+            padding-left: 25px;
+        }
+        
+        .sidebar-menu li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+        
+        .sidebar-menu li a i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #87CEEB, #E0F7FA);
+            color: #333;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        .sidebar-toggle.open {
+            left: 270px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* How to Play Section */
+        .how-to-play {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #87CEEB;
+        }
+        
+        .how-to-play h3 {
+            color: #333;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .how-to-play h3 i {
+            margin-right: 10px;
+            color: #87CEEB;
+        }
+        
+        .how-to-play ol {
+            padding-left: 20px;
+        }
+        
+        .how-to-play li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+                left: -220px;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .sidebar-toggle.open {
+                left: 240px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Science & Facts</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="main.html">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li>
+                <a href="dictionary.html">
+                    <i class="fas fa-book"></i> Dictionary
+                </a>
+            </li>
+            <li>
+                <a href="Quiz.html">
+                    <i class="fas fa-question-circle"></i> Quiz
+                </a>
+            </li>
+            <li>
+                <a href="test.html">
+                    <i class="fas fa-lightbulb"></i> Facts & Discoveries
+                </a>
+            </li>
+            <li>
+                <a href="Games.html">
+                    <i class="fas fa-gamepad"></i> Science Games
+                </a>
+            </li>
+        </ul>
+    </div>
+
     <div class="games-container">
         <!-- Header Section -->
         <header class="games-header">
@@ -100,6 +295,43 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- How to Play Sections -->
+        <div class="how-to-play" id="solarHowTo">
+            <h3><i class="fas fa-question-circle"></i> How to Play: Solar System Builder</h3>
+            <ol>
+                <li>Click on a planet type (Rocky, Gas Giant, or Ice Giant) to select it</li>
+                <li>Adjust the distance from the star using the slider (measured in Astronomical Units)</li>
+                <li>Adjust the planet mass using the slider (relative to Earth's mass)</li>
+                <li>Click "Add Planet" to place it in your solar system</li>
+                <li>Click "Start Simulation" to see how your planets orbit the star</li>
+                <li>Try to create a stable system where planets don't collide or get ejected!</li>
+            </ol>
+        </div>
+
+        <div class="how-to-play" id="atomHowTo">
+            <h3><i class="fas fa-question-circle"></i> How to Play: Atom Explorer</h3>
+            <ol>
+                <li>Add protons to the nucleus to change the element (determined by atomic number)</li>
+                <li>Add neutrons to create different isotopes of the same element</li>
+                <li>Add electrons to complete the electron shells (affects chemical properties)</li>
+                <li>Use the element selector to quickly jump to specific elements</li>
+                <li>Click "Show Chemical Bonds" to see how atoms would bond with others</li>
+                <li>Try to recreate common elements and see their properties!</li>
+            </ol>
+        </div>
+
+        <div class="how-to-play" id="dnaHowTo">
+            <h3><i class="fas fa-question-circle"></i> How to Play: DNA Puzzle</h3>
+            <ol>
+                <li>Examine the DNA strand with missing base pairs</li>
+                <li>Select a base (A, T, C, or G) from the options</li>
+                <li>Click on an empty position to place your selected base</li>
+                <li>Remember the base pairing rules: A pairs with T, C pairs with G</li>
+                <li>Complete the entire strand correctly to solve the puzzle</li>
+                <li>Click "Replicate DNA" to see how the strand would copy itself</li>
+            </ol>
         </div>
 
         <!-- Game Modals -->
@@ -305,5 +537,35 @@
     </div>
 
     <script src="aks.js"></script>
+    <script>
+        // Sidebar functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const overlay = document.getElementById('overlay');
+            
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+                sidebarToggle.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                sidebarToggle.classList.remove('open');
+            });
+            
+            // Close sidebar when clicking on a link (for single page applications)
+            const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('open');
+                    sidebarToggle.classList.remove('open');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
