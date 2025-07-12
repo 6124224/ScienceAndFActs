@@ -374,28 +374,111 @@
     margin-bottom: 40px;
   }
 }
-        /* Dark mode styles */
-        .dark-mode {
-            background-color: #1a1a1a;
-            color: #f0f0f0;
-        }
+ /* =====================================================================
+   DARK MODE STYLES
+   ===================================================================== */
+body.dark {
+  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+  color: #e0e0e0;
+}
 
-        .dark-mode .features-title {
-            color: #f0f0f0;
-        }
+body.dark .navbar {
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
 
-        .dark-mode .feature-item {
-            background-color: #2d2d2d;
-            border-left-color: #ff6b6b;
-        }
+body.dark .navbar .logo {
+  color: var(--cosmic-blue);
+}
 
-        .dark-mode .feature-item h2 {
-            color: #e2e8f0;
-        }
+body.dark .navbar li a {
+  color: #e0e0e0;
+}
 
-        .dark-mode .feature-item p {
-            color: #cbd5e0;
-        }
+body.dark .navbar li a:hover {
+  color: var(--cosmic-blue);
+}
+
+body.dark .feature-item,
+body.dark .service-item,
+body.dark .portfolio-item,
+body.dark .team-member,
+body.dark .faq-question,
+body.dark .faq-answer,
+body.dark .blog-card,
+body.dark .contact-form {
+  background: #1e1e1e;
+  color: #e0e0e0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .feature-item h2,
+body.dark .service-content h4,
+body.dark .team-member h4,
+body.dark .faq-question,
+body.dark .blog-content h4 {
+  color: #ffffff;
+}
+
+body.dark .feature-item p,
+body.dark .service-content p,
+body.dark .team-member span,
+body.dark .faq-answer p,
+body.dark .blog-content p {
+  color: #b0b0b0;
+}
+
+body.dark .newsletter {
+  background: linear-gradient(135deg, #2c3e50, #1a2a3a);
+}
+
+body.dark footer {
+  background: #0a0a0a;
+}
+
+body.dark .portfolio-item .overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Dark Mode Toggle Button */
+.theme-toggler {
+  background: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--dark-matter);
+  margin-left: 15px;
+}
+
+.theme-toggler:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+body.dark .theme-toggler {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--stellar-white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.dark .theme-toggler:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.theme-toggler i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+body.dark .theme-toggler i {
+  color: var(--stellar-white);
+}
     /* =====================================================================
        SERVICES SECTION
        ===================================================================== */
@@ -674,57 +757,18 @@
       }
     }
 
-    /* =====================================================================
-       CONTACT FORM + MAP
-       ===================================================================== */
-    .contact {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-    .contact-form {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .contact-form input,
-    .contact-form textarea {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .contact-form button {
-      padding: 0.8rem 2rem;
-      background: #3498db;
-      color: #fff;
-      border-radius: 50px;
-    }
-    .contact-map iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 10px;
-    }
-    @media (max-width: 900px) {
-      .contact {
-        grid-template-columns: 1fr;
-      }
-    }
 
-    /* =====================================================================
-       BACK-TO-TOP BUTTON
-       ===================================================================== */
-  #backToTop {
+  /* =====================================================================
+   BACK TO TOP BUTTON
+   ===================================================================== */
+#backToTop {
   position: fixed;
   right: 2rem;
   bottom: 2rem;
   background: linear-gradient(135deg, var(--light-speed), var(--quantum-teal));
   color: var(--stellar-white);
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -736,12 +780,7 @@
   visibility: hidden;
   transition: all 0.3s ease;
   z-index: 999;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  border: none;
 }
 
 #backToTop.visible {
@@ -753,33 +792,35 @@
   transform: translateY(-5px) scale(1.1);
   box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
 }
-    /* =====================================================================
-       DARK MODE
-       ===================================================================== */
-    body.dark {
-      background: #121212;
-      color: #eee;
-    }
-    body.dark .navbar {
-      background: rgba(0,0,0,0.8);
-    }
-    body.dark .feature-card,
-    body.dark .service-item,
-    body.dark .blog-card,
-    body.dark .contact-form {
-      background: #1e1e1e;
-      color: #ccc;
-    }
-    body.dark .newsletter {
-      background: #2c3e50;
-    }
-    body.dark .newsletter button {
-      background: #16a085;
-    }
-    body.dark #cookieConsent {
-      background: rgba(0,0,0,0.9);
-    }
 
+/* Animation for Back to Top */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+#backToTop {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Dark mode back to top button */
+body.dark #backToTop {
+  box-shadow: 0 5px 20px rgba(52, 152, 219, 0.6);
+}
+
+body.dark #backToTop:hover {
+  box-shadow: 0 10px 25px rgba(52, 152, 219, 0.8);
+}
+
+/* Color Variables */
+:root {
+  --cosmic-blue: #87CEEB;
+  --stellar-white: #FFFFFF;
+  --quantum-teal: #4ECDC4;
+  --light-speed: #3498DB;
+  --dark-matter: #2C3E50;
+  --nebula-purple: #9B59B6;
+}
     /* =====================================================================
        RESPONSIVE NAVIGATION (MOBILE)
        ===================================================================== */
