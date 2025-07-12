@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="sidebar.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Science Quizzes | ScienceAndFacts</title>
@@ -8,6 +10,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" id="sidebarToggle">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>Science & Facts</h3>
+    </div>
+    <ul class="sidebar-menu">
+        <li>
+            <a href="main.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        <li>
+            <a href="dictionary.html">
+                <i class="fas fa-book"></i> Dictionary
+            </a>
+        </li>
+        <li>
+            <a href="Quiz.html">
+                <i class="fas fa-question-circle"></i> Quiz
+            </a>
+        </li>
+        <li>
+            <a href="test.html">
+                <i class="fas fa-lightbulb"></i> Facts & Discoveries
+            </a>
+        </li>
+        <li>
+            <a href="Games.html">
+                <i class="fas fa-gamepad"></i> Science Games
+            </a>
+        </li>
+    </ul>
+</div>
     <div class="quiz-container">
         <!-- Header Section -->
         <header class="quiz-header">
@@ -225,7 +268,7 @@
             </div>
         </div>
     </div>
-
+<script src="sidebar.js"></script>
     <script src="alba.js"></script>
 </body>
 </html>
