@@ -20,7 +20,6 @@
       overflow-x: hidden;
     }
 
-    /* Soft dark overlay */
     body::before {
       content: "";
       position: fixed;
@@ -112,6 +111,16 @@
 
     .register-btn {
       background: #0072ff;
+      color: white;
+    }
+
+    .profile-btn {
+      background: rgba(0,114,255,0.7);
+      color: white;
+    }
+
+    .logout-btn {
+      background: rgba(255,0,0,0.7);
       color: white;
     }
 
@@ -213,6 +222,14 @@
       text-decoration: none;
     }
 
+    /* Error Messages */
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.9rem;
+      margin-top: -10px;
+      display: none;
+    }
+
     @keyframes fadeDown {
       0% { opacity: 0; transform: translateY(-30px); }
       100% { opacity: 1; transform: translateY(0); }
@@ -249,7 +266,7 @@
 </head>
 <body>
   <!-- Auth Buttons -->
-  <div class="auth-buttons">
+  <div class="auth-buttons" id="auth-buttons">
     <button class="auth-btn login-btn" id="login-btn">
       <i class="fas fa-sign-in-alt"></i> Login
     </button>
@@ -272,6 +289,7 @@
       <form class="auth-form" id="login-form">
         <input type="text" class="auth-input" placeholder="Username or Email" required>
         <input type="password" class="auth-input" placeholder="Password" required>
+        <p class="error-message" id="login-error"></p>
         <button type="submit" class="auth-submit">Login</button>
       </form>
       <p class="auth-switch">Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
@@ -288,6 +306,7 @@
         <input type="email" class="auth-input" placeholder="Email" required>
         <input type="password" class="auth-input" placeholder="Password" required>
         <input type="text" class="auth-input" placeholder="Class/Section">
+        <p class="error-message" id="register-error"></p>
         <button type="submit" class="auth-submit">Register</button>
       </form>
       <p class="auth-switch">Already have an account? <a href="#" id="switch-to-login">Login</a></p>
@@ -299,7 +318,16 @@
   </div>
 
   <script>
-    // Auth Modal Functionality
+    // User Database (localStorage)
+    if (!localStorage.getItem('userDatabase')) {
+      localStorage.setItem('userDatabase', JSON.stringify({
+        users: [],
+        currentUser: null
+      }));
+    }
+
+    // DOM Elements
+    const authButtons = document.getElementById('auth-buttons');
     const loginBtn = document.getElementById('login-btn');
     const registerBtn = document.getElementById('register-btn');
     const loginModal = document.getElementById('login-modal');
@@ -307,6 +335,10 @@
     const closeButtons = document.querySelectorAll('.close-auth');
     const switchToRegister = document.getElementById('switch-to-register');
     const switchToLogin = document.getElementById('switch-to-login');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const loginError = document.getElementById('login-error');
+    const registerError = document.getElementById('register-error');
 
     // Open modals
     loginBtn.addEventListener('click', () => {
@@ -322,6 +354,7 @@
       button.addEventListener('click', () => {
         loginModal.style.display = 'none';
         registerModal.style.display = 'none';
+        clearErrors();
       });
     });
 
@@ -330,36 +363,168 @@
       e.preventDefault();
       loginModal.style.display = 'none';
       registerModal.style.display = 'flex';
+      clearErrors();
     });
 
     switchToLogin.addEventListener('click', (e) => {
       e.preventDefault();
       registerModal.style.display = 'none';
       loginModal.style.display = 'flex';
+      clearErrors();
     });
 
     // Close when clicking outside modal
     window.addEventListener('click', (e) => {
       if (e.target === loginModal) {
         loginModal.style.display = 'none';
+        clearErrors();
       }
       if (e.target === registerModal) {
         registerModal.style.display = 'none';
+        clearErrors();
       }
     });
 
-    // Form submission (would be connected to backend in real implementation)
-    document.getElementById('login-form').addEventListener('submit', (e) => {
+    // Clear error messages
+    function clearErrors() {
+      loginError.style.display = 'none';
+      registerError.style.display = 'none';
+    }
+
+    // Registration Functionality
+    registerForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('Login functionality will be implemented');
-      loginModal.style.display = 'none';
+      
+      const username = registerForm.querySelector('input[placeholder="Username"]').value;
+      const email = registerForm.querySelector('input[placeholder="Email"]').value;
+      const password = registerForm.querySelector('input[placeholder="Password"]').value;
+      const classSection = registerForm.querySelector('input[placeholder="Class/Section"]').value;
+
+      // Basic validation
+      if (!username || !email || !password) {
+        registerError.textContent = 'Please fill in all required fields';
+        registerError.style.display = 'block';
+        return;
+      }
+
+      // Email validation
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        registerError.textContent = 'Please enter a valid email address';
+        registerError.style.display = 'block';
+        return;
+      }
+
+      // Password validation (min 6 chars)
+      if (password.length < 6) {
+        registerError.textContent = 'Password must be at least 6 characters';
+        registerError.style.display = 'block';
+        return;
+      }
+
+      const db = JSON.parse(localStorage.getItem('userDatabase'));
+      
+      // Check if user already exists
+      const userExists = db.users.some(user => 
+        user.username.toLowerCase() === username.toLowerCase() || 
+        user.email.toLowerCase() === email.toLowerCase()
+      );
+
+      if (userExists) {
+        registerError.textContent = 'Username or email already exists';
+        registerError.style.display = 'block';
+        return;
+      }
+
+      // Create new user object
+      const newUser = {
+        id: Date.now().toString(),
+        username,
+        email,
+        password, // In a real app, you would hash this password
+        classSection,
+        bio: '',
+        profilePic: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        friends: [],
+        quizzes: [],
+        groups: [],
+        createdAt: new Date().toISOString()
+      };
+
+      // Save to database
+      db.users.push(newUser);
+      db.currentUser = newUser;
+      localStorage.setItem('userDatabase', JSON.stringify(db));
+
+      // Success - redirect to main.html
+      window.location.href = 'main.html';
     });
 
-    document.getElementById('register-form').addEventListener('submit', (e) => {
+    // Login Functionality
+    loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('Registration functionality will be implemented');
-      registerModal.style.display = 'none';
+      
+      const identifier = loginForm.querySelector('input[placeholder="Username or Email"]').value;
+      const password = loginForm.querySelector('input[placeholder="Password"]').value;
+
+      const db = JSON.parse(localStorage.getItem('userDatabase'));
+      
+      // Find user in database
+      const user = db.users.find(user => 
+        (user.username.toLowerCase() === identifier.toLowerCase() || 
+         user.email.toLowerCase() === identifier.toLowerCase()) && 
+        user.password === password
+      );
+
+      if (user) {
+        // Save current user session
+        db.currentUser = user;
+        localStorage.setItem('userDatabase', JSON.stringify(db));
+        
+        // Redirect to main page
+        window.location.href = 'main.html';
+      } else {
+        loginError.textContent = 'Invalid username/email or password';
+        loginError.style.display = 'block';
+      }
     });
+
+    // Check if user is already logged in
+    document.addEventListener('DOMContentLoaded', () => {
+      const db = JSON.parse(localStorage.getItem('userDatabase'));
+      if (db.currentUser) {
+        // Update UI to show logged in state
+        authButtons.innerHTML = `
+          <button class="auth-btn profile-btn" id="profile-btn">
+            <img src="${db.currentUser.profilePic}" alt="Profile" class="profile-pic-small">
+            ${db.currentUser.username}
+          </button>
+          <button class="auth-btn logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        `;
+        
+        // Add logout functionality
+        document.getElementById('logout-btn').addEventListener('click', () => {
+          const db = JSON.parse(localStorage.getItem('userDatabase'));
+          db.currentUser = null;
+          localStorage.setItem('userDatabase', JSON.stringify(db));
+          window.location.reload();
+        });
+      }
+    });
+
+    // Profile picture styling
+    const style = document.createElement('style');
+    style.textContent = `
+      .profile-pic-small {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
