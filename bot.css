@@ -475,3 +475,40 @@ body.dark-mode {
         font-size: 1.3em;
     }
 }
+/* Chatbot Open Button */
+.chatbot-open-button {
+    position: fixed;
+    bottom: 90px; /* Positioned above Back to Top button */
+    right: 30px;
+    z-index: 9999; /* Ensure it's above other elements */
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9998; /* Slightly below chatbot */
+}
+
+/* Chatbot Container */
+.chatbot-container {
+    position: fixed;
+    bottom: 150px; /* Adjusted to be above both buttons when open */
+    right: 30px;
+    z-index: 9999;
+}
+/* Override any conflicting styles */
+#chatbotOpenBtn, .chatbot-container {
+    right: 30px !important;
+    bottom: 90px !important;
+}
+
+.chatbot-container.open {
+    bottom: 150px !important;
+}
+
+.back-to-top {
+    bottom: 30px !important;
+    z-index: 9998 !important;
+}
