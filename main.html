@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Add these if not already present -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Make sure bot.css is loaded -->
+<link rel="stylesheet" href="bot.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science&Facts</title>
@@ -1171,6 +1177,49 @@ footer a:hover::after {
       <button type="submit">Subscribe</button>
     </form>
   </section>
+<!-- Add this right BEFORE the back-to-top button -->
+<!-- Chatbot HTML -->
+<button id="chatbotOpenBtn" class="chatbot-open-button">
+    <i class="fas fa-comment-dots"></i>
+</button>
+
+<div id="chatbotContainer" class="chatbot-container">
+    <!-- Chat Header -->
+    <div id="chatbotHeader" class="chatbot-header">
+        <span>Science & Facts Assistant</span>
+        <div class="chatbot-header-actions">
+            <button id="themeToggleBtn" title="Toggle Dark/Light Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="chatbotCloseBtn" title="Close Chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Body (Message Display Area) -->
+    <div id="chatbotBody" class="chatbot-body">
+        <!-- Initial bot message -->
+        <div class="chat-message bot" style="opacity: 1; transform: translateY(0);">
+            <div class="message-text">Hello! I'm your Science & Facts assistant. I can answer questions about science, explain concepts from the <a href="https://6124224.github.io/ScienceAndFActs/" target="_blank">ScienceAndFacts website</a>, and help with general knowledge. How can I assist you today?</div>
+            <div class="message-timestamp"></div>
+        </div>
+    </div>
+
+    <!-- Chat Input Area -->
+    <div class="chatbot-input-area">
+        <textarea id="chatInput" placeholder="Type your message..." rows="1"></textarea>
+        <button id="emojiBtn" title="Choose Emoji">
+            <i class="fas fa-smile"></i>
+        </button>
+        <button id="sendBtn" title="Send Message">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+
+        <!-- Emoji Picker -->
+        <div id="emojiPicker" class="emoji-picker"></div>
+    </div>
+</div>
 
   <!-- BACK TO TOP -->
   <button id="backToTop"><i class="fas fa-chevron-up"></i></button>
@@ -1277,5 +1326,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <button id="backToTop" aria-label="Back to Top">
   <i class="fas fa-chevron-up"></i>
 </button>
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Your other scripts... -->
+
+<!-- Load bot.js after jQuery -->
+<script src="bot.js"></script>
 </body>
 </html>
