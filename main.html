@@ -1,20 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
-.back-to-top, #chatbotOpenBtn {
-    all: unset !important;
-    position: fixed !important;
-    right: 30px !important;
-    z-index: 999 !important;
-}
-.back-to-top { bottom: 30px !important; }
-#chatbotOpenBtn { bottom: 100px !important; z-index: 1000 !important; }
-</style>
 <head>
-<!-- Add these if not already present -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="bot.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science&Facts</title>
@@ -1291,55 +1277,5 @@ document.addEventListener('DOMContentLoaded', function() {
 <button id="backToTop" aria-label="Back to Top">
   <i class="fas fa-chevron-up"></i>
 </button>
-<script>
-// Back to Top functionality
-document.querySelector('.back-to-top').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Chatbot toggle (basic version)
-const chatbotBtn = document.getElementById('chatbotOpenBtn');
-chatbotBtn.addEventListener('click', () => {
-    alert("Chatbot will open here! Add your bot.js logic");
-    // Replace with your actual chatbot toggle code
-});
-</script>
-<!-- Chatbot (FIXED POSITION) -->
-<button id="chatbotOpenBtn" style="
-    position: fixed;
-    bottom: 100px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-">
-    <i class="fas fa-comment-dots"></i>
-</button>
-
-<!-- Back to Top (FIXED POSITION) -->
-<a href="#" class="back-to-top" style="
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #333;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    text-decoration: none;
-">
-    <i class="fas fa-arrow-up"></i>
-</a>
 </body>
 </html>
