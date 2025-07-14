@@ -17,6 +17,13 @@
   <!-- SWIPER.JS FOR CAROUSELS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
+<!-- Existing CSS links -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Montserrat:400,600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+<!-- Add this line for bot.css -->
+<link rel="stylesheet" href="bot.css">
   <style>
     /* =====================================================================
        RESET + BOX-SIZING + BASE TYPOGRAPHY
@@ -939,6 +946,43 @@ footer a:hover {
 footer a:hover::after {
   width: 100%;
 }
+
+/* =====================================================================
+   CHATBOT STYLES
+   ===================================================================== */
+.chatbot-open-button {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.chatbot-container {
+    position: fixed;
+    bottom: 160px;
+    right: 30px;
+    width: 350px;
+    max-height: 500px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+    z-index: 1001;
+    display: none; /* Hidden by default */
+}
+
+/* Add other chatbot styles from your bot.css here */
   </style>
 </head>
 
@@ -1171,7 +1215,44 @@ footer a:hover::after {
       <button type="submit">Subscribe</button>
     </form>
   </section>
+<!-- ===== CHATBOT ===== -->
+<button id="chatbotOpenBtn" class="chatbot-open-button">
+    <i class="fas fa-comment-dots"></i>
+</button>
 
+<div id="chatbotContainer" class="chatbot-container">
+    <!-- Chat Header -->
+    <div id="chatbotHeader" class="chatbot-header">
+        <span>Science & Facts Assistant</span>
+        <div class="chatbot-header-actions">
+            <button id="themeToggleBtn" title="Toggle Dark/Light Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="chatbotCloseBtn" title="Close Chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Body -->
+    <div id="chatbotBody" class="chatbot-body">
+        <div class="chat-message bot" style="opacity: 1; transform: translateY(0);">
+            <div class="message-text">Hello! I'm your Science & Facts assistant. Ask me anything!</div>
+            <div class="message-timestamp"></div>
+        </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chatbot-input-area">
+        <textarea id="chatInput" placeholder="Type your message..." rows="1"></textarea>
+        <button id="emojiBtn" title="Choose Emoji"><i class="fas fa-smile"></i></button>
+        <button id="sendBtn" title="Send Message"><i class="fas fa-paper-plane"></i></button>
+        <div id="emojiPicker" class="emoji-picker"></div>
+    </div>
+</div>
+
+<!-- BACK TO TOP (existing button - leave this as is) -->
+<button id="backToTop"><i class="fas fa-chevron-up"></i></button>
   <!-- BACK TO TOP -->
   <button id="backToTop"><i class="fas fa-chevron-up"></i></button>
 
@@ -1277,5 +1358,17 @@ document.addEventListener('DOMContentLoaded', function() {
 <button id="backToTop" aria-label="Back to Top">
   <i class="fas fa-chevron-up"></i>
 </button>
+<!-- Load bot.js AFTER jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="bot.js"></script>
+
+<!-- Initialize Chatbot (if not in bot.js) -->
+<script>
+    // Toggle chatbot visibility
+    document.getElementById('chatbotOpenBtn').addEventListener('click', function() {
+        const container = document.getElementById('chatbotContainer');
+        container.style.display = container.style.display === 'block' ? 'none' : 'block';
+    });
+</script>
 </body>
 </html>
