@@ -1697,6 +1697,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatbotVoice = document.querySelector('.chatbot-voice');
     const themeToggle = document.querySelector('.chatbot-theme-toggle');
     const ttsToggle = document.querySelector('.chatbot-tts-toggle');
+    const chatbotHeader = document.querySelector('.chatbot-header');
     
     // State variables
     let isListening = false;
@@ -1707,14 +1708,20 @@ document.addEventListener('DOMContentLoaded', function() {
     let dragOffsetX = 0;
     let dragOffsetY = 0;
     let conversationHistory = [];
-    const MAX_HISTORY_LENGTH = 10;
+    const MAX_HISTORY_LENGTH = 15;
     let currentTopic = null;
+    let messageQueue = [];
+    let isProcessing = false;
     
-    // Position the toggle button slightly higher
-    chatbotToggle.style.bottom = '70px';
-
     // API configuration with enhanced endpoints
     const API_CONFIG = {
+      openai: {
+        endpoint: 'https://api.openai.com/v1/chat/completions',
+        apiKey: 'sk-your-openai-api-key-here', // Should be secured in production
+        model: 'gpt-4-turbo-preview', // or 'gpt-3.5-turbo' for faster responses
+        temperature: 0.7,
+        max_tokens: 1000
+      },
       wikipedia: {
         endpoint: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
         fallback: 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='
@@ -1738,9 +1745,8 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         searchEndpoint: '/science-search' // Should be implemented server-side
       },
-      aiService: {
-        endpoint: 'https://api.openai.com/v1/chat/completions', // Replace with your AI service
-        apiKey: 'YOUR_AI_API_KEY' // Should be stored securely server-side
+      news: {
+        scienceNews: 'https://newsapi.org/v2/top-headlines?category=science&apiKey=YOUR_NEWS_API_KEY'
       }
     };
 
@@ -1810,6 +1816,18 @@ document.addEventListener('DOMContentLoaded', function() {
       setupEventListeners();
       initSpeechRecognition();
       sendWelcomeMessage();
+      positionChatbotWindow();
+    }
+
+    function positionChatbotWindow() {
+      // Position the window in the bottom right corner
+      chatbotWindow.style.right = '20px';
+      chatbotWindow.style.bottom = '100px';
+      chatbotWindow.style.left = 'auto';
+      chatbotWindow.style.top = 'auto';
+      
+      // Position the toggle button slightly higher
+      chatbotToggle.style.bottom = '70px';
     }
 
     function loadPreferences() {
@@ -1833,15 +1851,21 @@ document.addEventListener('DOMContentLoaded', function() {
       themeToggle.addEventListener('click', toggleDarkMode);
       ttsToggle.addEventListener('click', toggleTTS);
       initDragAndDrop();
+      
+      // Auto-focus input when window opens
+      chatbotWindow.addEventListener('click', () => {
+        chatbotInput.focus();
+      });
     }
 
     function sendWelcomeMessage() {
       setTimeout(() => {
         addBotMessage(`👋 Hello! I'm your AI Science Assistant from ScienceAndFacts. I can:
         
-- Explain complex scientific concepts
-- Solve equations and calculations
-- Show stunning space images
+- Explain complex scientific concepts using **OpenAI's advanced models**
+- Solve equations and calculations with Wolfram Alpha integration
+- Show stunning space images from NASA's API
+- Provide the latest science news
 - Guide you through our website content
 
 Try asking about quantum physics, chemical reactions, or NASA's latest discoveries!`);
@@ -1856,6 +1880,7 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       
       if (!isVisible) {
         setTimeout(() => {
+          chatbotInput.focus();
           chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         }, 100);
       }
@@ -1863,10 +1888,8 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
 
     // Enhanced drag and drop functionality
     function initDragAndDrop() {
-      const header = document.querySelector('.chatbot-header');
-      
-      header.addEventListener('mousedown', (e) => {
-        if (e.target === header || e.target.classList.contains('chatbot-title')) {
+      chatbotHeader.addEventListener('mousedown', (e) => {
+        if (e.target === chatbotHeader || e.target.classList.contains('chatbot-title')) {
           isDragging = true;
           chatbotWindow.classList.add('dragging');
           
@@ -1934,6 +1957,9 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
         utterance.rate = 0.9;
         speechSynthesis.speak(utterance);
       }
+      
+      // Process next message in queue
+      processNextMessage();
     }
 
     function addUserMessage(text) {
@@ -1983,8 +2009,100 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       if (message) {
         addUserMessage(message);
         chatbotInput.value = '';
-        await processMessage(message);
+        
+        // Add to message queue
+        messageQueue.push(message);
+        
+        // Process if not already processing
+        if (!isProcessing) {
+          processNextMessage();
+        }
       }
+    }
+
+    async function processNextMessage() {
+      if (messageQueue.length === 0 || isProcessing) return;
+      
+      isProcessing = true;
+      const message = messageQueue.shift();
+      
+      // Add to conversation history
+      conversationHistory.push({role: 'user', content: message});
+      if (conversationHistory.length > MAX_HISTORY_LENGTH) {
+        conversationHistory.shift();
+      }
+      
+      // Check for simple interactions first
+      const simpleResponse = handleSimpleInteractions(message);
+      if (simpleResponse) {
+        addBotMessage(simpleResponse);
+        isProcessing = false;
+        processNextMessage();
+        return;
+      }
+      
+      // Show typing indicator
+      showTypingIndicator();
+      
+      // Try knowledge base first
+      const knowledgeResponse = checkKnowledgeBase(message);
+      if (knowledgeResponse) {
+        addBotMessage(knowledgeResponse);
+        isProcessing = false;
+        processNextMessage();
+        return;
+      }
+      
+      // Determine which API to try based on query
+      let apiResponse = null;
+      
+      if (/calculate|solve|equation|formula/i.test(message)) {
+        apiResponse = await fetchWolframAlpha(message);
+      } 
+      else if (/space|nasa|astronomy|planet/i.test(message)) {
+        apiResponse = await fetchNasaInfo(message);
+      }
+      else if (/news|update|current|recent/i.test(message)) {
+        apiResponse = await fetchScienceNews(message);
+      }
+      
+      // If no specialized API response, try Wikipedia
+      if (!apiResponse) {
+        apiResponse = await fetchWikipediaInfo(message);
+      }
+      
+      // If we got an API response
+      if (apiResponse) {
+        addBotMessage(apiResponse.text);
+        if (apiResponse.image) {
+          addBotMessage(`[View image](${apiResponse.image})`);
+        }
+        isProcessing = false;
+        processNextMessage();
+        return;
+      }
+      
+      // Final fallback to OpenAI
+      try {
+        const aiResponse = await generateAIResponse(message);
+        if (aiResponse) {
+          addBotMessage(aiResponse);
+        } else {
+          addBotMessage(`I couldn't find a specific answer about "${message}". Here are some resources:
+          
+- [Search our ScienceAndFacts website](${API_CONFIG.scienceAndFacts.baseUrl})
+- [Wikipedia Search](https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(message)})
+- [NASA Science](https://science.nasa.gov)
+
+Could you rephrase your question or ask about something more specific?`);
+        }
+      } catch (error) {
+        console.error('Error processing message:', error);
+        addBotMessage("Sorry, I encountered an error processing your request. Please try again later.");
+      }
+      
+      isProcessing = false;
+      processNextMessage();
     }
 
     function toggleDarkMode() {
@@ -2019,6 +2137,15 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
           recognition.onerror = (event) => {
             console.error('Speech recognition error', event.error);
             addBotMessage("Sorry, I couldn't understand your voice command. Please try typing instead.");
+            chatbotVoice.classList.remove('listening');
+            isListening = false;
+          };
+          
+          recognition.onend = () => {
+            if (isListening) {
+              chatbotVoice.classList.remove('listening');
+              isListening = false;
+            }
           };
         }
       } catch (e) {
@@ -2050,7 +2177,7 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
     }
 
     // Enhanced API fetch with timeout and error handling
-    async function fetchAPI(url, options = {}, timeout = 5000) {
+    async function fetchAPI(url, options = {}, timeout = 8000) {
       try {
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
@@ -2070,16 +2197,24 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       }
     }
 
-    // AI-powered response generation
+    // AI-powered response generation with OpenAI
     async function generateAIResponse(message) {
       try {
         // Prepare conversation context
         const messages = [
           {
             role: "system",
-            content: "You are a science expert assistant from ScienceAndFacts. Provide accurate, engaging explanations. " +
-                    "Use markdown for formatting. Link to relevant sections of https://6124224.github.io/ScienceAndFActs/main.html when appropriate. " +
-                    "Be concise but thorough. Current conversation topic: " + (currentTopic || "general science")
+            content: `You are ScienceBot, an expert science assistant from ScienceAndFacts. Provide accurate, engaging explanations in clear language.
+            
+Guidelines:
+1. Use markdown for formatting (**, *, `, ```)
+2. Link to relevant sections of ${API_CONFIG.scienceAndFacts.baseUrl} when appropriate
+3. Be concise but thorough (3-5 paragraphs max)
+4. For complex topics, provide examples and analogies
+5. When discussing current science, mention it's based on knowledge up to October 2023
+6. If unsure, say so and suggest resources
+
+Current conversation topic: ${currentTopic || "general science"}`
           },
           ...conversationHistory.slice(-MAX_HISTORY_LENGTH).map(msg => ({
             role: msg.role,
@@ -2091,22 +2226,31 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
           }
         ];
 
-        const response = await fetchAPI(API_CONFIG.aiService.endpoint, {
+        const response = await fetchAPI(API_CONFIG.openai.endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_CONFIG.aiService.apiKey}`
+            "Authorization": `Bearer ${API_CONFIG.openai.apiKey}`
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
+            model: API_CONFIG.openai.model,
             messages: messages,
-            temperature: 0.7,
-            max_tokens: 500
+            temperature: API_CONFIG.openai.temperature,
+            max_tokens: API_CONFIG.openai.max_tokens
           })
         });
 
         if (response?.choices?.[0]?.message?.content) {
-          return response.choices[0].message.content;
+          // Extract and update current topic if mentioned
+          const responseText = response.choices[0].message.content;
+          for (const topic in SCIENCE_KNOWLEDGE) {
+            if (new RegExp(`\\b${topic}\\b`, 'i').test(responseText)) {
+              currentTopic = topic;
+              break;
+            }
+          }
+          
+          return responseText;
         }
         return null;
       } catch (error) {
@@ -2123,7 +2267,7 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
         if (summaryData?.extract) {
           let summary = cleanText(summaryData.extract);
           return {
-            text: `${summary}\n\n[Read more on Wikipedia](${summaryData.content_urls.desktop.page})`,
+            text: `From Wikipedia:\n\n${summary}\n\n[Read more on Wikipedia](${summaryData.content_urls.desktop.page})`,
             image: summaryData.thumbnail?.source
           };
         }
@@ -2168,7 +2312,9 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
         });
         
         if (response?.result) {
-          return "Here's what I found from Wolfram Alpha:\n\n" + response.result;
+          return {
+            text: "Here's what I found from Wolfram Alpha:\n\n" + response.result
+          };
         }
         return null;
       } catch (error) {
@@ -2208,6 +2354,32 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       }
     }
 
+    // Fetch science news
+    async function fetchScienceNews(query) {
+      try {
+        const newsData = await fetchAPI(API_CONFIG.news.scienceNews);
+        if (newsData?.articles?.length > 0) {
+          const topArticles = newsData.articles.slice(0, 3);
+          let newsText = "**Latest Science News:**\n\n";
+          
+          topArticles.forEach((article, index) => {
+            newsText += `${index + 1}. [${article.title}](${article.url})\n`;
+            if (article.description) {
+              newsText += `   ${article.description}\n\n`;
+            }
+          });
+          
+          return {
+            text: newsText
+          };
+        }
+        return null;
+      } catch (error) {
+        console.error('News API error:', error);
+        return null;
+      }
+    }
+
     // Check knowledge base with semantic matching
     function checkKnowledgeBase(query) {
       const lowerQuery = query.toLowerCase();
@@ -2215,6 +2387,7 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       // First check for exact matches
       for (const [topic, info] of Object.entries(SCIENCE_KNOWLEDGE)) {
         if (new RegExp(`\\b${topic}\\b`, 'i').test(lowerQuery)) {
+          currentTopic = topic;
           return formatKnowledgeResponse(topic, info);
         }
       }
@@ -2222,6 +2395,7 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       // Then check for related terms
       for (const [topic, info] of Object.entries(SCIENCE_KNOWLEDGE)) {
         if (info.related.some(term => new RegExp(`\\b${term}\\b`, 'i').test(lowerQuery))) {
+          currentTopic = topic;
           return formatKnowledgeResponse(topic, info);
         }
       }
@@ -2235,68 +2409,7 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       if (info.examples) response += `Examples: ${Array.isArray(info.examples) ? info.examples.join(', ') : info.examples}\n\n`;
       if (info.reference) response += `[Learn more on our website](${info.reference})`;
       
-      // Update current topic for context
-      currentTopic = topic;
       return response;
-    }
-
-    // Enhanced message processing with AI fallback
-    async function processMessage(message) {
-      // Add to conversation history
-      conversationHistory.push({role: 'user', content: message});
-      if (conversationHistory.length > MAX_HISTORY_LENGTH) {
-        conversationHistory.shift();
-      }
-      
-      // Check for simple interactions first
-      const simpleResponse = handleSimpleInteractions(message);
-      if (simpleResponse) return addBotMessage(simpleResponse);
-      
-      // Show typing indicator
-      showTypingIndicator();
-      
-      // Try knowledge base first
-      const knowledgeResponse = checkKnowledgeBase(message);
-      if (knowledgeResponse) return addBotMessage(knowledgeResponse);
-      
-      // Determine which API to try based on query
-      let apiResponse = null;
-      
-      if (/calculate|solve|equation|formula/i.test(message)) {
-        apiResponse = await fetchWolframAlpha(message);
-      } 
-      else if (/space|nasa|astronomy|planet/i.test(message)) {
-        apiResponse = await fetchNasaInfo(message);
-      }
-      
-      // If no specialized API response, try Wikipedia
-      if (!apiResponse) {
-        apiResponse = await fetchWikipediaInfo(message);
-      }
-      
-      // If we got an API response
-      if (apiResponse) {
-        addBotMessage(apiResponse.text);
-        if (apiResponse.image) {
-          addBotMessage(`[View image](${apiResponse.image})`);
-        }
-        return;
-      }
-      
-      // Final fallback to AI
-      const aiResponse = await generateAIResponse(message);
-      if (aiResponse) {
-        return addBotMessage(aiResponse);
-      }
-      
-      // Ultimate fallback
-      addBotMessage(`I couldn't find a specific answer about "${message}". Here are some resources:
-      
-- [Search our ScienceAndFacts website](${API_CONFIG.scienceAndFacts.baseUrl})
-- [Wikipedia Search](https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(message)})
-- [NASA Science](https://science.nasa.gov)
-
-Could you rephrase your question or ask about something more specific?`);
     }
 
     function handleSimpleInteractions(message) {
@@ -2328,6 +2441,26 @@ Could you rephrase your question or ask about something more specific?`);
 - [Physics Fundamentals](${API_CONFIG.scienceAndFacts.topics.physics})
 
 Which topic would you like to explore?`;
+      }
+      
+      // Clear conversation
+      if (/clear|reset|start over/.test(lowerMessage)) {
+        conversationHistory = [];
+        currentTopic = null;
+        return "I've cleared our conversation history. What would you like to discuss now?";
+      }
+      
+      // Help
+      if (/help|what can you do|support/.test(lowerMessage)) {
+        return `I can help with:
+        
+- Explaining scientific concepts
+- Solving math problems
+- Showing space images from NASA
+- Providing the latest science news
+- Guiding you through our website
+
+Try asking about specific topics like "quantum entanglement" or "chemical reactions"!`;
       }
       
       return null;
