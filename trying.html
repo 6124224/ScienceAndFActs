@@ -1,1264 +1,668 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Science&Facts</title>
-  <meta name="description" content="Explore fascinating science facts and discoveries" />
-  <meta name="keywords" content="science, facts, discoveries, education" />
-  <link rel="icon" href="https://emoji.gg/assets/emoji/9098_silly_face.png" />
-
-  <!-- GOOGLE FONTS -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Montserrat:400,600&display=swap" rel="stylesheet" />
-
-  <!-- ICONS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <!-- SWIPER.JS FOR CAROUSELS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-
-  <style>
-    /* =====================================================================
-       RESET + BOX-SIZING + BASE TYPOGRAPHY
-       ===================================================================== */
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background: #fafafa;
-      transition: background 0.3s, color 0.3s;
-    }
-    img, picture, video {
-      max-width: 100%;
-      display: block;
-    }
-    ul {
-      list-style: none;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    button {
-      cursor: pointer;
-      border: none;
-      background: none;
-      font-family: inherit;
-    }
-
-    /* =====================================================================
-       PRELOADER
-       ===================================================================== */
-    #preloader {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .spinner {
-      width: 80px;
-      height: 80px;
-      border: 10px solid #ddd;
-      border-top: 10px solid #3498db;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* =====================================================================
-       NAVIGATION / HEADER - UPDATED FOR USER PROFILE
-       ===================================================================== */
-    header {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-    }
-    .navbar .logo {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #3498db;
-    }
-    .navbar ul {
-      display: flex;
-      gap: 1.5rem;
-    }
-    .navbar li a {
-      font-weight: 500;
-      padding: 0.5rem;
-      transition: color 0.2s;
-    }
-    .navbar li a:hover {
-      color: #3498db;
-    }
-    .navbar .menu-toggle {
-      display: none;
-      font-size: 1.5rem;
-    }
-
-    /* User Profile in Navbar */
-    .user-profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .profile-pic-nav {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #3498db;
-    }
-    .logout-btn {
-      background: #e74c3c;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      transition: all 0.3s;
-    }
-    .logout-btn:hover {
-      background: #c0392b;
-    }
-
-    /* Friend Search Modal */
-    .friend-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(5px);
-    }
-    .friend-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    .friend-search-container {
-      margin-bottom: 1.5rem;
-    }
-    .friend-search-input {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin-bottom: 1rem;
-    }
-    .search-results {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-    .friend-result {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-    }
-    .friend-result img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 10px;
-    }
-    .friend-info {
-      flex-grow: 1;
-    }
-    .friend-info h4 {
-      margin-bottom: 5px;
-    }
-    .friend-info p {
-      color: #777;
-      font-size: 0.9rem;
-    }
-    .add-friend-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .add-friend-btn:hover {
-      background: #2980b9;
-    }
-    .close-friend-modal {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    /* =====================================================================
-       HERO SLIDER (SWIPER)
-       ===================================================================== */
-    .hero-slider {
-      width: 100%;
-      height: 100%;
-    }
-    .swiper-wrapper {
-      height: 100%;
-    }
-    .swiper-slide {
-      position: relative;
-      background-position: center;
-      background-size: cover;
-    }
-    .slide-content {
-      position: absolute;
-      bottom: 20%;
-      left: 10%;
-      color: #fff;
-      max-width: 500px;
-    }
-    .slide-content h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
-      animation: fadeInUp 1s ease forwards;
-      opacity: 0;
-    }
-    .slide-content p {
-      font-size: 1.2rem;
-      line-height: 1.4;
-      margin-bottom: 1.5rem;
-      text-shadow: 1px 1px 8px rgba(0,0,0,0.6);
-      animation: fadeInUp 1.2s ease forwards;
-      opacity: 0;
-    }
-    .slide-content button {
-      padding: 0.8rem 2rem;
-      background: #3498db;
-      color: #fff;
-      font-size: 1rem;
-      border-radius: 50px;
-      animation: fadeInUp 1.4s ease forwards;
-      opacity: 0;
-    }
-    .swiper-button-next,
-    .swiper-button-prev {
-      color: #fff;
-    }
-    @keyframes fadeInUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to   { transform: translateY(0);      opacity: 1; }
-    }
-
-    /* =====================================================================
-       TYPED EFFECT
-       ===================================================================== */
-    .typed {
-      color: #e74c3c;
-      font-weight: bold;
-    }
-
-    /* =====================================================================
-       SECTION STYLES
-       ===================================================================== */
-    section {
-      padding: 6rem 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
-    .container {
-      width: 100%;
-      max-width: 1100px;
-      margin: auto;
-    }
-    h2.section-title {
-      text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-      display: inline-block;
-    }
-    h2.section-title::after {
-      content: '';
-      width: 60px;
-      height: 4px;
-      background: #3498db;
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .grid {
-      display: grid;
-      gap: 2rem;
-    }
-    /* Responsive grid defaults */
-    .grid-2 { grid-template-columns: repeat(2, 1fr); }
-    .grid-3 { grid-template-columns: repeat(3, 1fr); }
-    .grid-4 { grid-template-columns: repeat(4, 1fr); }
-
-    /* =====================================================================
-       FEATURES CARDS
-       ===================================================================== */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
-  padding: 0;
-  margin: 0;
-}
-
-.features-container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three cards per row */
-  grid-gap: 30px; /* Space between cards */
-}
-
-.features-title {
-  text-align: center;
-  font-size: 2.8rem;
-  margin-bottom: 40px;
-  color: #222;
-  position: relative;
-}
-
-.features-title:after {
-  content: "";
-  display: block;
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-  margin: 15px auto;
-  border-radius: 2px;
-}
-
-.feature-item {
-  background: white;
-  border-radius: 8px;
-  padding: 25px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-left: 4px solid #4ecdc4;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-
-.feature-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.feature-item h2 {
-  font-size: 1.5rem;
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-.feature-item p {
-  margin: 0;
-  color: #555;
-  font-size: 1.05rem;
-}
-
-        /* Dark mode styles */
-        .dark-mode {
-            background-color: #1a1a1a;
-            color: #f0f0f0;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Books Collection | ScienceAndFacts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #87CEEB;
+            --primary-dark: #5F9EA0;
+            --secondary: #ffffff;
+            --accent: #4a90e2;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .dark-mode .features-title {
-            color: #f0f0f0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
         }
 
-        .dark-mode .feature-item {
-            background-color: #2d2d2d;
-            border-left-color: #ff6b6b;
+        body {
+            background: linear-gradient(135deg, #f5f9ff 0%, #e8f4ff 100%);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
-        .dark-mode .feature-item h2 {
-            color: #e2e8f0;
+        /* Header Styles */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
         }
 
-        .dark-mode .feature-item p {
-            color: #cbd5e0;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1535905557558-afc4877a26fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80') center/cover;
+            opacity: 0.15;
         }
-    /* =====================================================================
-       SERVICES SECTION
-       ===================================================================== */
-    .services {
-      background: #f0f8ff;
-      border-radius: 12px;
-      padding: 4rem 2rem;
-    }
-    .services .service-item {
-      display: flex;
-      gap: 1.5rem;
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: background 0.3s;
-    }
-    .services .service-item:hover {
-      background: #e8f6ff;
-    }
-    .service-icon {
-      font-size: 2.2rem;
-      color: #3498db;
-    }
-    .service-content h4 {
-      margin-bottom: 0.5rem;
-    }
 
-    /* =====================================================================
-       PORTFOLIO GALLERY + FILTER BUTTONS
-       ===================================================================== */
-    .portfolio-filter {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .portfolio-filter button {
-      background: #fff;
-      color: #3498db;
-      padding: 0.6rem 1.2rem;
-      margin: 0.2rem;
-      border: 2px solid #3498db;
-      border-radius: 50px;
-      transition: background 0.3s, color 0.3s;
-    }
-    .portfolio-filter button.active,
-    .portfolio-filter button:hover {
-      background: #3498db;
-      color: #fff;
-    }
-    .portfolio-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-    .portfolio-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .portfolio-item img {
-      width: 100%;
-      display: block;
-      transition: transform 0.5s;
-    }
-    .portfolio-item:hover img {
-      transform: scale(1.1);
-    }
-    .portfolio-item .overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    .portfolio-item:hover .overlay {
-      opacity: 1;
-    }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-    /* =====================================================================
-       TEAM SECTION
-       ===================================================================== */
-    .team {
-      text-align: center;
-    }
-    .team-members {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
-    }
-    .team-member {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .team-member:hover {
-      transform: translateY(-8px);
-    }
-    .team-photo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 1rem;
-    }
-    .team-member h4 {
-      margin-bottom: 0.3rem;
-    }
-    .team-member span {
-      color: #777;
-      font-size: 0.9rem;
-    }
-    .team-socials a {
-      margin: 0 0.3rem;
-      color: #3498db;
-      font-size: 1.1rem;
-      transition: color 0.3s;
-    }
-    .team-socials a:hover {
-      color: #2c3e50;
-    }
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: fadeInDown 1s both;
+        }
 
-    /* =====================================================================
-       TESTIMONIAL CAROUSEL
-       ===================================================================== */
-    .testimonials {
-      background: #fdfaf6;
-      padding: 4rem 2rem;
-      border-radius: 12px;
-    }
-    .swiper-slide .testimonial-card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-    .testimonial-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 1rem;
-    }
-    .testimonial-card p {
-      font-style: italic;
-      margin-bottom: 1rem;
-    }
-    .testimonial-card h5 {
-      font-weight: 600;
-    }
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s both 0.3s;
+        }
 
- =====================================================================
-    /* =====================================================================
-       FAQ ACCORDION
-       ===================================================================== */
-    .faq-item {
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #ddd;
-    }
-    .faq-question {
-      padding: 1rem;
-      cursor: pointer;
-      position: relative;
-      font-weight: 500;
-    }
-    .faq-question::after {
-      content: '\f107';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: 1rem;
-      transition: transform 0.3s;
-    }
-    .faq-question.active::after {
-      transform: rotate(180deg);
-    }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease;
-      padding: 0 1rem;
-    }
-    .faq-item.open .faq-answer {
-      max-height: 500px; /* big enough for content */
-      padding: 1rem;
-    }
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-    /* =====================================================================
-       BLOG PREVIEW
-       ===================================================================== */
-    .blog-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-    .blog-card {
-      background: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .blog-card:hover {
-      transform: translateY(-8px);
-    }
-    .blog-card img {
-      height: 200px;
-      object-fit: cover;
-    }
-    .blog-content {
-      padding: 1.5rem;
-    }
-    .blog-content h4 {
-      margin-bottom: 0.8rem;
-    }
-    .blog-content p {
-      font-size: 0.95rem;
-      color: #555;
-      margin-bottom: 1rem;
-    }
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
 
-    /* =====================================================================
-       NEWSLETTER SUBSCRIBE
-       ===================================================================== */
-    .newsletter {
-      background: #3498db;
-      padding: 4rem 2rem;
-      border-radius: 12px;
-      text-align: center;
-      color: #fff;
-    }
-    .newsletter input[type="email"] {
-      padding: 1rem;
-      width: 50%;
-      max-width: 400px;
-      border: none;
-      border-radius: 50px;
-      margin-right: 0.5rem;
-    }
-    .newsletter button {
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      background: #2ecc71;
-      color: #fff;
-      font-weight: bold;
-    }
-    @media (max-width: 768px) {
-      .newsletter input[type="email"] {
-        width: 80%;
-        margin-bottom: 1rem;
-      }
-      .newsletter button {
-        width: 80%;
-      }
-    }
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            position: relative;
+        }
 
-    /* =====================================================================
-       CONTACT FORM + MAP
-       ===================================================================== */
-    .contact {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-    .contact-form {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .contact-form input,
-    .contact-form textarea {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .contact-form button {
-      padding: 0.8rem 2rem;
-      background: #3498db;
-      color: #fff;
-      border-radius: 50px;
-    }
-    .contact-map iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 10px;
-    }
-    @media (max-width: 900px) {
-      .contact {
-        grid-template-columns: 1fr;
-      }
-    }
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
 
-    /* =====================================================================
-       BACK-TO-TOP BUTTON
-       ===================================================================== */
-    #backToTop {
-      position: fixed;
-      right: 1.5rem;
-      bottom: 1.5rem;
-      background: #3498db;
-      color: #fff;
-      padding: 0.8rem 1rem;
-      border-radius: 50%;
-      font-size: 1.3rem;
-      display: none;
-      z-index: 1000;
-      transition: background 0.3s;
-    }
-    #backToTop:hover {
-      background: #2980b9;
-    }
+        .section-header p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
 
-    /* =====================================================================
-       DARK MODE
-       ===================================================================== */
-    body.dark {
-      background: #121212;
-      color: #eee;
-    }
-    body.dark .navbar {
-      background: rgba(0,0,0,0.8);
-    }
-    body.dark .feature-card,
-    body.dark .service-item,
-    body.dark .blog-card,
-    body.dark .contact-form {
-      background: #1e1e1e;
-      color: #ccc;
-    }
-    body.dark .newsletter {
-      background: #2c3e50;
-    }
-    body.dark .newsletter button {
-      background: #16a085;
-    }
-    body.dark #cookieConsent {
-      background: rgba(0,0,0,0.9);
-    }
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 5rem;
+        }
 
-    /* =====================================================================
-       RESPONSIVE NAVIGATION (MOBILE)
-       ===================================================================== */
-    @media (max-width: 768px) {
-      .navbar ul {
-        position: fixed;
-        top: 70px;
-        right: -100%;
-        background: rgba(255,255,255,0.95);
-        height: calc(100vh - 70px);
-        width: 200px;
-        flex-direction: column;
-        padding: 2rem;
-        gap: 1rem;
-        transition: right 0.3s;
-      }
-      .navbar ul.show {
-        right: 0;
-      }
-      .navbar .menu-toggle {
-        display: block;
-        color: #333;
-      }
-    }
-  </style>
+        /* Book Card */
+        .book-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            transform: translateY(0);
+            opacity: 0;
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        .book-card:nth-child(1) { animation-delay: 0.1s; }
+        .book-card:nth-child(2) { animation-delay: 0.2s; }
+        .book-card:nth-child(3) { animation-delay: 0.3s; }
+        .book-card:nth-child(4) { animation-delay: 0.4s; }
+        .book-card:nth-child(5) { animation-delay: 0.5s; }
+        .book-card:nth-child(6) { animation-delay: 0.6s; }
+        .book-card:nth-child(7) { animation-delay: 0.7s; }
+        .book-card:nth-child(8) { animation-delay: 0.8s; }
+
+        .book-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .book-cover {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .book-card:hover .book-cover img {
+            transform: scale(1.05);
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        .book-info {
+            padding: 1.8rem;
+            position: relative;
+        }
+
+        .book-category {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .book-card:hover .book-title {
+            color: var(--primary-dark);
+        }
+
+        .book-author {
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .book-author i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .book-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.8rem;
+            line-height: 1.6;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .book-pages, .book-year {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+        }
+
+        .book-pages i, .book-year i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        .read-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .read-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .read-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+        }
+
+        .read-btn:hover::before {
+            left: 100%;
+        }
+
+        .read-btn i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .read-btn:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
 </head>
-
 <body>
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" id="sidebarToggle">
+    <i class="fas fa-bars"></i>
+</button>
 
-  <!-- PRELOADER -->
-  <div id="preloader">
-    <div class="spinner"></div>
-  </div>
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
 
-  <!-- NAVIGATION -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">Science&Facts</div>
-      <ul>
-        <li><a href="main.html">Home</a></li>
-        <li><a href="test.html">Facts & Discoveries</a></li>
-        <li><a href="dictionary.html">Dictionary</a></li>
-        <li><a href="Quiz.html">Quizzes</a></li>
-        <li><a href="Games.html">Games</a></li>
-      </ul>
-      <div class="user-profile" id="userProfile">
-        <!-- Will be populated by JavaScript -->
-      </div>
-      <i class="fas fa-bars menu-toggle"></i>
-      <button class="theme-toggler"><i class="fas fa-moon"></i></button>
-    </nav>
-
-    <!-- HERO SLIDER -->
-    <div class="hero-slider swiper">
-      <div class="swiper-wrapper">
-        <!-- Slide 1 -->
-        <div class="swiper-slide" style="background-image:url('https://picsum.photos/id/1015/1600/900')">
-          <div class="slide-content">
-            <h1>Explore the <span class="typed"></span></h1>
-            <p>Discover amazing science facts and fascinating discoveries from around the world.</p>
-            <button onclick="location.href='test.html'">Explore Facts</button>
-          </div>
-        </div>
-        <!-- Slide 2 -->
-        <div class="swiper-slide" style="background-image:url('sean-oulashin-KMn4VEeEPR8-unsplash.jpg')">
-          <div class="slide-content">
-            <h1>Science is Amazing<span class="typed"></span></h1>
-            <p>Learn about the wonders of our universe through interactive content.</p>
-            <button onclick="location.href='Quiz.html'">Try Quizzes</button>
-          </div>
-        </div>
-         <!-- Slide 3 -->
- <div class="swiper-slide" style="background-image:url('pexels-therato-1933320.jpg')">
-          <div class="slide-content">
-            <h1>Practice grammar<span class="typed"></span></h1>
-            <p>Dont know the meaning of a word no worries!</p>
-            <button onclick="location.href='dictionary.html'">Try Dictionary</button>
-          </div>
-        </div>
-      </div>
-      <!-- Slider controls -->
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>Science & Facts</h3>
     </div>
-  </header>
-
-  <!-- Friend Search Modal -->
-  <div class="friend-modal" id="friendModal">
-    <div class="friend-content">
-      <span class="close-friend-modal">&times;</span>
-      <h2>Search for Friends</h2>
-      <div class="friend-search-container">
-        <input type="text" class="friend-search-input" id="friendSearchInput" placeholder="Enter username...">
-        <button class="add-friend-btn" id="searchFriendBtn">Search</button>
-      </div>
-      <div class="search-results" id="friendSearchResults">
-        <p style="text-align: center; color: #777;">Search results will appear here</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- FACTS SECTION -->
-  <section id="facts">
-    <h2 class="section-title">Science Facts</h2>
-    <div class="portfolio-gallery container">
-      <!-- Fact 1 -->
-      <div class="portfolio-item">
-        <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Human Body">
-        <div class="overlay">
-          <h4>Human Body</h4>
-          <p>Your body produces 25 million new cells each second.</p>
-        </div>
-      </div>
-      <!-- Fact 2 -->
-      <div class="portfolio-item">
-        <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Space">
-        <div class="overlay">
-          <h4>Space</h4>
-          <p>There are more stars in the universe than grains of sand on all Earth's beaches.</p>
-        </div>
-      </div>
-      <!-- Fact 3 -->
-      <div class="portfolio-item">
-        <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Animals">
-        <div class="overlay">
-          <h4>Animals</h4>
-          <p>A blue whale's heart is so big, a human could swim through its arteries.</p>
-        </div>
-      </div>
-      <!-- Fact 4 -->
-      <div class="portfolio-item">
-        <img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Physics">
-        <div class="overlay">
-          <h4>Physics</h4>
-          <p>If you could fold a piece of paper 42 times, it would reach the moon.</p>
-        </div>
-      </div>
-      <!-- Fact 5 -->
-      <div class="portfolio-item">
-        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Technology">
-        <div class="overlay">
-          <h4>Technology</h4>
-          <p>The first computer mouse was made of wood.</p>
-        </div>
-      </div>
-      <!-- Fact 6 -->
-      <div class="portfolio-item">
-        <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Chemistry">
-        <div class="overlay">
-          <h4>Chemistry</h4>
-          <p>Helium is the only element that cannot be solidified by cooling.</p>
-        </div>
-      </div>
-<!-- Fact 7 -->
-<div class="portfolio-item" style="background-image: url('https://images.unsplash.com/photo-1580250642511-1660fe42ad58?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
-  <div class="overlay">
-    <h3>Volcanic Energy</h3>
-    <p>Earth's core produces enough heat to power entire cities—if only we could tap it.</p>
-  </div>
+    <ul class="sidebar-menu">
+        <li>
+            <a href="main.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        <li>
+            <a href="dictionary.html">
+                <i class="fas fa-book"></i> Dictionary
+            </a>
+        </li>
+        <li>
+            <a href="Quiz.html">
+                <i class="fas fa-question-circle"></i> Quiz
+            </a>
+        </li>
+        <li>
+            <a href="test.html">
+                <i class="fas fa-lightbulb"></i> Facts & Discoveries
+            </a>
+        </li>
+        <li>
+            <a href="Games.html">
+                <i class="fas fa-gamepad"></i> Science Games
+            </a>
+        </li>
+    </ul>
 </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="floating">Science Books Collection</h1>
+            <p>Explore our carefully curated selection of scientific literature across various disciplines</p>
+        </div>
+    </section>
 
-<!-- Fact 8 -->
-<div class="portfolio-item" style="background-image: url('https://images.unsplash.com/photo-1439405326854-014607f694d7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
-  <div class="overlay">
-    <h3>Deep Ocean Secrets</h3>
-    <p>Over 80% of our oceans remain unexplored, holding alien-like creatures and mysteries.</p>
-  </div>
-</div>
-    </div>
-  </section>
-<section id="site-features">
-  <h2 style="text-align:center; font-size:3rem; margin-bottom:40px; color:#fff;">Features</h2>
-  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; padding:20px;">
-
-  <div class="features-container">
-        <h1 class="features-title">Features</h1>
-
-        <div class="feature-item">
-            <h2>Dark & Light Mode</h2>
-            <p>Toggle between brilliant light and sinister dark with a click.</p>
-        </div>
-
-        <div class="feature-item">
-            <h2>Quiz</h2>
-            <p>Test your knowledge with interactive challenges.</p>
-        </div>
-
-        <div class="feature-item">
-            <h2>Games</h2>
-            <p>Play brainy and fun science-based games.</p>
-        </div>
-
-        <div class="feature-item">
-            <h2>Facts</h2>
-            <p>Bite-sized wonders from the world of science.</p>
-        </div>
-
-        <div class="feature-item">
-            <h2>Discoveries</h2>
-            <p>Reveal breakthroughs that shaped our understanding.</p>
-        </div>
-
-        <div class="feature-item">
-            <h2>Dictionary</h2>
-            <p>Look up scientific terms and meanings quickly.</p>
-        </div>
-    </div>
-  </div>
-</section>
-  <!-- TEAM SECTION -->
-  <section id="team">
-    <h2 class="section-title">Creator</h2>
-    <div class="team-members container">
-      <div class="team-member">
-        <img src="https://plus.unsplash.com/premium_photo-1738980401922-70995a1b6ade?q=80&w=1267&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Ishan Pal" class="team-photo">
-        <h4>Ishan Pal</h4>
-        <span>IX F Student</span>
-        <div class="team-socials">
-          <a href="#"><i class="fab fa-github"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-        </div>
-      </div>
-    </div>
-  </section>
- <section id="services" class="services">
-    <h2 class="section-title">Our Services</h2>
-    <div class="container grid grid-2">
-      <div class="service-item">
-        <div class="service-icon"><i class="fas fa-code"></i></div>
-        <div class="service-content">
-          <h4>Front-End Development</h4>
-          <p>Building ridiculous interfaces with absurd animations.</p>
-        </div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
-        <div class="service-content">
-          <h4>Graphic Design</h4>
-          <p>Creating visuals that make your eyes question reality.</p>
-        </div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon"><i class="fas fa-search"></i></div>
-        <div class="service-content">
-          <h4>SEO Optimization</h4>
-          <p>Ensuring Google can't ignore how amazing this site is.</p>
-        </div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon"><i class="fas fa-server"></i></div>
-        <div class="service-content">
-          <h4>Back-End Engineering</h4>
-          <p>Database wizardry so spells and potions are properly stored.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- FAQ ACCORDION -->
-  <section id="faq">
-    <h2 class="section-title">Frequently Asked Questions</h2>
+    <!-- Main Content -->
     <div class="container">
-      <div class="faq-item">
-        <div class="faq-question">What is this site about?</div>
-        <div class="faq-answer">
-          <p>This site is dedicated to sharing interesting science facts and discoveries.</p>
+        <div class="section-header">
+            <h2>Featured Publications</h2>
+            <p>Discover books that bridge the gap between complex scientific concepts and practical understanding</p>
         </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">Who created this website?</div>
-        <div class="faq-answer">
-          <p>This website was created by Ishan Pal, a student in class IX F.</p>
+
+        <div class="books-grid">
+            <!-- Book 1 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Natural Sciences">
+                    <div class="book-badge">Bestseller</div>
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Science</span>
+                    <h3 class="book-title">Natural Sciences</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Siyavula</p>
+                    <p class="book-desc">A comprehensive guide covering fundamental concepts in physics, chemistry, and biology with practical examples and illustrations.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 420 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2021</span>
+                    </div>
+                    <a href="1. Natural Sciences Author Siyavula.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Natural Sciences and Technology">
+                    <div class="book-badge">New</div>
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Technology</span>
+                    <h3 class="book-title">Natural Sciences & Technology</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Siyavula</p>
+                    <p class="book-desc">Explore how scientific principles drive technological innovation with real-world applications and case studies.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 380 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2022</span>
+                    </div>
+                    <a href="2. Natural Sciences and Technology Author Siyavula.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1605722243979-fe0be8158232?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Numerical Methods">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Meteorology</span>
+                    <h3 class="book-title">Numerical Methods in Meteorology</h3>
+                    <p class="book-author"><i class="fas fa-users"></i> Kristofer Doos, Peter Lundberg, Aitor Aldama</p>
+                    <p class="book-desc">Essential computational techniques for atmospheric sciences with practical implementations for weather prediction models.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 510 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2020</span>
+                    </div>
+                    <a href="23. Basic Numerical Methods in Meteorology and Oceanography Author Kristofer Doos, Peter Lundberg and Aitor Aldama Campino.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Agricultural Meteorology">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Agriculture</span>
+                    <h3 class="book-title">Agricultural Meteorology</h3>
+                    <p class="book-author"><i class="fas fa-users"></i> Branislava Lalic et al.</p>
+                    <p class="book-desc">Comprehensive analysis of climate-agriculture relationships and strategies for climate-resilient farming practices.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 450 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2019</span>
+                    </div>
+                    <a href="22. Agricultural Meteorology and Climatology Author Branislava Lalic, Josef Eitzinger, Anna Dalla Marta, Simone Orlandini, Ana Firanj Sremac and Bernhard Pacher.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 5 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Geochemistry">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Earth Science</span>
+                    <h3 class="book-title">Geochemistry</h3>
+                    <p class="book-author"><i class="fas fa-users"></i> Milos René, Gemma Aiello, Gaafar El Bahariya</p>
+                    <p class="book-desc">Detailed exploration of Earth's chemical composition with applications in environmental science and resource exploration.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 480 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2021</span>
+                    </div>
+                    <a href="21. Geochemistry Author Milos René, Gemma Aiello and Gaafar El Bahariya.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 6 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="General Astronomy">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Astronomy</span>
+                    <h3 class="book-title">General Astronomy</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Wikibooks</p>
+                    <p class="book-desc">Fundamental concepts of astronomy from celestial mechanics to cosmology with stunning visual references.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 360 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2020</span>
+                    </div>
+                    <a href="15. General Astronomy Author Wikibooks.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 7 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Discover Physics">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Physics</span>
+                    <h3 class="book-title">Discover Physics</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Benjamin Crowell</p>
+                    <p class="book-desc">Conceptual approach to physics emphasizing understanding through real-world applications and thought experiments.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 520 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2018</span>
+                    </div>
+                    <a href="11. Discover Physics Author Benjamin Crowell.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 8 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1575505586569-646b2ca898fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Models In Biology">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Biology</span>
+                    <h3 class="book-title">Models In Biology</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Attihro Georg Striedter</p>
+                    <p class="book-desc">Critical examination of modeling approaches in biological research with historical context and philosophical insights.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 390 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2019</span>
+                    </div>
+                    <a href="6. Models In Biology - History, Philosophy, and Practical Concerns Attihro Georg Striedter.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </section>
 
-  <!-- NEWSLETTER SUBSCRIBE -->
-  <section id="newsletter" class="newsletter">
-    <h2 class="section-title">Stay Updated</h2>
-    <p>Subscribe for new science facts and discoveries delivered to your inbox.</p>
-    <form onsubmit="event.preventDefault(); alert('Subscribed! 🎉');">
-      <input type="email" placeholder="Your Email Address" required>
-      <button type="submit">Subscribe</button>
-    </form>
-  </section>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">ScienceAndFacts</div>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Books</a>
+                <a href="#">Articles</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="copyright">© 2023 ScienceAndFacts. All rights reserved.</p>
+        </div>
+    </footer>
 
-  <!-- BACK TO TOP -->
-  <button id="backToTop"><i class="fas fa-chevron-up"></i></button>
+    <script>
+        // Additional animation triggers
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.book-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = `fadeInUp 0.6s forwards`;
+                    }
+                });
+            }, { threshold: 0.1 });
 
-  <!-- FOOTER -->
-  <footer style="background:#333;color:#fff;text-align:center;padding:2rem;">
-    <p>&copy; 2025 Science&Facts. All Rights Reserved.</p>
-  <p>Created with ❤️ by Ishan Pal</p>
-  <p>
-    <a href="Data_Science_Holiday_Homework.docx" download>
-  Download: Data Science Holiday Homework (.docx)
-</a>
-  </p>
-  </footer>
-
-  <!-- ===================================================================
-       JAVASCRIPT INCLUDES & INITIALIZATION
-       =================================================================== -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script>
-    // User Database (localStorage)
-    if (!localStorage.getItem('userDatabase')) {
-      localStorage.setItem('userDatabase', JSON.stringify({
-        users: [],
-        currentUser: null
-      }));
-    }
-
-    // PRELOADER DISMISS
-    window.addEventListener('load', () => {
-      document.getElementById('preloader').style.display = 'none';
-      checkLoginStatus();
-    });
-
-    // Check login status and update UI
-    function checkLoginStatus() {
-      const db = JSON.parse(localStorage.getItem('userDatabase'));
-      const userProfileElement = document.getElementById('userProfile');
-      
-      if (db.currentUser) {
-        // User is logged in - show profile
-        userProfileElement.innerHTML = `
-          <img src="${db.currentUser.profilePic || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}" 
-               class="profile-pic-nav" 
-               alt="Profile"
-               title="${db.currentUser.username}">
-          <button class="logout-btn" id="logoutBtn">Logout</button>
-          <button class="add-friend-btn" id="searchFriendsBtn" style="margin-left: 10px;">
-            <i class="fas fa-user-plus"></i> Find Friends
-          </button>
-        `;
-        
-        // Add logout functionality
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-          db.currentUser = null;
-          localStorage.setItem('userDatabase', JSON.stringify(db));
-          window.location.reload();
+            cards.forEach(card => {
+                observer.observe(card);
+            });
         });
-        
-        // Add friend search functionality
-        document.getElementById('searchFriendsBtn').addEventListener('click', () => {
-          document.getElementById('friendModal').style.display = 'flex';
-        });
-      } else {
-        // User is not logged in - redirect to index.html
-        window.location.href = 'index.html';
-      }
-    }
-
-    // Friend Search Functionality
-    document.getElementById('searchFriendBtn').addEventListener('click', searchFriends);
-    document.getElementById('friendSearchInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') searchFriends();
-    });
-    
-    // Close friend modal
-    document.querySelector('.close-friend-modal').addEventListener('click', () => {
-      document.getElementById('friendModal').style.display = 'none';
-    });
-
-    function searchFriends() {
-      const searchTerm = document.getElementById('friendSearchInput').value.trim().toLowerCase();
-      const db = JSON.parse(localStorage.getItem('userDatabase'));
-      const currentUser = db.currentUser;
-      const resultsContainer = document.getElementById('friendSearchResults');
-      
-      if (!searchTerm) {
-        resultsContainer.innerHTML = '<p style="text-align: center; color: #777;">Please enter a username to search</p>';
-        return;
-      }
-      
-      // Filter users (excluding current user and already friends)
-      const matchedUsers = db.users.filter(user => 
-        user.username.toLowerCase().includes(searchTerm) && 
-        user.id !== currentUser.id &&
-        !currentUser.friends?.includes(user.id)
-      );
-      
-      if (matchedUsers.length === 0) {
-        resultsContainer.innerHTML = '<p style="text-align: center; color: #777;">No users found matching your search</p>';
-        return;
-      }
-      
-      // Display results
-      resultsContainer.innerHTML = '';
-      matchedUsers.forEach(user => {
-        const friendElement = document.createElement('div');
-        friendElement.className = 'friend-result';
-        friendElement.innerHTML = `
-          <img src="${user.profilePic || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}" 
-               alt="${user.username}">
-          <div class="friend-info">
-            <h4>${user.username}</h4>
-            <p>${user.classSection || 'No class info'}</p>
-          </div>
-          <button class="add-friend-btn" data-userid="${user.id}">
-            <i class="fas fa-user-plus"></i> Add
-          </button>
-        `;
-        resultsContainer.appendChild(friendElement);
-        
-        // Add click event to add friend button
-        friendElement.querySelector('.add-friend-btn').addEventListener('click', function() {
-          addFriend(user.id);
-        });
-      });
-    }
-    
-    function addFriend(friendId) {
-      const db = JSON.parse(localStorage.getItem('userDatabase'));
-      const currentUser = db.currentUser;
-      
-      // Add friend to current user's friend list
-      if (!currentUser.friends) currentUser.friends = [];
-      if (!currentUser.friends.includes(friendId)) {
-        currentUser.friends.push(friendId);
-      }
-      
-      // Add current user to friend's friend list (reciprocal)
-      const friend = db.users.find(u => u.id === friendId);
-      if (friend) {
-        if (!friend.friends) friend.friends = [];
-        if (!friend.friends.includes(currentUser.id)) {
-          friend.friends.push(currentUser.id);
-        }
-      }
-      
-      // Update database
-      localStorage.setItem('userDatabase', JSON.stringify(db));
-      
-      // Update UI
-      searchFriends();
-      alert(`You are now friends with ${friend.username}!`);
-    }
-
-    // MOBILE NAV TOGGLE
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navUL = document.querySelector('.navbar ul');
-    menuToggle.addEventListener('click', () => navUL.classList.toggle('show'));
-
-    // THEME TOGGLER
-    const themeBtn = document.querySelector('.theme-toggler');
-    themeBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      themeBtn.innerHTML = document.body.classList.contains('dark')
-        ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    });
-
-    // BACK TO TOP
-    const backBtn = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-      backBtn.style.display = window.scrollY > 500 ? 'block' : 'none';
-    });
-    backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    // SWIPER HERO
-    new Swiper('.hero-slider', {
-      loop: true,
-      speed: 1000,
-      autoplay: { delay: 5000 },
-      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-    });
-
-    // TYPED.JS EFFECT
-    new Typed('.typed', {
-      strings: ['Wonderful.', 'Amazing.', 'Fascinating.'],
-      typeSpeed: 80,
-      backSpeed: 50,
-      loop: true
-    });
-
-    // FAQ ACCORDION
-    const faqs = document.querySelectorAll('.faq-item');
-    faqs.forEach(item => {
-      item.querySelector('.faq-question').addEventListener('click', () => {
-        item.classList.toggle('open');
-        item.querySelector('.faq-question').classList.toggle('active');
-      });
-    });
-  </script>
+    </script>
+<script src="sidebar.js"></script>
 </body>
 </html>
