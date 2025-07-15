@@ -943,381 +943,371 @@ footer a:hover::after {
 }
   </style>
 <style>
-/* Chatbot Container Styles */
-.chatbot-container {
+  /* AI Chatbot Styles */
+  .ai-chatbot-container {
     position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 1000;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
+    bottom: 80px;
+    right: 30px;
+    z-index: 1008;
+    font-family: 'Poppins', sans-serif;
+  }
 
-/* Toggle Button Styles */
-.chatbot-toggle {
-    position: fixed;
-    right: 20px;
-    bottom: 70px;
+  .chatbot-toggle {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: #4285f4;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
     color: white;
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    font-size: 24px;
+    box-shadow: 0 5px 15px rgba(0, 180, 219, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1001;
+    font-size: 24px;
     transition: all 0.3s ease;
-}
+    position: relative;
+    overflow: hidden;
+  }
 
-.chatbot-toggle:hover {
-    background-color: #3367d6;
+  .chatbot-toggle:hover {
     transform: scale(1.1);
-}
+    box-shadow: 0 8px 25px rgba(0, 180, 219, 0.6);
+  }
 
-/* Chatbot Window Styles */
-.chatbot-window {
-    display: none;
-    position: fixed;
-    right: 20px;
-    bottom: 100px;
+  .chatbot-toggle::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+  }
+
+  @keyframes shine {
+    0% { left: -50%; }
+    100% { left: 150%; }
+  }
+
+  .chatbot-window {
     width: 350px;
     height: 500px;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: none;
     flex-direction: column;
+    position: fixed;
+    bottom: 160px;
+    right: 0;
     overflow: hidden;
-    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
-}
+    resize: both;
+    min-width: 300px;
+    min-height: 400px;
+  }
 
-.chatbot-window.dark-mode {
-    background-color: #2d3748;
-    color: #f7fafc;
-}
+  .chatbot-window.dark-mode {
+    background: #1a1a2e;
+    color: #e6e6e6;
+  }
 
-.chatbot-window.dragging {
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-}
-
-/* Header Styles */
-.chatbot-header {
+  .chatbot-header {
     padding: 15px;
-    background-color: #4285f4;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     cursor: move;
-    user-select: none;
-}
+    font-family: 'Orbitron', sans-serif;
+  }
 
-.dark-mode .chatbot-header {
-    background-color: #1a365d;
-}
+  .chatbot-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
 
-.chatbot-title {
-    font-weight: 600;
-    font-size: 16px;
-    margin: 0;
-}
+  .chatbot-title i {
+    font-size: 18px;
+    animation: pulse 2s infinite;
+  }
 
-.chatbot-close {
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  .chatbot-close {
     background: none;
     border: none;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
-    padding: 5px;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    transition: transform 0.2s;
+  }
 
-.chatbot-close:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
+  .chatbot-close:hover {
+    transform: rotate(90deg);
+  }
 
-/* Messages Container Styles */
-.chatbot-messages {
+  .chatbot-messages {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
     scroll-behavior: smooth;
-    background-color: #f8f9fa;
-}
+    background-color: rgba(255, 255, 255, 0.9);
+  }
 
-.dark-mode .chatbot-messages {
-    background-color: #1a202c;
-}
+  .dark-mode .chatbot-messages {
+    background-color: rgba(26, 26, 46, 0.9);
+  }
 
-/* Message Styles */
-.message {
-    max-width: 80%;
+  .message {
     margin-bottom: 15px;
+    max-width: 80%;
     padding: 10px 15px;
     border-radius: 18px;
     line-height: 1.4;
     position: relative;
-    word-wrap: break-word;
     animation: fadeIn 0.3s ease;
-}
+    word-wrap: break-word;
+  }
 
-@keyframes fadeIn {
+  @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
+  }
 
-.user-message {
-    background-color: #4285f4;
+  .user-message {
+    background: #0083b0;
     color: white;
     margin-left: auto;
-    border-bottom-right-radius: 4px;
-}
+    border-bottom-right-radius: 5px;
+  }
 
-.dark-mode .user-message {
-    background-color: #2b6cb0;
-}
-
-.bot-message {
-    background-color: #e9ecef;
-    color: #212529;
+  .bot-message {
+    background: #f1f1f1;
+    color: #333;
     margin-right: auto;
-    border-bottom-left-radius: 4px;
-}
+    border-bottom-left-radius: 5px;
+  }
 
-.dark-mode .bot-message {
-    background-color: #4a5568;
-    color: #f7fafc;
-}
+  .dark-mode .bot-message {
+    background: #2a2a3a;
+    color: #e6e6e6;
+  }
 
-.bot-message strong {
-    font-weight: 600;
-}
-
-.bot-message em {
-    font-style: italic;
-}
-
-.bot-message pre {
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 10px;
-    border-radius: 6px;
-    overflow-x: auto;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-}
-
-.dark-mode .bot-message pre {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.bot-message code {
-    font-family: 'Courier New', Courier, monospace;
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.dark-mode .bot-message code {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.bot-message a {
-    color: #4285f4;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.dark-mode .bot-message a {
-    color: #63b3ed;
-}
-
-.bot-message a:hover {
-    text-decoration: underline;
-}
-
-.message-time {
-    display: block;
+  .message-time {
     font-size: 10px;
     opacity: 0.7;
     margin-top: 5px;
+    display: block;
     text-align: right;
-}
+  }
 
-.user-message .message-time {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.bot-message .message-time {
-    color: rgba(0, 0, 0, 0.6);
-}
-
-.dark-mode .bot-message .message-time {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* Input Area Styles */
-.chatbot-input-area {
+  .chatbot-input-area {
+    padding: 15px;
+    border-top: 1px solid #eee;
     display: flex;
-    padding: 10px;
-    background-color: white;
-    border-top: 1px solid #e9ecef;
-}
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
 
-.dark-mode .chatbot-input-area {
-    background-color: #2d3748;
-    border-top: 1px solid #4a5568;
-}
+  .dark-mode .chatbot-input-area {
+    border-top: 1px solid #333;
+    background-color: rgba(26, 26, 46, 0.9);
+  }
 
-.chatbot-input {
+  .chatbot-input {
     flex: 1;
-    padding: 10px 15px;
-    border: 1px solid #e9ecef;
-    border-radius: 24px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
     outline: none;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-}
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+  }
 
-.dark-mode .chatbot-input {
-    background-color: #4a5568;
-    border-color: #4a5568;
-    color: #f7fafc;
-}
+  .dark-mode .chatbot-input {
+    background: #2a2a3a;
+    border-color: #444;
+    color: #e6e6e6;
+  }
 
-.chatbot-input:focus {
-    border-color: #4285f4;
-}
+  .chatbot-input:focus {
+    border-color: #00b4db;
+    box-shadow: 0 0 0 2px rgba(0, 180, 219, 0.2);
+  }
 
-.chatbot-send, .chatbot-voice, .chatbot-theme-toggle, .chatbot-tts-toggle {
-    background: none;
+  .chatbot-send, .chatbot-voice {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     border: none;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    color: white;
     cursor: pointer;
-    font-size: 20px;
-    margin-left: 8px;
-    color: #4285f4;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
+    transition: all 0.3s;
+  }
 
-.dark-mode .chatbot-send, 
-.dark-mode .chatbot-voice, 
-.dark-mode .chatbot-theme-toggle, 
-.dark-mode .chatbot-tts-toggle {
-    color: #63b3ed;
-}
-
-.chatbot-send:hover, .chatbot-voice:hover, .chatbot-theme-toggle:hover, .chatbot-tts-toggle:hover {
-    background-color: rgba(66, 133, 244, 0.1);
+  .chatbot-send:hover, .chatbot-voice:hover {
     transform: scale(1.1);
-}
+    box-shadow: 0 5px 15px rgba(0, 180, 219, 0.4);
+  }
 
-.dark-mode .chatbot-send:hover, 
-.dark-mode .chatbot-voice:hover, 
-.dark-mode .chatbot-theme-toggle:hover, 
-.dark-mode .chatbot-tts-toggle:hover {
-    background-color: rgba(99, 179, 237, 0.1);
-}
+  .chatbot-send:active, .chatbot-voice:active {
+    transform: scale(0.95);
+  }
 
-.chatbot-voice.listening {
-    color: #ea4335;
+  .chatbot-voice.listening {
     animation: pulse 1.5s infinite;
-}
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  }
 
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(234, 67, 53, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(234, 67, 53, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(234, 67, 53, 0); }
-}
+  .chatbot-controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #eee;
+  }
 
-/* Typing Indicator Styles */
-.typing-indicator {
+  .dark-mode .chatbot-controls {
+    background-color: rgba(26, 26, 46, 0.9);
+    border-top: 1px solid #333;
+  }
+
+  .chatbot-theme-toggle, .chatbot-tts-toggle {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+  }
+
+  .dark-mode .chatbot-theme-toggle, .dark-mode .chatbot-tts-toggle {
+    color: #aaa;
+  }
+
+  .chatbot-theme-toggle:hover, .chatbot-tts-toggle:hover {
+    color: #00b4db;
+    transform: scale(1.1);
+  }
+
+  .typing-indicator {
     display: flex;
     padding: 10px 15px;
-    background-color: #e9ecef;
+    background: #f1f1f1;
     border-radius: 18px;
     margin-bottom: 15px;
     width: fit-content;
-    border-bottom-left-radius: 4px;
-}
+    border-bottom-left-radius: 5px;
+  }
 
-.dark-mode .typing-indicator {
-    background-color: #4a5568;
-}
+  .dark-mode .typing-indicator {
+    background: #2a2a3a;
+  }
 
-.typing-dot {
+  .typing-dot {
     width: 8px;
     height: 8px;
-    background-color: #6c757d;
+    background: #666;
     border-radius: 50%;
-    margin: 0 3px;
-    animation: bounce 1.4s infinite ease-in-out;
-}
+    margin: 0 2px;
+    animation: typingAnimation 1.4s infinite ease-in-out;
+  }
 
-.dark-mode .typing-dot {
-    background-color: #a0aec0;
-}
+  .dark-mode .typing-dot {
+    background: #aaa;
+  }
 
-.typing-dot:nth-child(1) {
-    animation-delay: -0.32s;
-}
+  .typing-dot:nth-child(1) {
+    animation-delay: 0s;
+  }
 
-.typing-dot:nth-child(2) {
-    animation-delay: -0.16s;
-}
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
 
-@keyframes bounce {
-    0%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-5px); }
-}
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
 
-/* Scrollbar Styles */
-.chatbot-messages::-webkit-scrollbar {
-    width: 6px;
-}
+  @keyframes typingAnimation {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+  }
 
-.chatbot-messages::-webkit-scrollbar-track {
-    background: transparent;
-}
+  /* Dragging state */
+  .chatbot-window.dragging {
+    opacity: 0.9;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
 
-.chatbot-messages::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-}
-
-.dark-mode .chatbot-messages::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
     .chatbot-window {
-        width: 100%;
-        height: 70vh;
-        right: 0;
-        bottom: 0;
-        border-radius: 0;
+      width: 90vw;
+      height: 70vh;
+      bottom: 70px;
+      right: 5vw;
     }
     
-    .chatbot-toggle {
-        right: 15px;
-        bottom: 15px;
+    .chatbot-container {
+      right: 5vw;
     }
-}
+  }
+
+  /* Markdown-like formatting */
+  .bot-message strong {
+    font-weight: bold;
+    color: #0083b0;
+  }
+
+  .dark-mode .bot-message strong {
+    color: #00b4db;
+  }
+
+  .bot-message em {
+    font-style: italic;
+  }
+
+  .bot-message code {
+    font-family: monospace;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .dark-mode .bot-message code {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .bot-message a {
+    color: #0083b0;
+    text-decoration: underline;
+  }
+
+  .dark-mode .bot-message a {
+    color: #00b4db;
+  }
 </style>
 </head>
 
@@ -1657,27 +1647,44 @@ document.addEventListener('DOMContentLoaded', function() {
   <i class="fas fa-chevron-up"></i>
 </button>
 <!-- AI Chatbot HTML -->
-<div class="chatbot-container">
-    <button class="chatbot-toggle">🤖</button>
-    
-    <div class="chatbot-window">
-        <div class="chatbot-header">
-            <h3 class="chatbot-title">Science Assistant</h3>
-            <button class="chatbot-close">✕</button>
-        </div>
-        
-        <div class="chatbot-messages"></div>
-        
-        <div class="chatbot-input-area">
-            <input type="text" class="chatbot-input" placeholder="Ask about science...">
-            <button class="chatbot-send" title="Send">➤</button>
-            <button class="chatbot-voice" title="Voice Input">🎤</button>
-            <button class="chatbot-theme-toggle" title="Toggle Dark Mode">🌙</button>
-            <button class="chatbot-tts-toggle" title="Toggle Speech">🔊</button>
-        </div>
+<div class="ai-chatbot-container">
+  <button class="chatbot-toggle" aria-label="Open chatbot">
+    <i class="fas fa-robot"></i>
+  </button>
+  
+  <div class="chatbot-window">
+    <div class="chatbot-header">
+      <div class="chatbot-title">
+        <i class="fas fa-atom"></i>
+        <span>Science Assistant</span>
+      </div>
+      <button class="chatbot-close" aria-label="Close chatbot">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
+    
+    <div class="chatbot-controls">
+      <button class="chatbot-theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="chatbot-tts-toggle" aria-label="Toggle text-to-speech">
+        <i class="fas fa-volume-up"></i>
+      </button>
+    </div>
+    
+    <div class="chatbot-messages"></div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" class="chatbot-input" placeholder="Ask me about science..." aria-label="Chat input">
+      <button class="chatbot-voice" aria-label="Voice input">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <button class="chatbot-send" aria-label="Send message">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
@@ -1690,7 +1697,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatbotVoice = document.querySelector('.chatbot-voice');
     const themeToggle = document.querySelector('.chatbot-theme-toggle');
     const ttsToggle = document.querySelector('.chatbot-tts-toggle');
-    const chatbotHeader = document.querySelector('.chatbot-header');
     
     // State variables
     let isListening = false;
@@ -1701,20 +1707,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let dragOffsetX = 0;
     let dragOffsetY = 0;
     let conversationHistory = [];
-    const MAX_HISTORY_LENGTH = 15;
+    const MAX_HISTORY_LENGTH = 10;
     let currentTopic = null;
-    let messageQueue = [];
-    let isProcessing = false;
     
+    // Position the toggle button slightly higher
+    chatbotToggle.style.bottom = '70px';
+
     // API configuration with enhanced endpoints
     const API_CONFIG = {
-      openai: {
-        endpoint: 'https://api.openai.com/v1/chat/completions',
-        apiKey: 'sk-your-openai-api-key-here', // Should be secured in production
-        model: 'gpt-4-turbo-preview', // or 'gpt-3.5-turbo' for faster responses
-        temperature: 0.7,
-        max_tokens: 1000
-      },
       wikipedia: {
         endpoint: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
         fallback: 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='
@@ -1738,8 +1738,9 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         searchEndpoint: '/science-search' // Should be implemented server-side
       },
-      news: {
-        scienceNews: 'https://newsapi.org/v2/top-headlines?category=science&apiKey=YOUR_NEWS_API_KEY'
+      aiService: {
+        endpoint: 'https://api.openai.com/v1/chat/completions', // Replace with your AI service
+        apiKey: 'YOUR_AI_API_KEY' // Should be stored securely server-side
       }
     };
 
@@ -1809,18 +1810,6 @@ document.addEventListener('DOMContentLoaded', function() {
       setupEventListeners();
       initSpeechRecognition();
       sendWelcomeMessage();
-      positionChatbotWindow();
-    }
-
-    function positionChatbotWindow() {
-      // Position the window in the bottom right corner
-      chatbotWindow.style.right = '20px';
-      chatbotWindow.style.bottom = '100px';
-      chatbotWindow.style.left = 'auto';
-      chatbotWindow.style.top = 'auto';
-      
-      // Position the toggle button slightly higher
-      chatbotToggle.style.bottom = '70px';
     }
 
     function loadPreferences() {
@@ -1844,21 +1833,15 @@ document.addEventListener('DOMContentLoaded', function() {
       themeToggle.addEventListener('click', toggleDarkMode);
       ttsToggle.addEventListener('click', toggleTTS);
       initDragAndDrop();
-      
-      // Auto-focus input when window opens
-      chatbotWindow.addEventListener('click', () => {
-        chatbotInput.focus();
-      });
     }
 
     function sendWelcomeMessage() {
       setTimeout(() => {
         addBotMessage(`👋 Hello! I'm your AI Science Assistant from ScienceAndFacts. I can:
         
-- Explain complex scientific concepts using **OpenAI's advanced models**
-- Solve equations and calculations with Wolfram Alpha integration
-- Show stunning space images from NASA's API
-- Provide the latest science news
+- Explain complex scientific concepts
+- Solve equations and calculations
+- Show stunning space images
 - Guide you through our website content
 
 Try asking about quantum physics, chemical reactions, or NASA's latest discoveries!`);
@@ -1873,7 +1856,6 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       
       if (!isVisible) {
         setTimeout(() => {
-          chatbotInput.focus();
           chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         }, 100);
       }
@@ -1881,8 +1863,10 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
 
     // Enhanced drag and drop functionality
     function initDragAndDrop() {
-      chatbotHeader.addEventListener('mousedown', (e) => {
-        if (e.target === chatbotHeader || e.target.classList.contains('chatbot-title')) {
+      const header = document.querySelector('.chatbot-header');
+      
+      header.addEventListener('mousedown', (e) => {
+        if (e.target === header || e.target.classList.contains('chatbot-title')) {
           isDragging = true;
           chatbotWindow.classList.add('dragging');
           
@@ -1950,9 +1934,6 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
         utterance.rate = 0.9;
         speechSynthesis.speak(utterance);
       }
-      
-      // Process next message in queue
-      processNextMessage();
     }
 
     function addUserMessage(text) {
@@ -2002,100 +1983,8 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       if (message) {
         addUserMessage(message);
         chatbotInput.value = '';
-        
-        // Add to message queue
-        messageQueue.push(message);
-        
-        // Process if not already processing
-        if (!isProcessing) {
-          processNextMessage();
-        }
+        await processMessage(message);
       }
-    }
-
-    async function processNextMessage() {
-      if (messageQueue.length === 0 || isProcessing) return;
-      
-      isProcessing = true;
-      const message = messageQueue.shift();
-      
-      // Add to conversation history
-      conversationHistory.push({role: 'user', content: message});
-      if (conversationHistory.length > MAX_HISTORY_LENGTH) {
-        conversationHistory.shift();
-      }
-      
-      // Check for simple interactions first
-      const simpleResponse = handleSimpleInteractions(message);
-      if (simpleResponse) {
-        addBotMessage(simpleResponse);
-        isProcessing = false;
-        processNextMessage();
-        return;
-      }
-      
-      // Show typing indicator
-      showTypingIndicator();
-      
-      // Try knowledge base first
-      const knowledgeResponse = checkKnowledgeBase(message);
-      if (knowledgeResponse) {
-        addBotMessage(knowledgeResponse);
-        isProcessing = false;
-        processNextMessage();
-        return;
-      }
-      
-      // Determine which API to try based on query
-      let apiResponse = null;
-      
-      if (/calculate|solve|equation|formula/i.test(message)) {
-        apiResponse = await fetchWolframAlpha(message);
-      } 
-      else if (/space|nasa|astronomy|planet/i.test(message)) {
-        apiResponse = await fetchNasaInfo(message);
-      }
-      else if (/news|update|current|recent/i.test(message)) {
-        apiResponse = await fetchScienceNews(message);
-      }
-      
-      // If no specialized API response, try Wikipedia
-      if (!apiResponse) {
-        apiResponse = await fetchWikipediaInfo(message);
-      }
-      
-      // If we got an API response
-      if (apiResponse) {
-        addBotMessage(apiResponse.text);
-        if (apiResponse.image) {
-          addBotMessage(`[View image](${apiResponse.image})`);
-        }
-        isProcessing = false;
-        processNextMessage();
-        return;
-      }
-      
-      // Final fallback to OpenAI
-      try {
-        const aiResponse = await generateAIResponse(message);
-        if (aiResponse) {
-          addBotMessage(aiResponse);
-        } else {
-          addBotMessage(`I couldn't find a specific answer about "${message}". Here are some resources:
-          
-- [Search our ScienceAndFacts website](${API_CONFIG.scienceAndFacts.baseUrl})
-- [Wikipedia Search](https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(message)})
-- [NASA Science](https://science.nasa.gov)
-
-Could you rephrase your question or ask about something more specific?`);
-        }
-      } catch (error) {
-        console.error('Error processing message:', error);
-        addBotMessage("Sorry, I encountered an error processing your request. Please try again later.");
-      }
-      
-      isProcessing = false;
-      processNextMessage();
     }
 
     function toggleDarkMode() {
@@ -2130,15 +2019,6 @@ Could you rephrase your question or ask about something more specific?`);
           recognition.onerror = (event) => {
             console.error('Speech recognition error', event.error);
             addBotMessage("Sorry, I couldn't understand your voice command. Please try typing instead.");
-            chatbotVoice.classList.remove('listening');
-            isListening = false;
-          };
-          
-          recognition.onend = () => {
-            if (isListening) {
-              chatbotVoice.classList.remove('listening');
-              isListening = false;
-            }
           };
         }
       } catch (e) {
@@ -2170,7 +2050,7 @@ Could you rephrase your question or ask about something more specific?`);
     }
 
     // Enhanced API fetch with timeout and error handling
-    async function fetchAPI(url, options = {}, timeout = 8000) {
+    async function fetchAPI(url, options = {}, timeout = 5000) {
       try {
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
@@ -2190,24 +2070,16 @@ Could you rephrase your question or ask about something more specific?`);
       }
     }
 
-    // AI-powered response generation with OpenAI
+    // AI-powered response generation
     async function generateAIResponse(message) {
       try {
         // Prepare conversation context
         const messages = [
           {
             role: "system",
-            content: `You are ScienceBot, an expert science assistant from ScienceAndFacts. Provide accurate, engaging explanations in clear language.
-            
-Guidelines:
-1. Use markdown for formatting (**, *, `, ```)
-2. Link to relevant sections of ${API_CONFIG.scienceAndFacts.baseUrl} when appropriate
-3. Be concise but thorough (3-5 paragraphs max)
-4. For complex topics, provide examples and analogies
-5. When discussing current science, mention it's based on knowledge up to October 2023
-6. If unsure, say so and suggest resources
-
-Current conversation topic: ${currentTopic || "general science"}`
+            content: "You are a science expert assistant from ScienceAndFacts. Provide accurate, engaging explanations. " +
+                    "Use markdown for formatting. Link to relevant sections of https://6124224.github.io/ScienceAndFActs/main.html when appropriate. " +
+                    "Be concise but thorough. Current conversation topic: " + (currentTopic || "general science")
           },
           ...conversationHistory.slice(-MAX_HISTORY_LENGTH).map(msg => ({
             role: msg.role,
@@ -2219,31 +2091,22 @@ Current conversation topic: ${currentTopic || "general science"}`
           }
         ];
 
-        const response = await fetchAPI(API_CONFIG.openai.endpoint, {
+        const response = await fetchAPI(API_CONFIG.aiService.endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_CONFIG.openai.apiKey}`
+            "Authorization": `Bearer ${API_CONFIG.aiService.apiKey}`
           },
           body: JSON.stringify({
-            model: API_CONFIG.openai.model,
+            model: "gpt-3.5-turbo",
             messages: messages,
-            temperature: API_CONFIG.openai.temperature,
-            max_tokens: API_CONFIG.openai.max_tokens
+            temperature: 0.7,
+            max_tokens: 500
           })
         });
 
         if (response?.choices?.[0]?.message?.content) {
-          // Extract and update current topic if mentioned
-          const responseText = response.choices[0].message.content;
-          for (const topic in SCIENCE_KNOWLEDGE) {
-            if (new RegExp(`\\b${topic}\\b`, 'i').test(responseText)) {
-              currentTopic = topic;
-              break;
-            }
-          }
-          
-          return responseText;
+          return response.choices[0].message.content;
         }
         return null;
       } catch (error) {
@@ -2260,7 +2123,7 @@ Current conversation topic: ${currentTopic || "general science"}`
         if (summaryData?.extract) {
           let summary = cleanText(summaryData.extract);
           return {
-            text: `From Wikipedia:\n\n${summary}\n\n[Read more on Wikipedia](${summaryData.content_urls.desktop.page})`,
+            text: `${summary}\n\n[Read more on Wikipedia](${summaryData.content_urls.desktop.page})`,
             image: summaryData.thumbnail?.source
           };
         }
@@ -2305,9 +2168,7 @@ Current conversation topic: ${currentTopic || "general science"}`
         });
         
         if (response?.result) {
-          return {
-            text: "Here's what I found from Wolfram Alpha:\n\n" + response.result
-          };
+          return "Here's what I found from Wolfram Alpha:\n\n" + response.result;
         }
         return null;
       } catch (error) {
@@ -2347,32 +2208,6 @@ Current conversation topic: ${currentTopic || "general science"}`
       }
     }
 
-    // Fetch science news
-    async function fetchScienceNews(query) {
-      try {
-        const newsData = await fetchAPI(API_CONFIG.news.scienceNews);
-        if (newsData?.articles?.length > 0) {
-          const topArticles = newsData.articles.slice(0, 3);
-          let newsText = "**Latest Science News:**\n\n";
-          
-          topArticles.forEach((article, index) => {
-            newsText += `${index + 1}. [${article.title}](${article.url})\n`;
-            if (article.description) {
-              newsText += `   ${article.description}\n\n`;
-            }
-          });
-          
-          return {
-            text: newsText
-          };
-        }
-        return null;
-      } catch (error) {
-        console.error('News API error:', error);
-        return null;
-      }
-    }
-
     // Check knowledge base with semantic matching
     function checkKnowledgeBase(query) {
       const lowerQuery = query.toLowerCase();
@@ -2380,7 +2215,6 @@ Current conversation topic: ${currentTopic || "general science"}`
       // First check for exact matches
       for (const [topic, info] of Object.entries(SCIENCE_KNOWLEDGE)) {
         if (new RegExp(`\\b${topic}\\b`, 'i').test(lowerQuery)) {
-          currentTopic = topic;
           return formatKnowledgeResponse(topic, info);
         }
       }
@@ -2388,7 +2222,6 @@ Current conversation topic: ${currentTopic || "general science"}`
       // Then check for related terms
       for (const [topic, info] of Object.entries(SCIENCE_KNOWLEDGE)) {
         if (info.related.some(term => new RegExp(`\\b${term}\\b`, 'i').test(lowerQuery))) {
-          currentTopic = topic;
           return formatKnowledgeResponse(topic, info);
         }
       }
@@ -2402,408 +2235,13 @@ Current conversation topic: ${currentTopic || "general science"}`
       if (info.examples) response += `Examples: ${Array.isArray(info.examples) ? info.examples.join(', ') : info.examples}\n\n`;
       if (info.reference) response += `[Learn more on our website](${info.reference})`;
       
+      // Update current topic for context
+      currentTopic = topic;
       return response;
     }
 
-    function handleSimpleInteractions(message) {
-      const lowerMessage = message.toLowerCase();
-      
-      // Greetings
-      if (/hello|hi|hey|greetings/.test(lowerMessage)) {
-        const greetings = [
-          "Hello! What scientific topic interests you today?",
-          "Hi there! Ready to explore some science?",
-          "Greetings! Ask me anything about science or our website content."
-        ];
-        return greetings[Math.floor(Math.random() * greetings.length)];
-      }
-      
-      // Thanks
-      if (/thanks|thank you|appreciate/.test(lowerMessage)) {
-        return "You're welcome! Feel free to ask more or explore our [ScienceAndFacts website](" + API_CONFIG.scienceAndFacts.baseUrl + ").";
-      }
-      
-      // Website reference
-      if (/your (site|website)|scienceandfacts/.test(lowerMessage)) {
-        return `Our ScienceAndFacts website has these main sections:
-        
-- [Quantum Physics](${API_CONFIG.scienceAndFacts.topics.quantum})
-- [Space Exploration](${API_CONFIG.scienceAndFacts.topics.space})
-- [Chemistry Wonders](${API_CONFIG.scienceAndFacts.topics.chemistry})
-- [Biology Marvels](${API_CONFIG.scienceAndFacts.topics.biology})
-- [Physics Fundamentals](${API_CONFIG.scienceAndFacts.topics.physics})
-
-Which topic would you like to explore?`;
-      }
-      
-      // Clear conversation
-      if (/clear|reset|start over/.test(lowerMessage)) {
-        conversationHistory = [];
-        currentTopic = null;
-        return "I've cleared our conversation history. What would you like to discuss now?";
-      }
-      
-      // Help
-      if (/help|what can you do|support/.test(lowerMessage)) {
-        return `I can help with:
-        
-- Explaining scientific concepts
-- Solving math problems
-- Showing space images from NASA
-- Providing the latest science news
-- Guiding you through our website
-
-Try asking about specific topics like "quantum entanglement" or "chemical reactions"!`;
-      }
-      
-      return null;
-    }
-
-    // Initialize the chatbot
-    initChatbot();
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
-    const chatbotToggle = document.querySelector('.chatbot-toggle');
-    const chatbotWindow = document.querySelector('.chatbot-window');
-    const chatbotClose = document.querySelector('.chatbot-close');
-    const chatbotMessages = document.querySelector('.chatbot-messages');
-    const chatbotInput = document.querySelector('.chatbot-input');
-    const chatbotSend = document.querySelector('.chatbot-send');
-    const chatbotVoice = document.querySelector('.chatbot-voice');
-    const themeToggle = document.querySelector('.chatbot-theme-toggle');
-    const ttsToggle = document.querySelector('.chatbot-tts-toggle');
-    const chatbotHeader = document.querySelector('.chatbot-header');
-    
-    // State variables
-    let isListening = false;
-    let ttsEnabled = true;
-    let darkMode = false;
-    let recognition;
-    let isDragging = false;
-    let dragOffsetX = 0;
-    let dragOffsetY = 0;
-    let conversationHistory = [];
-    const MAX_HISTORY_LENGTH = 15;
-    let currentTopic = null;
-    let messageQueue = [];
-    let isProcessing = false;
-    
-    // API configuration with enhanced endpoints
-    const API_CONFIG = {
-      openai: {
-        endpoint: 'https://api.openai.com/v1/chat/completions',
-        apiKey: 'sk-your-openai-api-key-here', // Should be secured in production
-        model: 'gpt-4-turbo-preview', // or 'gpt-3.5-turbo' for faster responses
-        temperature: 0.7,
-        max_tokens: 1000
-      },
-      wikipedia: {
-        endpoint: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
-        fallback: 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='
-      },
-      wolframAlpha: {
-        proxyEndpoint: '/wolfram-proxy', // Should be implemented server-side
-        appId: 'DEMO' // Replace with actual app ID
-      },
-      nasa: {
-        apod: 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY',
-        imageLibrary: 'https://images-api.nasa.gov/search'
-      },
-      scienceAndFacts: {
-        baseUrl: 'https://6124224.github.io/ScienceAndFActs/main.html',
-        topics: {
-          quantum: '#quantum-physics',
-          space: '#space-exploration',
-          chemistry: '#chemistry-wonders',
-          biology: '#biology-marvels',
-          physics: '#physics-fundamentals'
-        },
-        searchEndpoint: '/science-search' // Should be implemented server-side
-      },
-      news: {
-        scienceNews: 'https://newsapi.org/v2/top-headlines?category=science&apiKey=YOUR_NEWS_API_KEY'
-      }
-    };
-
-    // Enhanced science knowledge graph
-    const SCIENCE_KNOWLEDGE = {
-      elements: {
-        definition: "🧪 *Elements* are pure substances consisting of only one type of atom.",
-        details: [
-          "There are 118 known elements (94 occur naturally)",
-          "Organized in the periodic table by atomic number and properties",
-          "Elements combine to form all matter in the universe"
-        ],
-        examples: ["Hydrogen (H)", "Oxygen (O)", "Carbon (C)", "Gold (Au)"],
-        related: ["periodic table", "atomic structure", "chemical bonds"],
-        reference: `${API_CONFIG.scienceAndFacts.baseUrl}${API_CONFIG.scienceAndFacts.topics.chemistry}`
-      },
-      quantum: {
-        definition: "🔬 *Quantum Physics* studies matter and energy at the smallest scales.",
-        details: [
-          "Key principles: Superposition, Entanglement, Quantization",
-          "Applications: Quantum computing, Cryptography"
-        ],
-        related: ["particle physics", "quantum mechanics", "wave-particle duality"],
-        reference: `${API_CONFIG.scienceAndFacts.baseUrl}${API_CONFIG.scienceAndFacts.topics.quantum}`
-      },
-      space: {
-        definition: "🚀 *Space Exploration* involves discovering celestial structures in outer space.",
-        details: [
-          "Major milestones: Moon landing, Hubble Telescope, Mars rovers",
-          "Current missions: James Webb Telescope, Artemis program"
-        ],
-        related: ["astronomy", "astrophysics", "cosmology"],
-        reference: `${API_CONFIG.scienceAndFacts.baseUrl}${API_CONFIG.scienceAndFacts.topics.space}`
-      },
-      chemistry: {
-        definition: "⚗️ *Chemistry* is the study of matter and its transformations.",
-        details: [
-          "Branches: Organic, Inorganic, Physical, Analytical",
-          "Key concepts: Chemical bonds, Reactions, Thermodynamics"
-        ],
-        related: ["elements", "molecules", "chemical reactions"],
-        reference: `${API_CONFIG.scienceAndFacts.baseUrl}${API_CONFIG.scienceAndFacts.topics.chemistry}`
-      },
-      biology: {
-        definition: "🧬 *Biology* is the scientific study of life and living organisms.",
-        details: [
-          "Sub-disciplines: Genetics, Ecology, Microbiology",
-          "Key concepts: Evolution, Homeostasis, DNA"
-        ],
-        related: ["cells", "ecosystems", "genetics"],
-        reference: `${API_CONFIG.scienceAndFacts.baseUrl}${API_CONFIG.scienceAndFacts.topics.biology}`
-      },
-      physics: {
-        definition: "🌌 *Physics* studies matter, energy, and their interactions.",
-        details: [
-          "Main branches: Classical, Quantum, Relativity",
-          "Fundamental forces: Gravity, Electromagnetism"
-        ],
-        related: ["mechanics", "thermodynamics", "electromagnetism"],
-        reference: `${API_CONFIG.scienceAndFacts.baseUrl}${API_CONFIG.scienceAndFacts.topics.physics}`
-      }
-    };
-
-    // Initialize the chatbot
-    function initChatbot() {
-      loadPreferences();
-      setupEventListeners();
-      initSpeechRecognition();
-      sendWelcomeMessage();
-      positionChatbotWindow();
-    }
-
-    function positionChatbotWindow() {
-      // Position the window in the bottom right corner
-      chatbotWindow.style.right = '20px';
-      chatbotWindow.style.bottom = '100px';
-      chatbotWindow.style.left = 'auto';
-      chatbotWindow.style.top = 'auto';
-      
-      // Position the toggle button slightly higher
-      chatbotToggle.style.bottom = '70px';
-    }
-
-    function loadPreferences() {
-      darkMode = localStorage.getItem('chatbotDarkMode') === 'true';
-      ttsEnabled = localStorage.getItem('chatbotTTS') !== 'false';
-      
-      if (darkMode) {
-        document.querySelector('.chatbot-window').classList.add('dark-mode');
-        themeToggle.innerHTML = '☀️';
-      }
-      
-      ttsToggle.innerHTML = ttsEnabled ? '🔊' : '🔇';
-    }
-
-    function setupEventListeners() {
-      chatbotToggle.addEventListener('click', toggleChatbotWindow);
-      chatbotClose.addEventListener('click', toggleChatbotWindow);
-      chatbotSend.addEventListener('click', sendMessage);
-      chatbotInput.addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
-      chatbotVoice.addEventListener('click', toggleVoiceRecognition);
-      themeToggle.addEventListener('click', toggleDarkMode);
-      ttsToggle.addEventListener('click', toggleTTS);
-      initDragAndDrop();
-      
-      // Auto-focus input when window opens
-      chatbotWindow.addEventListener('click', () => {
-        chatbotInput.focus();
-      });
-    }
-
-    function sendWelcomeMessage() {
-      setTimeout(() => {
-        addBotMessage(`👋 Hello! I'm your AI Science Assistant from ScienceAndFacts. I can:
-        
-- Explain complex scientific concepts using **OpenAI's advanced models**
-- Solve equations and calculations with Wolfram Alpha integration
-- Show stunning space images from NASA's API
-- Provide the latest science news
-- Guide you through our website content
-
-Try asking about quantum physics, chemical reactions, or NASA's latest discoveries!`);
-      }, 1000);
-    }
-
-    // Toggle chatbot window visibility
-    function toggleChatbotWindow() {
-      const isVisible = chatbotWindow.style.display === 'flex';
-      chatbotWindow.style.display = isVisible ? 'none' : 'flex';
-      chatbotToggle.innerHTML = isVisible ? '🤖' : '✕';
-      
-      if (!isVisible) {
-        setTimeout(() => {
-          chatbotInput.focus();
-          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        }, 100);
-      }
-    }
-
-    // Enhanced drag and drop functionality
-    function initDragAndDrop() {
-      chatbotHeader.addEventListener('mousedown', (e) => {
-        if (e.target === chatbotHeader || e.target.classList.contains('chatbot-title')) {
-          isDragging = true;
-          chatbotWindow.classList.add('dragging');
-          
-          const rect = chatbotWindow.getBoundingClientRect();
-          dragOffsetX = e.clientX - rect.left;
-          dragOffsetY = e.clientY - rect.top;
-          
-          e.preventDefault();
-        }
-      });
-      
-      document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-          const newLeft = e.clientX - dragOffsetX;
-          const newTop = e.clientY - dragOffsetY;
-          
-          // Constrain to viewport
-          const minDistance = 20;
-          const constrainedLeft = Math.max(minDistance, Math.min(newLeft, window.innerWidth - chatbotWindow.offsetWidth - minDistance));
-          const constrainedTop = Math.max(minDistance, Math.min(newTop, window.innerHeight - chatbotWindow.offsetHeight - minDistance));
-          
-          chatbotWindow.style.left = `${constrainedLeft}px`;
-          chatbotWindow.style.top = `${constrainedTop}px`;
-          chatbotWindow.style.right = 'auto';
-          chatbotWindow.style.bottom = 'auto';
-        }
-      });
-      
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-        chatbotWindow.classList.remove('dragging');
-      });
-    }
-
-    // Add a message from the bot with markdown support
-    function addBotMessage(text) {
-      hideTypingIndicator();
-      
-      const messageDiv = document.createElement('div');
-      messageDiv.className = 'message bot-message';
-      
-      // Enhanced markdown formatting
-      let formattedText = text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/```(.*?)```/gs, '<pre>$1</pre>')
-        .replace(/`(.*?)`/g, '<code>$1</code>')
-        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-        .replace(/\n/g, '<br>');
-      
-      messageDiv.innerHTML = formattedText;
-      
-      // Add timestamp
-      const timeSpan = document.createElement('span');
-      timeSpan.className = 'message-time';
-      timeSpan.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      messageDiv.appendChild(timeSpan);
-      
-      chatbotMessages.appendChild(messageDiv);
-      scrollToBottom();
-      
-      // Speak the message if TTS is enabled
-      if (ttsEnabled && 'speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text.replace(/\[.*?\]\(.*?\)/g, '').replace(/\*\*/g, ''));
-        utterance.rate = 0.9;
-        speechSynthesis.speak(utterance);
-      }
-      
-      // Process next message in queue
-      processNextMessage();
-    }
-
-    function addUserMessage(text) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = 'message user-message';
-      messageDiv.textContent = text;
-      
-      const timeSpan = document.createElement('span');
-      timeSpan.className = 'message-time';
-      timeSpan.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      messageDiv.appendChild(timeSpan);
-      
-      chatbotMessages.appendChild(messageDiv);
-      scrollToBottom();
-    }
-
-    function scrollToBottom() {
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    }
-
-    function showTypingIndicator() {
-      hideTypingIndicator();
-      
-      const typingDiv = document.createElement('div');
-      typingDiv.className = 'typing-indicator';
-      typingDiv.id = 'typing-indicator';
-      
-      for (let i = 0; i < 3; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'typing-dot';
-        typingDiv.appendChild(dot);
-      }
-      
-      chatbotMessages.appendChild(typingDiv);
-      scrollToBottom();
-    }
-
-    function hideTypingIndicator() {
-      const existingIndicator = document.getElementById('typing-indicator');
-      if (existingIndicator) {
-        existingIndicator.remove();
-      }
-    }
-
-    async function sendMessage() {
-      const message = chatbotInput.value.trim();
-      if (message) {
-        addUserMessage(message);
-        chatbotInput.value = '';
-        
-        // Add to message queue
-        messageQueue.push(message);
-        
-        // Process if not already processing
-        if (!isProcessing) {
-          processNextMessage();
-        }
-      }
-    }
-
-    async function processNextMessage() {
-      if (messageQueue.length === 0 || isProcessing) return;
-      
-      isProcessing = true;
-      const message = messageQueue.shift();
-      
+    // Enhanced message processing with AI fallback
+    async function processMessage(message) {
       // Add to conversation history
       conversationHistory.push({role: 'user', content: message});
       if (conversationHistory.length > MAX_HISTORY_LENGTH) {
@@ -2812,24 +2250,14 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       
       // Check for simple interactions first
       const simpleResponse = handleSimpleInteractions(message);
-      if (simpleResponse) {
-        addBotMessage(simpleResponse);
-        isProcessing = false;
-        processNextMessage();
-        return;
-      }
+      if (simpleResponse) return addBotMessage(simpleResponse);
       
       // Show typing indicator
       showTypingIndicator();
       
       // Try knowledge base first
       const knowledgeResponse = checkKnowledgeBase(message);
-      if (knowledgeResponse) {
-        addBotMessage(knowledgeResponse);
-        isProcessing = false;
-        processNextMessage();
-        return;
-      }
+      if (knowledgeResponse) return addBotMessage(knowledgeResponse);
       
       // Determine which API to try based on query
       let apiResponse = null;
@@ -2839,9 +2267,6 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
       } 
       else if (/space|nasa|astronomy|planet/i.test(message)) {
         apiResponse = await fetchNasaInfo(message);
-      }
-      else if (/news|update|current|recent/i.test(message)) {
-        apiResponse = await fetchScienceNews(message);
       }
       
       // If no specialized API response, try Wikipedia
@@ -2855,339 +2280,23 @@ Try asking about quantum physics, chemical reactions, or NASA's latest discoveri
         if (apiResponse.image) {
           addBotMessage(`[View image](${apiResponse.image})`);
         }
-        isProcessing = false;
-        processNextMessage();
         return;
       }
       
-      // Final fallback to OpenAI
-      try {
-        const aiResponse = await generateAIResponse(message);
-        if (aiResponse) {
-          addBotMessage(aiResponse);
-        } else {
-          addBotMessage(`I couldn't find a specific answer about "${message}". Here are some resources:
-          
+      // Final fallback to AI
+      const aiResponse = await generateAIResponse(message);
+      if (aiResponse) {
+        return addBotMessage(aiResponse);
+      }
+      
+      // Ultimate fallback
+      addBotMessage(`I couldn't find a specific answer about "${message}". Here are some resources:
+      
 - [Search our ScienceAndFacts website](${API_CONFIG.scienceAndFacts.baseUrl})
 - [Wikipedia Search](https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(message)})
 - [NASA Science](https://science.nasa.gov)
 
 Could you rephrase your question or ask about something more specific?`);
-        }
-      } catch (error) {
-        console.error('Error processing message:', error);
-        addBotMessage("Sorry, I encountered an error processing your request. Please try again later.");
-      }
-      
-      isProcessing = false;
-      processNextMessage();
-    }
-
-    function toggleDarkMode() {
-      darkMode = !darkMode;
-      document.querySelector('.chatbot-window').classList.toggle('dark-mode');
-      themeToggle.innerHTML = darkMode ? '☀️' : '🌙';
-      localStorage.setItem('chatbotDarkMode', darkMode);
-    }
-
-    function toggleTTS() {
-      ttsEnabled = !ttsEnabled;
-      ttsToggle.innerHTML = ttsEnabled ? '🔊' : '🔇';
-      localStorage.setItem('chatbotTTS', ttsEnabled);
-    }
-
-    // Enhanced speech recognition
-    function initSpeechRecognition() {
-      try {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (SpeechRecognition) {
-          recognition = new SpeechRecognition();
-          recognition.continuous = false;
-          recognition.interimResults = false;
-          recognition.lang = 'en-US';
-          
-          recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            chatbotInput.value = transcript;
-            sendMessage();
-          };
-          
-          recognition.onerror = (event) => {
-            console.error('Speech recognition error', event.error);
-            addBotMessage("Sorry, I couldn't understand your voice command. Please try typing instead.");
-            chatbotVoice.classList.remove('listening');
-            isListening = false;
-          };
-          
-          recognition.onend = () => {
-            if (isListening) {
-              chatbotVoice.classList.remove('listening');
-              isListening = false;
-            }
-          };
-        }
-      } catch (e) {
-        console.error('Speech recognition not supported', e);
-      }
-    }
-
-    function toggleVoiceRecognition() {
-      if (!recognition) {
-        addBotMessage("Voice recognition is not supported in your browser. Please try typing your question.");
-        return;
-      }
-      
-      if (isListening) {
-        recognition.stop();
-        chatbotVoice.classList.remove('listening');
-        isListening = false;
-      } else {
-        try {
-          recognition.start();
-          chatbotVoice.classList.add('listening');
-          isListening = true;
-          addBotMessage("I'm listening... Speak your question now.");
-        } catch (e) {
-          console.error('Speech recognition error', e);
-          addBotMessage("Sorry, I couldn't start voice recognition. Please check your microphone permissions.");
-        }
-      }
-    }
-
-    // Enhanced API fetch with timeout and error handling
-    async function fetchAPI(url, options = {}, timeout = 8000) {
-      try {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        
-        const response = await fetch(url, {
-          ...options,
-          signal: controller.signal
-        });
-        
-        clearTimeout(id);
-        
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return await response.json();
-      } catch (error) {
-        console.error('API fetch error:', error);
-        return null;
-      }
-    }
-
-    // AI-powered response generation with OpenAI
-    async function generateAIResponse(message) {
-      try {
-        // Prepare conversation context
-        const messages = [
-          {
-            role: "system",
-            content: `You are ScienceBot, an expert science assistant from ScienceAndFacts. Provide accurate, engaging explanations in clear language.
-            
-Guidelines:
-1. Use markdown for formatting (**, *, `, ```)
-2. Link to relevant sections of ${API_CONFIG.scienceAndFacts.baseUrl} when appropriate
-3. Be concise but thorough (3-5 paragraphs max)
-4. For complex topics, provide examples and analogies
-5. When discussing current science, mention it's based on knowledge up to October 2023
-6. If unsure, say so and suggest resources
-
-Current conversation topic: ${currentTopic || "general science"}`
-          },
-          ...conversationHistory.slice(-MAX_HISTORY_LENGTH).map(msg => ({
-            role: msg.role,
-            content: msg.content
-          })),
-          {
-            role: "user",
-            content: message
-          }
-        ];
-
-        const response = await fetchAPI(API_CONFIG.openai.endpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_CONFIG.openai.apiKey}`
-          },
-          body: JSON.stringify({
-            model: API_CONFIG.openai.model,
-            messages: messages,
-            temperature: API_CONFIG.openai.temperature,
-            max_tokens: API_CONFIG.openai.max_tokens
-          })
-        });
-
-        if (response?.choices?.[0]?.message?.content) {
-          // Extract and update current topic if mentioned
-          const responseText = response.choices[0].message.content;
-          for (const topic in SCIENCE_KNOWLEDGE) {
-            if (new RegExp(`\\b${topic}\\b`, 'i').test(responseText)) {
-              currentTopic = topic;
-              break;
-            }
-          }
-          
-          return responseText;
-        }
-        return null;
-      } catch (error) {
-        console.error('AI service error:', error);
-        return null;
-      }
-    }
-
-    // Enhanced Wikipedia integration
-    async function fetchWikipediaInfo(query) {
-      try {
-        const summaryData = await fetchAPI(`${API_CONFIG.wikipedia.endpoint}${encodeURIComponent(query)}`);
-        
-        if (summaryData?.extract) {
-          let summary = cleanText(summaryData.extract);
-          return {
-            text: `From Wikipedia:\n\n${summary}\n\n[Read more on Wikipedia](${summaryData.content_urls.desktop.page})`,
-            image: summaryData.thumbnail?.source
-          };
-        }
-        
-        // Fallback to search
-        const searchData = await fetchAPI(`${API_CONFIG.wikipedia.fallback}${encodeURIComponent(query)}&format=json`);
-        
-        if (searchData?.query?.search?.length > 0) {
-          const topResult = searchData.query.search[0];
-          return {
-            text: `I found Wikipedia articles about "${query}". The most relevant is "${topResult.title}". [Read it here](https://en.wikipedia.org/wiki/${encodeURIComponent(topResult.title.replace(/ /g, '_'))})`
-          };
-        }
-        
-        return null;
-      } catch (error) {
-        console.error('Wikipedia fetch error:', error);
-        return null;
-      }
-    }
-
-    function cleanText(text) {
-      return text
-        .replace(/\([^)]*\)/g, '')
-        .replace(/\[[^\]]*\]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-    }
-
-    // Wolfram Alpha proxy (should be implemented server-side)
-    async function fetchWolframAlpha(query) {
-      try {
-        const response = await fetchAPI(API_CONFIG.wolframAlpha.proxyEndpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            query: query,
-            appId: API_CONFIG.wolframAlpha.appId
-          })
-        });
-        
-        if (response?.result) {
-          return {
-            text: "Here's what I found from Wolfram Alpha:\n\n" + response.result
-          };
-        }
-        return null;
-      } catch (error) {
-        console.error('Wolfram Alpha error:', error);
-        return null;
-      }
-    }
-
-    // NASA API integration with caching
-    async function fetchNasaInfo(query) {
-      try {
-        if (/apod|picture of the day|astronomy photo/i.test(query)) {
-          const apodData = await fetchAPI(API_CONFIG.nasa.apod);
-          if (apodData) {
-            return {
-              text: `**NASA Astronomy Picture of the Day (${apodData.date})**: ${apodData.title}\n\n${cleanText(apodData.explanation)}\n\n[View image](${apodData.url})`,
-              image: apodData.url
-            };
-          }
-        }
-        
-        const imageData = await fetchAPI(`${API_CONFIG.nasa.imageLibrary}?q=${encodeURIComponent(query)}`);
-        if (imageData?.collection?.items?.length > 0) {
-          const firstItem = imageData.collection.items[0];
-          const imageLink = firstItem.links?.[0]?.href;
-          const description = firstItem.data?.[0]?.description || 'NASA space image';
-          
-          return {
-            text: `**NASA Image**: ${description}\n\n[View image](${imageLink})`,
-            image: imageLink
-          };
-        }
-        return null;
-      } catch (error) {
-        console.error('NASA API error:', error);
-        return null;
-      }
-    }
-
-    // Fetch science news
-    async function fetchScienceNews(query) {
-      try {
-        const newsData = await fetchAPI(API_CONFIG.news.scienceNews);
-        if (newsData?.articles?.length > 0) {
-          const topArticles = newsData.articles.slice(0, 3);
-          let newsText = "**Latest Science News:**\n\n";
-          
-          topArticles.forEach((article, index) => {
-            newsText += `${index + 1}. [${article.title}](${article.url})\n`;
-            if (article.description) {
-              newsText += `   ${article.description}\n\n`;
-            }
-          });
-          
-          return {
-            text: newsText
-          };
-        }
-        return null;
-      } catch (error) {
-        console.error('News API error:', error);
-        return null;
-      }
-    }
-
-    // Check knowledge base with semantic matching
-    function checkKnowledgeBase(query) {
-      const lowerQuery = query.toLowerCase();
-      
-      // First check for exact matches
-      for (const [topic, info] of Object.entries(SCIENCE_KNOWLEDGE)) {
-        if (new RegExp(`\\b${topic}\\b`, 'i').test(lowerQuery)) {
-          currentTopic = topic;
-          return formatKnowledgeResponse(topic, info);
-        }
-      }
-      
-      // Then check for related terms
-      for (const [topic, info] of Object.entries(SCIENCE_KNOWLEDGE)) {
-        if (info.related.some(term => new RegExp(`\\b${term}\\b`, 'i').test(lowerQuery))) {
-          currentTopic = topic;
-          return formatKnowledgeResponse(topic, info);
-        }
-      }
-      
-      return null;
-    }
-
-    function formatKnowledgeResponse(topic, info) {
-      let response = `**${info.definition}**\n\n`;
-      if (info.details) response += info.details.join('\n') + '\n\n';
-      if (info.examples) response += `Examples: ${Array.isArray(info.examples) ? info.examples.join(', ') : info.examples}\n\n`;
-      if (info.reference) response += `[Learn more on our website](${info.reference})`;
-      
-      return response;
     }
 
     function handleSimpleInteractions(message) {
@@ -3219,26 +2328,6 @@ Current conversation topic: ${currentTopic || "general science"}`
 - [Physics Fundamentals](${API_CONFIG.scienceAndFacts.topics.physics})
 
 Which topic would you like to explore?`;
-      }
-      
-      // Clear conversation
-      if (/clear|reset|start over/.test(lowerMessage)) {
-        conversationHistory = [];
-        currentTopic = null;
-        return "I've cleared our conversation history. What would you like to discuss now?";
-      }
-      
-      // Help
-      if (/help|what can you do|support/.test(lowerMessage)) {
-        return `I can help with:
-        
-- Explaining scientific concepts
-- Solving math problems
-- Showing space images from NASA
-- Providing the latest science news
-- Guiding you through our website
-
-Try asking about specific topics like "quantum entanglement" or "chemical reactions"!`;
       }
       
       return null;
