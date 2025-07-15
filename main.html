@@ -1,314 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-#chatbot-container {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 9999;
-}
-
-/* Floating Button */
-#chatbot-toggle {
-  background: transparent;
-  border: none;
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.3s ease;
-}
-
-#chatbot-toggle:hover {
-  transform: scale(1.1) rotate(10deg);
-}
-
-.chatbot-icon {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
-  border-radius: 50%;
-  box-shadow: 0 4px 20px rgba(103, 132, 247, 0.5);
-  transition: all 0.3s ease;
-}
-
-.chatbot-icon svg {
-  width: 28px;
-  height: 28px;
-  stroke: white;
-  stroke-width: 2;
-  fill: none;
-}
-
-.pulse-ring {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 2px solid #6e8efb;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-  opacity: 0;
-}
-
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  70% { transform: scale(1.3); opacity: 0; }
-  100% { transform: scale(0.95); opacity: 0; }
-}
-
-/* Sidebar */
-#chatbot-sidebar {
-  position: fixed;
-  right: -400px;
-  top: 0;
-  width: 380px;
-  height: 100vh;
-  background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-  box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
-  transition: right 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  display: flex;
-  flex-direction: column;
-  backdrop-filter: blur(10px);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-#chatbot-sidebar.active {
-  right: 0;
-}
-
-/* Header */
-.chatbot-header {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ai-avatar {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-  border-radius: 50%;
-}
-
-.ai-avatar svg {
-  width: 20px;
-  height: 20px;
-  stroke: white;
-  stroke-width: 2;
-  fill: none;
-}
-
-.ai-glowing-circle {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: rgba(0, 210, 255, 0.3);
-  animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 5px rgba(0, 210, 255, 0.5); }
-  to { box-shadow: 0 0 20px rgba(0, 210, 255, 0.8); }
-}
-
-.chatbot-header h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: white;
-  flex-grow: 1;
-}
-
-.chatbot-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.chatbot-actions button {
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chatbot-actions button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.1);
-}
-
-.chatbot-actions button svg {
-  width: 20px;
-  height: 20px;
-}
-
-/* Messages */
-#chatbot-messages {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.message {
-  max-width: 80%;
-  padding: 12px 16px;
-  border-radius: 18px;
-  line-height: 1.4;
-  position: relative;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.message.user {
-  align-self: flex-end;
-  background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
-  color: white;
-  border-bottom-right-radius: 4px;
-}
-
-.message.bot {
-  align-self: flex-start;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border-bottom-left-radius: 4px;
-  backdrop-filter: blur(5px);
-}
-
-.message.typing {
-  background: rgba(255, 255, 255, 0.05);
-  width: fit-content;
-  padding: 12px 20px;
-}
-
-/* Typing Animation */
-.typing-indicator {
-  display: flex;
-  gap: 5px;
-  padding: 5px 0;
-}
-
-.typing-dot {
-  width: 8px;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  animation: typingAnimation 1.4s infinite ease-in-out;
-}
-
-.typing-dot:nth-child(1) { animation-delay: 0s; }
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes typingAnimation {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
-  30% { transform: translateY(-5px); opacity: 1; }
-}
-
-/* Footer */
-.chatbot-footer {
-  padding: 15px 20px;
-  background: rgba(0, 0, 0, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.input-container {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-#chatbot-input {
-  flex: 1;
-  padding: 12px 20px;
-  border-radius: 25px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  font-size: 0.9rem;
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-#chatbot-input:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 2px rgba(110, 142, 251, 0.3);
-}
-
-#chatbot-send {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-#chatbot-send:hover {
-  transform: scale(1.05) rotate(10deg);
-  box-shadow: 0 0 15px rgba(110, 142, 251, 0.5);
-}
-
-#chatbot-send svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* Voice Mode Indicator */
-.voice-mode-active #chatbot-input::placeholder {
-  color: #6e8efb;
-  animation: pulseText 1.5s infinite;
-}
-
-@keyframes pulseText {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
-  #chatbot-sidebar {
-    width: 100%;
-    right: -100%;
-  }
-  
-  #chatbot-toggle {
-    width: 50px;
-    height: 50px;
-    right: 10px;
-    bottom: 10px;
-  }
-}
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science&Facts</title>
@@ -1248,6 +942,373 @@ footer a:hover::after {
   width: 100%;
 }
   </style>
+<style>
+  /* AI Chatbot Styles */
+  .ai-chatbot-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 180, 219, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 180, 219, 0.6);
+  }
+
+  .chatbot-toggle::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+  }
+
+  @keyframes shine {
+    0% { left: -50%; }
+    100% { left: 150%; }
+  }
+
+  .chatbot-window {
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    resize: both;
+    min-width: 300px;
+    min-height: 400px;
+  }
+
+  .chatbot-window.dark-mode {
+    background: #1a1a2e;
+    color: #e6e6e6;
+  }
+
+  .chatbot-header {
+    padding: 15px;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    cursor: move;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .chatbot-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .chatbot-title i {
+    font-size: 18px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  .chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .chatbot-close:hover {
+    transform: rotate(90deg);
+  }
+
+  .chatbot-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  .dark-mode .chatbot-messages {
+    background-color: rgba(26, 26, 46, 0.9);
+  }
+
+  .message {
+    margin-bottom: 15px;
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.4;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+    word-wrap: break-word;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .user-message {
+    background: #0083b0;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+  }
+
+  .bot-message {
+    background: #f1f1f1;
+    color: #333;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+  }
+
+  .dark-mode .bot-message {
+    background: #2a2a3a;
+    color: #e6e6e6;
+  }
+
+  .message-time {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 5px;
+    display: block;
+    text-align: right;
+  }
+
+  .chatbot-input-area {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  .dark-mode .chatbot-input-area {
+    border-top: 1px solid #333;
+    background-color: rgba(26, 26, 46, 0.9);
+  }
+
+  .chatbot-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+  }
+
+  .dark-mode .chatbot-input {
+    background: #2a2a3a;
+    border-color: #444;
+    color: #e6e6e6;
+  }
+
+  .chatbot-input:focus {
+    border-color: #00b4db;
+    box-shadow: 0 0 0 2px rgba(0, 180, 219, 0.2);
+  }
+
+  .chatbot-send, .chatbot-voice {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+
+  .chatbot-send:hover, .chatbot-voice:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 180, 219, 0.4);
+  }
+
+  .chatbot-send:active, .chatbot-voice:active {
+    transform: scale(0.95);
+  }
+
+  .chatbot-voice.listening {
+    animation: pulse 1.5s infinite;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  }
+
+  .chatbot-controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #eee;
+  }
+
+  .dark-mode .chatbot-controls {
+    background-color: rgba(26, 26, 46, 0.9);
+    border-top: 1px solid #333;
+  }
+
+  .chatbot-theme-toggle, .chatbot-tts-toggle {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+  }
+
+  .dark-mode .chatbot-theme-toggle, .dark-mode .chatbot-tts-toggle {
+    color: #aaa;
+  }
+
+  .chatbot-theme-toggle:hover, .chatbot-tts-toggle:hover {
+    color: #00b4db;
+    transform: scale(1.1);
+  }
+
+  .typing-indicator {
+    display: flex;
+    padding: 10px 15px;
+    background: #f1f1f1;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    width: fit-content;
+    border-bottom-left-radius: 5px;
+  }
+
+  .dark-mode .typing-indicator {
+    background: #2a2a3a;
+  }
+
+  .typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #666;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: typingAnimation 1.4s infinite ease-in-out;
+  }
+
+  .dark-mode .typing-dot {
+    background: #aaa;
+  }
+
+  .typing-dot:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes typingAnimation {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+  }
+
+  /* Dragging state */
+  .chatbot-window.dragging {
+    opacity: 0.9;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .chatbot-window {
+      width: 90vw;
+      height: 70vh;
+      bottom: 70px;
+      right: 5vw;
+    }
+    
+    .chatbot-container {
+      right: 5vw;
+    }
+  }
+
+  /* Markdown-like formatting */
+  .bot-message strong {
+    font-weight: bold;
+    color: #0083b0;
+  }
+
+  .dark-mode .bot-message strong {
+    color: #00b4db;
+  }
+
+  .bot-message em {
+    font-style: italic;
+  }
+
+  .bot-message code {
+    font-family: monospace;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .dark-mode .bot-message code {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .bot-message a {
+    color: #0083b0;
+    text-decoration: underline;
+  }
+
+  .dark-mode .bot-message a {
+    color: #00b4db;
+  }
+</style>
 </head>
 
 <body>
@@ -1585,306 +1646,388 @@ document.addEventListener('DOMContentLoaded', function() {
 <button id="backToTop" aria-label="Back to Top">
   <i class="fas fa-chevron-up"></i>
 </button>
-<!-- ===== SCIENCE AI CHATBOT ===== -->
-<div id="chatbot-container">
-  <!-- Floating Trigger Button -->
-  <button id="chatbot-toggle" aria-label="Open AI Chatbot">
-    <div class="chatbot-icon">
-      <div class="pulse-ring"></div>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14z"/>
-        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-      </svg>
-    </div>
+<!-- AI Chatbot HTML -->
+<div class="ai-chatbot-container">
+  <button class="chatbot-toggle" aria-label="Open chatbot">
+    <i class="fas fa-robot"></i>
   </button>
-
-  <!-- Chat Sidebar -->
-  <div id="chatbot-sidebar">
+  
+  <div class="chatbot-window">
     <div class="chatbot-header">
-      <div class="ai-avatar">
-        <div class="ai-glowing-circle"></div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-        </svg>
+      <div class="chatbot-title">
+        <i class="fas fa-atom"></i>
+        <span>Science Assistant</span>
       </div>
-      <h3>Science AI</h3>
-      <div class="chatbot-actions">
-        <button id="chatbot-voice-toggle" aria-label="Toggle Voice Mode">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
-          </svg>
-        </button>
-        <button id="chatbot-close">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
+      <button class="chatbot-close" aria-label="Close chatbot">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-
-    <div id="chatbot-messages">
-      <!-- Messages will appear here -->
+    
+    <div class="chatbot-controls">
+      <button class="chatbot-theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="chatbot-tts-toggle" aria-label="Toggle text-to-speech">
+        <i class="fas fa-volume-up"></i>
+      </button>
     </div>
-
-    <div class="chatbot-footer">
-      <div class="input-container">
-        <input type="text" id="chatbot-input" placeholder="Ask about black holes, quantum physics..." autocomplete="off">
-        <button id="chatbot-send">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-        </button>
-      </div>
+    
+    <div class="chatbot-messages"></div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" class="chatbot-input" placeholder="Ask me about science..." aria-label="Chat input">
+      <button class="chatbot-voice" aria-label="Voice input">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <button class="chatbot-send" aria-label="Send message">
+        <i class="fas fa-paper-plane"></i>
+      </button>
     </div>
   </div>
 </div>
 <script>
-// ===== CHATBOT FUNCTIONALITY =====
-document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
-  const toggleBtn = document.getElementById('chatbot-toggle');
-  const sidebar = document.getElementById('chatbot-sidebar');
-  const closeBtn = document.getElementById('chatbot-close');
-  const sendBtn = document.getElementById('chatbot-send');
-  const voiceBtn = document.getElementById('chatbot-voice-toggle');
-  const input = document.getElementById('chatbot-input');
-  const messagesContainer = document.getElementById('chatbot-messages');
-  
-  // State
-  let isVoiceMode = false;
-  let recognition;
-  let synth = window.speechSynthesis;
-  
-  // ===== UI FUNCTIONS =====
-  
-  // Toggle sidebar
-  toggleBtn.addEventListener('click', () => {
-    sidebar.classList.add('active');
-    // Auto-focus input when opening
-    setTimeout(() => input.focus(), 300);
-  });
-  
-  closeBtn.addEventListener('click', () => {
-    sidebar.classList.remove('active');
-    if (recognition) recognition.stop();
-  });
-  
-  // Add message to chat
-  function addMessage(sender, text, isTyping = false) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
+  document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const chatbotToggle = document.querySelector('.chatbot-toggle');
+    const chatbotWindow = document.querySelector('.chatbot-window');
+    const chatbotClose = document.querySelector('.chatbot-close');
+    const chatbotMessages = document.querySelector('.chatbot-messages');
+    const chatbotInput = document.querySelector('.chatbot-input');
+    const chatbotSend = document.querySelector('.chatbot-send');
+    const chatbotVoice = document.querySelector('.chatbot-voice');
+    const themeToggle = document.querySelector('.chatbot-theme-toggle');
+    const ttsToggle = document.querySelector('.chatbot-tts-toggle');
     
-    if (isTyping) {
-      messageDiv.classList.add('typing');
-      messageDiv.innerHTML = `
-        <div class="typing-indicator">
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-        </div>
-      `;
-    } else {
-      messageDiv.textContent = text;
+    // State variables
+    let isListening = false;
+    let ttsEnabled = true;
+    let darkMode = false;
+    let recognition;
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    
+    // Initialize the chatbot
+    function initChatbot() {
+      // Check for saved preferences
+      if (localStorage.getItem('chatbotDarkMode') === 'true') {
+        toggleDarkMode();
+      }
+      
+      if (localStorage.getItem('chatbotTTS') === 'false') {
+        toggleTTS();
+      }
+      
+      // Add welcome message
+      setTimeout(() => {
+        addBotMessage("👋 Hello! I'm your Science Assistant. Ask me anything about science, technology, or fascinating facts! Try saying 'Tell me about quantum physics' or 'Explain photosynthesis'. You can also use voice commands by clicking the mic button.");
+      }, 1000);
+      
+      // Initialize speech recognition if available
+      initSpeechRecognition();
     }
     
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  }
-  
-  // Simulate typing animation
-  function simulateTypingResponse(response, callback) {
-    addMessage('bot', '', true);
-    let i = 0;
-    const typingSpeed = 10; // Lower = faster
+    // Toggle chatbot window
+    chatbotToggle.addEventListener('click', function() {
+      chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+      if (chatbotWindow.style.display === 'flex') {
+        scrollToBottom();
+      }
+    });
     
-    const typingInterval = setInterval(() => {
-      if (i < response.length) {
-        // Replace last message with new text
-        messagesContainer.lastChild.textContent = response.substring(0, i + 1);
-        messagesContainer.lastChild.className = 'message bot';
-        i++;
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    chatbotClose.addEventListener('click', function() {
+      chatbotWindow.style.display = 'none';
+    });
+    
+    // Send message on Enter key
+    chatbotInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+    
+    // Send message on button click
+    chatbotSend.addEventListener('click', sendMessage);
+    
+    // Voice input
+    chatbotVoice.addEventListener('click', toggleVoiceInput);
+    
+    // Theme toggle
+    themeToggle.addEventListener('click', toggleDarkMode);
+    
+    // TTS toggle
+    ttsToggle.addEventListener('click', toggleTTS);
+    
+    // Make window draggable
+    const chatbotHeader = document.querySelector('.chatbot-header');
+    chatbotHeader.addEventListener('mousedown', startDrag);
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', endDrag);
+    
+    // Initialize speech recognition
+    function initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      
+      if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+          isListening = true;
+          chatbotVoice.classList.add('listening');
+        };
+        
+        recognition.onend = function() {
+          isListening = false;
+          chatbotVoice.classList.remove('listening');
+        };
+        
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          chatbotInput.value = transcript;
+          sendMessage();
+        };
+        
+        recognition.onerror = function(event) {
+          console.error('Speech recognition error', event.error);
+          addBotMessage("Sorry, I couldn't hear you properly. Please try again or type your question.");
+          isListening = false;
+          chatbotVoice.classList.remove('listening');
+        };
       } else {
-        clearInterval(typingInterval);
-        if (callback) callback();
+        chatbotVoice.style.display = 'none';
+        console.warn('Speech recognition not supported in this browser');
       }
-    }, typingSpeed);
-  }
-  
-  // ===== VOICE FUNCTIONS =====
-  
-  // Toggle voice mode
-  voiceBtn.addEventListener('click', toggleVoiceMode);
-  
-  function toggleVoiceMode() {
-    isVoiceMode = !isVoiceMode;
-    document.body.classList.toggle('voice-mode-active', isVoiceMode);
-    
-    if (isVoiceMode) {
-      startVoiceRecognition();
-      input.placeholder = "Listening... Say something!";
-    } else {
-      if (recognition) recognition.stop();
-      input.placeholder = "Ask about black holes, quantum physics...";
-    }
-  }
-  
-  // Initialize voice recognition
-  function startVoiceRecognition() {
-    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    
-    recognition.onstart = () => {
-      input.placeholder = "Listening... Speak now";
-    };
-    
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      input.value = transcript;
-      handleSend();
-    };
-    
-    recognition.onerror = (event) => {
-      console.log('Voice recognition error', event.error);
-      input.placeholder = "Voice input failed. Try typing instead.";
-      isVoiceMode = false;
-      document.body.classList.remove('voice-mode-active');
-    };
-    
-    recognition.onend = () => {
-      if (isVoiceMode) {
-        recognition.start(); // Continue listening
-      }
-    };
-    
-    recognition.start();
-  }
-  
-  // Text-to-speech
-  function speak(text) {
-    if (synth.speaking) {
-      synth.cancel();
     }
     
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    utterance.voice = synth.getVoices().find(voice => voice.name.includes('English'));
+    // Toggle voice input
+    function toggleVoiceInput() {
+      if (!recognition) {
+        addBotMessage("Voice input is not supported in your browser. Please type your question.");
+        return;
+      }
+      
+      if (isListening) {
+        recognition.stop();
+      } else {
+        try {
+          recognition.start();
+          addBotMessage("I'm listening... Speak now.");
+        } catch (e) {
+          console.error('Speech recognition error:', e);
+          addBotMessage("Sorry, I couldn't access the microphone. Please check your permissions.");
+        }
+      }
+    }
     
-    synth.speak(utterance);
-  }
-  
-  // ===== AI INTEGRATION =====
-  
-  // Handle sending messages
-  function handleSend() {
-    const message = input.value.trim();
-    if (message) {
-      addMessage('user', message);
-      input.value = '';
+    // Toggle dark mode
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      chatbotWindow.classList.toggle('dark-mode', darkMode);
+      themeToggle.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      localStorage.setItem('chatbotDarkMode', darkMode);
+    }
+    
+    // Toggle TTS
+    function toggleTTS() {
+      ttsEnabled = !ttsEnabled;
+      ttsToggle.innerHTML = ttsEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
+      localStorage.setItem('chatbotTTS', ttsEnabled);
+    }
+    
+    // Send message
+    function sendMessage() {
+      const message = chatbotInput.value.trim();
+      if (message === '') return;
+      
+      addUserMessage(message);
+      chatbotInput.value = '';
       
       // Show typing indicator
-      addMessage('bot', '', true);
+      showTypingIndicator();
       
-      // Get AI response (simulated for now - replace with real API call)
-      getAIResponse(message).then(response => {
-        // Remove typing indicator
-        messagesContainer.removeChild(messagesContainer.lastChild);
-        
-        // Show response with typing animation
-        simulateTypingResponse(response, () => {
-          // After message is fully typed
-          if (isVoiceMode) {
-            speak(response);
-          }
-        });
-      });
-    }
-  }
-  
-  // Simulate AI response (REPLACE WITH REAL API CALL)
-  function getAIResponse(message) {
-    return new Promise((resolve) => {
-      // Mock delay to simulate API call
+      // Process message and get response
       setTimeout(() => {
-        const scienceResponses = [
-          `Did you know? The observable universe contains about 2 trillion galaxies. That's 2,000,000,000,000!`,
-          `Quantum superposition means particles can exist in multiple states simultaneously until measured. Schrödinger's cat is both alive and dead!`,
-          `The human brain generates about 20 watts of electrical power - enough to power a dim light bulb!`,
-          `Black holes aren't cosmic vacuum cleaners. You'd have to get very close to one to be pulled in.`,
-          `Neutron stars are so dense that a sugar-cube-sized amount would weigh about 1 billion tons on Earth!`
-        ];
-        
-        // Simple keyword matching for demo purposes
-        if (message.toLowerCase().includes('quantum')) {
-          resolve("Quantum physics reveals that particles can be entangled across vast distances—change one, and its partner changes instantly, defying classical physics!");
-        } else if (message.toLowerCase().includes('black hole')) {
-          resolve("Black holes warp spacetime so severely that not even light can escape. Their event horizons mark the point of no return!");
-        } else if (message.toLowerCase().includes('galaxy')) {
-          resolve("Our Milky Way galaxy is about 100,000 light-years across and contains over 100 billion stars. We're located in one of its spiral arms!");
-        } else {
-          // Random science fact
-          resolve(scienceResponses[Math.floor(Math.random() * scienceResponses.length)]);
-        }
-      }, 1500);
-    });
-  }
-  
-  // Event listeners
-  sendBtn.addEventListener('click', handleSend);
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSend();
-  });
-  
-  // Initial greeting
-  setTimeout(() => {
-    const greeting = "Hello! I'm your Science AI assistant. Ask me anything about physics, astronomy, biology, or any scientific topic!";
-    simulateTypingResponse(greeting);
-  }, 1000);
-  
-  // Close when clicking outside (optional)
-  document.addEventListener('click', (e) => {
-    if (!sidebar.contains(e.target) && e.target !== toggleBtn) {
-      sidebar.classList.remove('active');
+        processMessage(message);
+      }, 500);
     }
+    
+    // Add user message to chat
+    function addUserMessage(text) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', 'user-message');
+      
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      messageDiv.innerHTML = `${text}<span class="message-time">${time}</span>`;
+      
+      chatbotMessages.appendChild(messageDiv);
+      scrollToBottom();
+    }
+    
+    // Add bot message to chat
+    function addBotMessage(text) {
+      // Remove typing indicator if present
+      const typingIndicator = document.querySelector('.typing-indicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', 'bot-message');
+      
+      // Simple markdown formatting
+      let formattedText = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // bold
+        .replace(/\*(.*?)\*/g, '<em>$1</em>') // italic
+        .replace(/`(.*?)`/g, '<code>$1</code>') // code
+        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>'); // links
+      
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      messageDiv.innerHTML = `${formattedText}<span class="message-time">${time}</span>`;
+      
+      chatbotMessages.appendChild(messageDiv);
+      scrollToBottom();
+      
+      // Speak the message if TTS is enabled
+      if (ttsEnabled && window.speechSynthesis) {
+        const utterance = new SpeechSynthesisUtterance(text.replace(/\[.*?\]\(.*?\)/g, '')); // Remove markdown links
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+    
+    // Show typing indicator
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.classList.add('typing-indicator');
+      typingDiv.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      chatbotMessages.appendChild(typingDiv);
+      scrollToBottom();
+    }
+    
+    // Scroll to bottom of chat
+    function scrollToBottom() {
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    // Process user message and generate response
+    function processMessage(message) {
+      const lowerMessage = message.toLowerCase();
+      
+      // Check for greetings
+      if (/hello|hi|hey|greetings/.test(lowerMessage)) {
+        const greetings = [
+          "Hello there! What science topic can I help you with today?",
+          "Hi! Ready to explore some fascinating science facts?",
+          "Greetings! Ask me anything about the wonders of science."
+        ];
+        return addBotMessage(greetings[Math.floor(Math.random() * greetings.length)]);
+      }
+      
+      // Check for thanks
+      if (/thanks|thank you|appreciate/.test(lowerMessage)) {
+        return addBotMessage("You're welcome! Is there anything else you'd like to know about?");
+      }
+      
+      // Check for specific science topics
+      if (/quantum|physics|particle/.test(lowerMessage)) {
+        return addBotMessage("🔬 *Quantum physics* is the study of matter and energy at the smallest scales. It explains phenomena like:\n\n- **Wave-particle duality**: Particles can behave as both waves and particles\n- **Superposition**: Quantum systems can exist in multiple states at once\n- **Entanglement**: Particles can be connected across vast distances\n\nWould you like to know more about any specific quantum phenomenon?");
+      }
+      
+      if (/photosynthesis|plants|chlorophyll/.test(lowerMessage)) {
+        return addBotMessage("🌱 *Photosynthesis* is how plants convert light energy to chemical energy. The basic equation is:\n\n`6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂`\n\nKey stages:\n1. **Light-dependent reactions**: Capture light energy\n2. **Calvin cycle**: Use energy to make glucose\n\nThis process produces the oxygen we breathe! Amazing, right?");
+      }
+      
+      if (/black hole|neutron star|cosmos/.test(lowerMessage)) {
+        return addBotMessage("🪐 *Black holes* are incredibly dense objects with gravity so strong that not even light can escape. Fun facts:\n\n- Formed from collapsed massive stars\n- Contain a **singularity** where physics breaks down\n- Have an **event horizon** - the point of no return\n\nDid you know a black hole's size is called its Schwarzschild radius?");
+      }
+      
+      if (/dna|genetic|gene|genome/.test(lowerMessage)) {
+        return addBotMessage("🧬 *DNA* contains the genetic instructions for life. Key facts:\n\n- Double helix structure discovered by Watson & Crick\n- Made of 4 nucleotide bases: A, T, C, G\n- Human genome has ~3 billion base pairs\n\nFun fact: If uncoiled, the DNA in one cell would be about 2 meters long!");
+      }
+      
+      // Default response - try to fetch from Wikipedia API
+      fetchScienceInfo(message);
+    }
+    
+    // Fetch science information from Wikipedia API
+    function fetchScienceInfo(query) {
+      // First try to match with our predefined responses
+      const predefinedResponses = {
+        'big bang': "💥 The *Big Bang* theory describes the universe's expansion from an extremely hot and dense state ~13.8 billion years ago. Key evidence includes:\n\n- Cosmic microwave background radiation\n- Redshift of galaxies\n- Abundance of light elements",
+        'evolution': "🦖 *Evolution* by natural selection, proposed by Charles Darwin, explains how species change over time. Key principles:\n\n1. Variation exists in populations\n2. Some traits are more advantageous\n3. Beneficial traits become more common\n\nThis process has created Earth's incredible biodiversity!",
+        'periodic table': "🧪 The *periodic table* organizes chemical elements by atomic number and properties. Interesting facts:\n\n- Created by Dmitri Mendeleev in 1869\n- Groups show similar chemical properties\n- New elements are still being discovered\n\nThe table helps predict element behaviors and reactions!",
+        'relativity': "⏱️ *Einstein's theory of relativity* revolutionized physics. There are two parts:\n\n- **Special relativity** (1905): Speed of light is constant; time and space are relative\n- **General relativity** (1915): Gravity warps spacetime\n\nThis explains GPS time corrections and black holes!"
+      };
+      
+      const lowerQuery = query.toLowerCase();
+      for (const [key, response] of Object.entries(predefinedResponses)) {
+        if (lowerQuery.includes(key)) {
+          return addBotMessage(response);
+        }
+      }
+      
+      // If no predefined match, use a generic science response
+      const scienceFacts = [
+        `I found some information about *${query}*. While I can't browse the web, here's what I know: Science is constantly evolving, and ${query} is a fascinating topic worth researching further!`,
+        `Regarding *${query}*, that's an interesting science topic! The latest research shows we're always learning new things about it.`,
+        `*${query}* is an important subject in science. While I don't have live data, I can tell you it's a key area of study with many exciting discoveries.`
+      ];
+      
+      addBotMessage(scienceFacts[Math.floor(Math.random() * scienceFacts.length)]);
+      addBotMessage("For detailed information, you might want to check reputable science sources like [NASA](https://www.nasa.gov), [Nature](https://www.nature.com), or [Scientific American](https://www.scientificamerican.com).");
+    }
+    
+    // Draggable window functionality
+    function startDrag(e) {
+      isDragging = true;
+      chatbotWindow.classList.add('dragging');
+      
+      // Calculate offset from mouse to window corner
+      const rect = chatbotWindow.getBoundingClientRect();
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+      
+      e.preventDefault();
+    }
+    
+    function drag(e) {
+      if (!isDragging) return;
+      
+      // Calculate new position
+      let newLeft = e.clientX - dragOffsetX;
+      let newTop = e.clientY - dragOffsetY;
+      
+      // Constrain to viewport
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const chatWidth = chatbotWindow.offsetWidth;
+      const chatHeight = chatbotWindow.offsetHeight;
+      
+      newLeft = Math.max(0, Math.min(newLeft, windowWidth - chatWidth));
+      newTop = Math.max(0, Math.min(newTop, windowHeight - chatHeight));
+      
+      chatbotWindow.style.left = `${newLeft}px`;
+      chatbotWindow.style.top = `${newTop}px`;
+      chatbotWindow.style.right = 'auto';
+      chatbotWindow.style.bottom = 'auto';
+    }
+    
+    function endDrag() {
+      isDragging = false;
+      chatbotWindow.classList.remove('dragging');
+    }
+    
+    // Initialize the chatbot
+    initChatbot();
   });
-});
-
-// ===== REAL API INTEGRATION GUIDE =====
-/* 
-For production, replace getAIResponse() with actual API calls:
-
-1. SAFE BACKEND OPTION (Recommended):
-   - Create a Netlify/Zeit serverless function
-   - Store your OpenAI API key there
-   - Frontend calls your endpoint which then calls OpenAI
-
-   async function getAIResponse(message) {
-     const response = await fetch('YOUR_BACKEND_ENDPOINT', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ message })
-     });
-     return await response.json();
-   }
-
-2. FREE OPTION (HuggingFace):
-   - Use models like Llama-3 or Mistral
-   - Requires HuggingFace API token
-
-   async function getAIResponse(message) {
-     const API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct";
-     const response = await fetch(API_URL, {
-       headers: { Authorization: "Bearer YOUR_HF_TOKEN" },
-       method: "POST",
-       body: JSON.stringify({ inputs: message }),
-     });
-     return await response.json();
-   }
-*/
 </script>
 </body>
 </html>
