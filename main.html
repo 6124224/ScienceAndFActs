@@ -948,7 +948,7 @@ footer a:hover::after {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 1000;
+    z-index: 1001;
     font-family: 'Poppins', sans-serif;
   }
 
@@ -1706,10 +1706,62 @@ document.addEventListener('DOMContentLoaded', function() {
     let isDragging = false;
     let dragOffsetX = 0;
     let dragOffsetY = 0;
+    let conversationContext = [];
+    const MAX_CONTEXT_LENGTH = 5;
+    let siteContentKnowledge = {};
     
+    // API configuration
+    const API_CONFIG = {
+      wikipedia: {
+        endpoint: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
+        fallback: 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='
+      },
+      wolframAlpha: {
+        endpoint: 'https://api.wolframalpha.com/v2/query',
+        appId: 'YOUR_WOLFRAM_APP_ID' // Replace with actual app ID
+      },
+      nasa: {
+        apod: 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY',
+        imageLibrary: 'https://images-api.nasa.gov/search'
+      },
+      siteContent: {
+        pages: [
+          { url: 'https://6124224.github.io/ScienceAndFActs/main.html', title: 'Main Page' },
+          // Add other pages from your site as needed
+        ]
+      }
+    };
+
+    // Enhanced science knowledge base
+    const SCIENCE_KNOWLEDGE = {
+      elements: {
+        definition: "🧪 *Elements* are pure substances consisting of only one type of atom, distinguished by their atomic number (number of protons).",
+        details: [
+          "There are 118 known elements (94 occur naturally)",
+          "Organized in the **periodic table** by properties",
+          "Elements combine to form all matter in the universe",
+          "Lightest element: Hydrogen (1 proton)",
+          "Heaviest natural element: Uranium (92 protons)"
+        ],
+        examples: "Common elements: Oxygen (O), Carbon (C), Gold (Au), Iron (Fe), Silicon (Si)",
+        relatedPages: ["/chemistry.html", "/periodic-table.html"]
+      },
+      quantum: {
+        definition: "🔬 *Quantum mechanics* is physics at atomic and subatomic scales where classical physics breaks down.",
+        principles: [
+          "**Wave-particle duality**: Particles exhibit both wave and particle properties",
+          "**Uncertainty principle**: Can't precisely know position and momentum simultaneously",
+          "**Superposition**: Quantum systems can be in multiple states at once",
+          "**Entanglement**: Particles can be correlated across distances instantly"
+        ],
+        applications: "Quantum computing, cryptography, MRI machines, lasers",
+        relatedPages: ["/physics.html", "/quantum-physics.html"]
+      },
+      // ... (other knowledge base entries)
+    };
+
     // Initialize the chatbot
-    function initChatbot() {
-      // Check for saved preferences
+    async function initChatbot() {
       if (localStorage.getItem('chatbotDarkMode') === 'true') {
         toggleDarkMode();
       }
@@ -1718,51 +1770,378 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleTTS();
       }
       
-      // Add welcome message
+      // Load knowledge from your website
+      await loadSiteContentKnowledge();
+      
       setTimeout(() => {
-        addBotMessage("👋 Hello! I'm your Science Assistant. Ask me anything about science, technology, or fascinating facts! Try saying 'Tell me about quantum physics' or 'Explain photosynthesis'. You can also use voice commands by clicking the mic button.");
+        addBotMessage("👋 Hello! I'm your Ultimate Science Assistant. I know all about this website's content and can explain complex concepts, solve scientific equations, show space images, and fetch the latest research. Try asking about topics from this site or general science questions!");
       }, 1000);
       
-      // Initialize speech recognition if available
       initSpeechRecognition();
     }
-    
-    // Toggle chatbot window
-    chatbotToggle.addEventListener('click', function() {
-      chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
-      if (chatbotWindow.style.display === 'flex') {
-        scrollToBottom();
+
+    // Load content knowledge from your website
+    async function loadSiteContentKnowledge() {
+      try {
+        // This would need to be adapted based on your site's actual structure
+        // For demo purposes, we'll simulate some knowledge
+        siteContentKnowledge = {
+          "main page": {
+            description: "Welcome to Science and Facts! This is the main hub for exploring fascinating scientific topics.",
+            sections: [
+              "Latest Science News",
+              "Featured Articles",
+              "Interactive Learning"
+            ],
+            url: "https://6124224.github.io/ScienceAndFActs/main.html"
+          },
+          "quantum physics": {
+            description: "Explore the weird world of quantum mechanics where particles can be in two places at once!",
+            keyConcepts: [
+              "Wave-particle duality",
+              "Quantum entanglement",
+              "Heisenberg uncertainty principle"
+            ],
+            url: "https://6124224.github.io/ScienceAndFActs/quantum.html"
+          },
+          // Add more pages as needed
+        };
+        
+        console.log("Loaded site content knowledge:", siteContentKnowledge);
+      } catch (error) {
+        console.error("Error loading site content:", error);
       }
-    });
-    
-    chatbotClose.addEventListener('click', function() {
-      chatbotWindow.style.display = 'none';
-    });
-    
-    // Send message on Enter key
-    chatbotInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        sendMessage();
+    }
+
+    // Enhanced API fetch function with error handling
+    async function fetchAPI(url, options = {}) {
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+      } catch (error) {
+        console.error('API fetch error:', error);
+        return null;
       }
-    });
+    }
+
+    // Wikipedia API integration
+    async function fetchWikipediaInfo(query) {
+      try {
+        // First try the summary API
+        const summaryData = await fetchAPI(`${API_CONFIG.wikipedia.endpoint}${encodeURIComponent(query)}`);
+        
+        if (summaryData && summaryData.extract) {
+          let summary = summaryData.extract
+            .replace(/\([^)]*\)/g, '')
+            .replace(/\[[^\]]*\]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+            
+          return {
+            text: `${summary}\n\n[Read more on Wikipedia](${summaryData.content_urls.desktop.page})`,
+            image: summaryData.thumbnail?.source
+          };
+        }
+        
+        // Fallback to search API if summary not found
+        const searchData = await fetchAPI(`${API_CONFIG.wikipedia.fallback}${encodeURIComponent(query)}&format=json`);
+        
+        if (searchData?.query?.search?.length > 0) {
+          const topResult = searchData.query.search[0];
+          return {
+            text: `I found Wikipedia articles about "${query}". The most relevant is "${topResult.title}". [Read it here](https://en.wikipedia.org/wiki/${encodeURIComponent(topResult.title.replace(/ /g, '_'))})`
+          };
+        }
+        
+        return null;
+      } catch (error) {
+        console.error('Wikipedia fetch error:', error);
+        return null;
+      }
+    }
+
+    // Wolfram Alpha API integration (simplified)
+    async function fetchWolframAlpha(query) {
+      // Note: In production, you would need a server-side component for this
+      // due to CORS and API key security issues
+      try {
+        const response = await fetchAPI(
+          `${API_CONFIG.wolframAlpha.endpoint}?input=${encodeURIComponent(query)}&appid=${API_CONFIG.wolframAlpha.appId}&output=json`
+        );
+        
+        if (response?.queryresult?.pods) {
+          let result = "Here's what I found from Wolfram Alpha:\n\n";
+          response.queryresult.pods.forEach(pod => {
+            if (pod.subpods && pod.subpods[0].plaintext) {
+              result += `**${pod.title}**: ${pod.subpods[0].plaintext}\n\n`;
+            }
+          });
+          return result;
+        }
+        return null;
+      } catch (error) {
+        console.error('Wolfram Alpha error:', error);
+        return null;
+      }
+    }
+
+    // NASA API integration
+    async function fetchNasaInfo(query) {
+      try {
+        // Check if query is about astronomy or space
+        if (/space|astronomy|nasa|planet|star|galaxy|apod/i.test(query)) {
+          // Astronomy Picture of the Day
+          if (/apod|picture of the day|astronomy photo/i.test(query)) {
+            const apodData = await fetchAPI(API_CONFIG.nasa.apod);
+            if (apodData) {
+              return {
+                text: `**NASA Astronomy Picture of the Day (${apodData.date})**: ${apodData.title}\n\n${apodData.explanation}\n\n[View image](${apodData.url})`,
+                image: apodData.url
+              };
+            }
+          }
+          
+          // General space image search
+          const imageData = await fetchAPI(`${API_CONFIG.nasa.imageLibrary}?q=${encodeURIComponent(query)}`);
+          if (imageData?.collection?.items?.length > 0) {
+            const firstItem = imageData.collection.items[0];
+            const imageLink = firstItem.links?.[0]?.href;
+            const description = firstItem.data?.[0]?.description || 'NASA space image';
+            
+            return {
+              text: `**NASA Image**: ${description}\n\n[View image](${imageLink})`,
+              image: imageLink
+            };
+          }
+        }
+        return null;
+      } catch (error) {
+        console.error('NASA API error:', error);
+        return null;
+      }
+    }
+
+    // Check if query is about content on your site
+    function checkSiteContent(query) {
+      const lowerQuery = query.toLowerCase();
+      
+      // First check exact matches
+      if (siteContentKnowledge[lowerQuery]) {
+        const content = siteContentKnowledge[lowerQuery];
+        let response = `📚 I found information about "${lowerQuery}" on this website:\n\n**${content.description}**\n\n`;
+        
+        if (content.sections) {
+          response += `Sections:\n- ${content.sections.join('\n- ')}\n\n`;
+        }
+        if (content.keyConcepts) {
+          response += `Key Concepts:\n- ${content.keyConcepts.join('\n- ')}\n\n`;
+        }
+        
+        response += `[Visit this page](${content.url})`;
+        return response;
+      }
+      
+      // Then check partial matches
+      for (const [topic, content] of Object.entries(siteContentKnowledge)) {
+        if (lowerQuery.includes(topic)) {
+          return `📚 This website has content about "${topic}":\n\n${content.description}\n\n[Visit this page](${content.url})`;
+        }
+      }
+      
+      return null;
+    }
+
+    // Enhanced message processing with multiple API fallbacks
+    async function processMessage(message) {
+      const lowerMessage = message.toLowerCase();
+      
+      // Add to conversation context
+      conversationContext.push({role: 'user', content: message});
+      if (conversationContext.length > MAX_CONTEXT_LENGTH) {
+        conversationContext.shift();
+      }
+      
+      // Check for greetings
+      if (/hello|hi|hey|greetings/.test(lowerMessage)) {
+        const greetings = [
+          "Hello there! What would you like to learn about today?",
+          "Hi! Ready to explore some fascinating science from this website or general knowledge?",
+          "Greetings! Ask me anything about science or this website's content."
+        ];
+        return addBotMessage(greetings[Math.floor(Math.random() * greetings.length)]);
+      }
+      
+      // Check for thanks
+      if (/thanks|thank you|appreciate/.test(lowerMessage)) {
+        return addBotMessage("You're welcome! Remember, you can ask me about content on this website or general science topics.");
+      }
+      
+      // Check for website-specific commands
+      if (/what('s| is) on (this )?site|website content|pages? on this site/i.test(message)) {
+        let response = "📚 This website contains content about:\n\n";
+        const topics = Object.keys(siteContentKnowledge);
+        response += topics.map(t => `- ${t.charAt(0).toUpperCase() + t.slice(1)}`).join('\n');
+        response += "\n\nAsk me about any of these topics for more details!";
+        return addBotMessage(response);
+      }
+      
+      // Check knowledge base first
+      for (const [topic, info] of Object.entries(SCIENCE_KNOWLEDGE)) {
+        if (lowerMessage.includes(topic)) {
+          let response = `**${info.definition}**\n\n`;
+          if (info.details) response += info.details.join('\n') + '\n\n';
+          if (info.examples) response += `Examples: ${info.examples}\n\n`;
+          if (info.applications) response += `Applications: ${info.applications}\n\n`;
+          
+          // Add related pages from your site if available
+          if (info.relatedPages && info.relatedPages.length > 0) {
+            response += `🔗 Related pages on this site:\n`;
+            response += info.relatedPages.map(p => `- [${p.split('/').pop().replace('.html', '')}](${p})`).join('\n');
+          }
+          
+          return addBotMessage(response);
+        }
+      }
+      
+      // Check if this is about your site's content
+      const siteContentResponse = checkSiteContent(message);
+      if (siteContentResponse) {
+        return addBotMessage(siteContentResponse);
+      }
+      
+      // Show typing indicator while we fetch info
+      showTypingIndicator();
+      
+      // Determine which API to try first based on query type
+      if (/calculate|solve|equation|formula/i.test(message)) {
+        // Try Wolfram Alpha for computational questions
+        const wolframResponse = await fetchWolframAlpha(message);
+        if (wolframResponse) return addBotMessage(wolframResponse);
+      }
+      else if (/space|nasa|astronomy|planet/i.test(message)) {
+        // Try NASA API for space-related queries
+        const nasaResponse = await fetchNasaInfo(message);
+        if (nasaResponse) {
+          addBotMessage(nasaResponse.text);
+          if (nasaResponse.image) {
+            // In a real implementation, you'd display the image
+            addBotMessage(`[View image](${nasaResponse.image})`);
+          }
+          return;
+        }
+      }
+      
+      // Try Wikipedia for general knowledge
+      const wikiResponse = await fetchWikipediaInfo(message);
+      if (wikiResponse) {
+        addBotMessage(wikiResponse.text);
+        if (wikiResponse.image) {
+          // In a real implementation, you'd display the image
+          addBotMessage(`[View image](${wikiResponse.image})`);
+        }
+        return;
+      }
+      
+      // Final fallback with site-specific suggestions
+      addBotMessage(`I couldn't find a definitive answer about "${message}". Here are some options:
+      
+1. Check these reliable sources:
+   - [Wikipedia Search](${API_CONFIG.wikipedia.fallback}${encodeURIComponent(message)})
+   - [NASA Science](https://science.nasa.gov)
+   - [Wolfram Alpha](https://www.wolframalpha.com)
+
+2. This website has content about:
+${Object.keys(siteContentKnowledge).map(t => `   - ${t.charAt(0).toUpperCase() + t.slice(1)}`).join('\n')}
+
+Would you like me to search for something more specific?`);
+    }
+
+    // Add user message to chat
+    function addUserMessage(text) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', 'user-message');
+      
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      messageDiv.innerHTML = `${text}<span class="message-time">${time}</span>`;
+      
+      chatbotMessages.appendChild(messageDiv);
+      scrollToBottom();
+    }
     
-    // Send message on button click
-    chatbotSend.addEventListener('click', sendMessage);
+    // Add bot message to chat
+    function addBotMessage(text) {
+      // Remove typing indicator if present
+      const typingIndicator = document.querySelector('.typing-indicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', 'bot-message');
+      
+      // Enhanced markdown formatting with support for numbered lists
+      let formattedText = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // bold
+        .replace(/\*(.*?)\*/g, '<em>$1</em>') // italic
+        .replace(/`(.*?)`/g, '<code>$1</code>') // code
+        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>') // links
+        .replace(/(\d+\. .*?(?=\n|$))/g, '<li>$1</li>') // numbered lists
+        .replace(/(- .*?(?=\n|$))/g, '<li>$1</li>'); // bullet points
+      
+      // Wrap list items in <ul> or <ol>
+      if (formattedText.includes('<li>')) {
+        formattedText = formattedText.replace(/((\d+\. <li>.*?<\/li>)+)/g, '<ol>$1</ol>');
+        formattedText = formattedText.replace(/((- <li>.*?<\/li>)+)/g, '<ul>$1</ul>');
+      }
+      
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      messageDiv.innerHTML = `${formattedText}<span class="message-time">${time}</span>`;
+      
+      chatbotMessages.appendChild(messageDiv);
+      scrollToBottom();
+      
+      // Speak the message if TTS is enabled
+      if (ttsEnabled && window.speechSynthesis) {
+        const utterance = new SpeechSynthesisUtterance(text.replace(/\[.*?\]\(.*?\)/g, '')); // Remove markdown links
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
     
-    // Voice input
-    chatbotVoice.addEventListener('click', toggleVoiceInput);
+    // Show typing indicator
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.classList.add('typing-indicator');
+      typingDiv.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      chatbotMessages.appendChild(typingDiv);
+      scrollToBottom();
+    }
     
-    // Theme toggle
-    themeToggle.addEventListener('click', toggleDarkMode);
+    // Scroll to bottom of chat
+    function scrollToBottom() {
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
     
-    // TTS toggle
-    ttsToggle.addEventListener('click', toggleTTS);
+    // Toggle dark mode
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      chatbotWindow.classList.toggle('dark-mode', darkMode);
+      themeToggle.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      localStorage.setItem('chatbotDarkMode', darkMode);
+    }
     
-    // Make window draggable
-    const chatbotHeader = document.querySelector('.chatbot-header');
-    chatbotHeader.addEventListener('mousedown', startDrag);
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', endDrag);
+    // Toggle TTS
+    function toggleTTS() {
+      ttsEnabled = !ttsEnabled;
+      ttsToggle.innerHTML = ttsEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
+      localStorage.setItem('chatbotTTS', ttsEnabled);
+    }
     
     // Initialize speech recognition
     function initSpeechRecognition() {
@@ -1822,21 +2201,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     
-    // Toggle dark mode
-    function toggleDarkMode() {
-      darkMode = !darkMode;
-      chatbotWindow.classList.toggle('dark-mode', darkMode);
-      themeToggle.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-      localStorage.setItem('chatbotDarkMode', darkMode);
-    }
-    
-    // Toggle TTS
-    function toggleTTS() {
-      ttsEnabled = !ttsEnabled;
-      ttsToggle.innerHTML = ttsEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
-      localStorage.setItem('chatbotTTS', ttsEnabled);
-    }
-    
     // Send message
     function sendMessage() {
       const message = chatbotInput.value.trim();
@@ -1852,137 +2216,6 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(() => {
         processMessage(message);
       }, 500);
-    }
-    
-    // Add user message to chat
-    function addUserMessage(text) {
-      const messageDiv = document.createElement('div');
-      messageDiv.classList.add('message', 'user-message');
-      
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      messageDiv.innerHTML = `${text}<span class="message-time">${time}</span>`;
-      
-      chatbotMessages.appendChild(messageDiv);
-      scrollToBottom();
-    }
-    
-    // Add bot message to chat
-    function addBotMessage(text) {
-      // Remove typing indicator if present
-      const typingIndicator = document.querySelector('.typing-indicator');
-      if (typingIndicator) {
-        typingIndicator.remove();
-      }
-      
-      const messageDiv = document.createElement('div');
-      messageDiv.classList.add('message', 'bot-message');
-      
-      // Simple markdown formatting
-      let formattedText = text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // bold
-        .replace(/\*(.*?)\*/g, '<em>$1</em>') // italic
-        .replace(/`(.*?)`/g, '<code>$1</code>') // code
-        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>'); // links
-      
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      messageDiv.innerHTML = `${formattedText}<span class="message-time">${time}</span>`;
-      
-      chatbotMessages.appendChild(messageDiv);
-      scrollToBottom();
-      
-      // Speak the message if TTS is enabled
-      if (ttsEnabled && window.speechSynthesis) {
-        const utterance = new SpeechSynthesisUtterance(text.replace(/\[.*?\]\(.*?\)/g, '')); // Remove markdown links
-        utterance.rate = 1;
-        utterance.pitch = 1;
-        window.speechSynthesis.speak(utterance);
-      }
-    }
-    
-    // Show typing indicator
-    function showTypingIndicator() {
-      const typingDiv = document.createElement('div');
-      typingDiv.classList.add('typing-indicator');
-      typingDiv.innerHTML = `
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-      `;
-      chatbotMessages.appendChild(typingDiv);
-      scrollToBottom();
-    }
-    
-    // Scroll to bottom of chat
-    function scrollToBottom() {
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    }
-    
-    // Process user message and generate response
-    function processMessage(message) {
-      const lowerMessage = message.toLowerCase();
-      
-      // Check for greetings
-      if (/hello|hi|hey|greetings/.test(lowerMessage)) {
-        const greetings = [
-          "Hello there! What science topic can I help you with today?",
-          "Hi! Ready to explore some fascinating science facts?",
-          "Greetings! Ask me anything about the wonders of science."
-        ];
-        return addBotMessage(greetings[Math.floor(Math.random() * greetings.length)]);
-      }
-      
-      // Check for thanks
-      if (/thanks|thank you|appreciate/.test(lowerMessage)) {
-        return addBotMessage("You're welcome! Is there anything else you'd like to know about?");
-      }
-      
-      // Check for specific science topics
-      if (/quantum|physics|particle/.test(lowerMessage)) {
-        return addBotMessage("🔬 *Quantum physics* is the study of matter and energy at the smallest scales. It explains phenomena like:\n\n- **Wave-particle duality**: Particles can behave as both waves and particles\n- **Superposition**: Quantum systems can exist in multiple states at once\n- **Entanglement**: Particles can be connected across vast distances\n\nWould you like to know more about any specific quantum phenomenon?");
-      }
-      
-      if (/photosynthesis|plants|chlorophyll/.test(lowerMessage)) {
-        return addBotMessage("🌱 *Photosynthesis* is how plants convert light energy to chemical energy. The basic equation is:\n\n`6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂`\n\nKey stages:\n1. **Light-dependent reactions**: Capture light energy\n2. **Calvin cycle**: Use energy to make glucose\n\nThis process produces the oxygen we breathe! Amazing, right?");
-      }
-      
-      if (/black hole|neutron star|cosmos/.test(lowerMessage)) {
-        return addBotMessage("🪐 *Black holes* are incredibly dense objects with gravity so strong that not even light can escape. Fun facts:\n\n- Formed from collapsed massive stars\n- Contain a **singularity** where physics breaks down\n- Have an **event horizon** - the point of no return\n\nDid you know a black hole's size is called its Schwarzschild radius?");
-      }
-      
-      if (/dna|genetic|gene|genome/.test(lowerMessage)) {
-        return addBotMessage("🧬 *DNA* contains the genetic instructions for life. Key facts:\n\n- Double helix structure discovered by Watson & Crick\n- Made of 4 nucleotide bases: A, T, C, G\n- Human genome has ~3 billion base pairs\n\nFun fact: If uncoiled, the DNA in one cell would be about 2 meters long!");
-      }
-      
-      // Default response - try to fetch from Wikipedia API
-      fetchScienceInfo(message);
-    }
-    
-    // Fetch science information from Wikipedia API
-    function fetchScienceInfo(query) {
-      // First try to match with our predefined responses
-      const predefinedResponses = {
-        'big bang': "💥 The *Big Bang* theory describes the universe's expansion from an extremely hot and dense state ~13.8 billion years ago. Key evidence includes:\n\n- Cosmic microwave background radiation\n- Redshift of galaxies\n- Abundance of light elements",
-        'evolution': "🦖 *Evolution* by natural selection, proposed by Charles Darwin, explains how species change over time. Key principles:\n\n1. Variation exists in populations\n2. Some traits are more advantageous\n3. Beneficial traits become more common\n\nThis process has created Earth's incredible biodiversity!",
-        'periodic table': "🧪 The *periodic table* organizes chemical elements by atomic number and properties. Interesting facts:\n\n- Created by Dmitri Mendeleev in 1869\n- Groups show similar chemical properties\n- New elements are still being discovered\n\nThe table helps predict element behaviors and reactions!",
-        'relativity': "⏱️ *Einstein's theory of relativity* revolutionized physics. There are two parts:\n\n- **Special relativity** (1905): Speed of light is constant; time and space are relative\n- **General relativity** (1915): Gravity warps spacetime\n\nThis explains GPS time corrections and black holes!"
-      };
-      
-      const lowerQuery = query.toLowerCase();
-      for (const [key, response] of Object.entries(predefinedResponses)) {
-        if (lowerQuery.includes(key)) {
-          return addBotMessage(response);
-        }
-      }
-      
-      // If no predefined match, use a generic science response
-      const scienceFacts = [
-        `I found some information about *${query}*. While I can't browse the web, here's what I know: Science is constantly evolving, and ${query} is a fascinating topic worth researching further!`,
-        `Regarding *${query}*, that's an interesting science topic! The latest research shows we're always learning new things about it.`,
-        `*${query}* is an important subject in science. While I don't have live data, I can tell you it's a key area of study with many exciting discoveries.`
-      ];
-      
-      addBotMessage(scienceFacts[Math.floor(Math.random() * scienceFacts.length)]);
-      addBotMessage("For detailed information, you might want to check reputable science sources like [NASA](https://www.nasa.gov), [Nature](https://www.nature.com), or [Scientific American](https://www.scientificamerican.com).");
     }
     
     // Draggable window functionality
