@@ -1,556 +1,1030 @@
-// --- Configuration and Constants ---
-// IMPORTANT: The GEMINI_API_KEY is left empty as Canvas will inject it at runtime.
-// For a standalone production environment, you would need to replace this with your actual key
-// or, ideally, use a backend proxy to keep your API key secure.
-const GEMINI_API_KEY = ''; // Canvas will inject the key here.
-const WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php';
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-const MAX_CHAT_HISTORY_TURNS = 10; // Increased context window for better conversation
-const SCIENCE_SITE_URL = 'https://6124224.github.io/ScienceAndFActs/';
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const chatbotToggle = document.querySelector('.chatbot-toggle');
+    const chatbotWindow = document.querySelector('.chatbot-window');
+    const chatbotClose = document.querySelector('.chatbot-close');
+    const chatbotMessages = document.querySelector('.chatbot-messages');
+    const chatbotInput = document.querySelector('.chatbot-input');
+    const chatbotSend = document.querySelector('.chatbot-send');
+    const chatbotVoice = document.querySelector('.chatbot-voice');
+    const themeToggle = document.querySelector('.chatbot-theme-toggle');
+    const ttsToggle = document.querySelector('.chatbot-tts-toggle');
+    
+    // Enhanced State Management
+    let isListening = false;
+    let ttsEnabled = false; // Start with TTS disabled
+    let darkMode = false;
+    let recognition;
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let conversationHistory = [];
+    let currentTopic = null;
+    let userProfile = {
+        preferredTopics: [],
+        knowledgeLevel: 'beginner',
+        previousQuestions: []
+    };
+    let isFirstVisit = true;
+    let hasShownIntroduction = false;
 
-// --- DOM Elements ---
-const chatbotOpenBtn = document.getElementById('chatbotOpenBtn');
-const chatbotContainer = document.getElementById('chatbotContainer');
-const chatbotCloseBtn = document.getElementById('chatbotCloseBtn');
-const chatbotHeader = document.getElementById('chatbotHeader');
-const chatbotBody = document.getElementById('chatbotBody');
-const chatInput = document.getElementById('chatInput');
-const sendBtn = document.getElementById('sendBtn');
-const themeToggleBtn = document.getElementById('themeToggleBtn');
-const emojiBtn = document.getElementById('emojiBtn');
-const emojiPicker = document.getElementById('emojiPicker');
+    const MAX_HISTORY_LENGTH = 20;
+    const TYPING_DELAY = 1500;
+    const INTRODUCTION_DELAY = 2000;
 
-// --- State Variables ---
-let isChatOpen = false;
-let isDragging = false;
-let offsetX, offsetY;
-let isDarkMode = false;
-let typingIndicator = null; // To store the typing indicator element
-// Stores chat history for sending to Gemini for context
-let currentChatHistory = [{ 
-    role: "model", 
-    parts: [{ 
-        text: "Hello! I'm your Science & Facts assistant. I can answer questions about science, explain concepts from the ScienceAndFacts website, and help with general knowledge. How can I assist you today?" 
-    }] 
-}];
-
-// --- Utility Functions ---
-
-/**
- * Formats the current time as HH:MM AM/PM.
- * @returns {string} Formatted time string.
- */
-function getCurrentTime() {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-    return `${formattedHours}:${formattedMinutes} ${ampm}`;
-}
-
-/**
- * Creates a new message element and appends it to the chat body.
- * Also updates the internal chat history for context.
- * @param {string} text - The message text (can contain HTML for links).
- * @param {string} sender - 'user' or 'bot'.
- */
-function addMessage(text, sender) {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('chat-message', sender);
-    messageElement.innerHTML = `
-        <div class="message-text">${text}</div>
-        <div class="message-timestamp">${getCurrentTime()}</div>
-    `;
-    chatbotBody.appendChild(messageElement);
-
-    // Add message to currentChatHistory for Gemini context
-    // Note: Gemini API uses 'user' and 'model' roles.
-    const geminiRole = sender === 'user' ? 'user' : 'model';
-    currentChatHistory.push({ role: geminiRole, parts: [{ text: text.replace(/<[^>]*>?/gm, '') }] }); // Store plain text
-
-    // Keep history trimmed to MAX_CHAT_HISTORY_TURNS * 2 (user + model messages)
-    if (currentChatHistory.length > MAX_CHAT_HISTORY_TURNS * 2) {
-        // Remove oldest messages, ensuring we keep pairs if possible
-        currentChatHistory = currentChatHistory.slice(currentChatHistory.length - (MAX_CHAT_HISTORY_TURNS * 2));
-    }
-
-    // Trigger animation for the new message
-    setTimeout(() => {
-        messageElement.style.opacity = '1';
-        messageElement.style.transform = 'translateY(0)';
-    }, 50); // Small delay for animation to kick in after append
-
-    scrollToBottom();
-}
-
-/**
- * Scrolls the chat body to the bottom.
- */
-function scrollToBottom() {
-    chatbotBody.scrollTop = chatbotBody.scrollHeight;
-}
-
-/**
- * Shows the typing indicator in the chat.
- */
-function showTypingIndicator() {
-    if (typingIndicator) return; // Prevent multiple indicators if already present
-
-    typingIndicator = document.createElement('div');
-    typingIndicator.classList.add('typing-indicator');
-    typingIndicator.innerHTML = `
-        <span></span>
-        <span></span>
-        <span></span>
-    `;
-    chatbotBody.appendChild(typingIndicator);
-    scrollToBottom();
-
-    // Trigger animation for the typing indicator
-    setTimeout(() => {
-        if (typingIndicator) {
-            typingIndicator.style.opacity = '1';
-        }
-    }, 50);
-}
-
-/**
- * Hides the typing indicator from the chat.
- */
-function hideTypingIndicator() {
-    if (typingIndicator) {
-        typingIndicator.style.opacity = '0';
-        // Remove the element after the fade-out animation completes
-        typingIndicator.addEventListener('transitionend', () => {
-            if (typingIndicator && typingIndicator.parentNode) {
-                typingIndicator.parentNode.removeChild(typingIndicator);
+    // Enhanced API Configuration
+    const API_CONFIG = {
+        scienceAndFacts: {
+            baseUrl: 'https://6124224.github.io/ScienceAndFActs/',
+            topics: {
+                quantum: '#quantum-physics',
+                space: '#space-exploration', 
+                chemistry: '#chemistry-wonders',
+                biology: '#biology-marvels',
+                physics: '#physics-fundamentals'
             }
-            typingIndicator = null; // Reset the reference
-        }, { once: true }); // Ensure the event listener is removed after first use
-    }
-}
-
-/**
- * Handles the auto-resizing of the textarea based on content.
- * Prevents the textarea from growing indefinitely.
- */
-function autoResizeTextarea() {
-    chatInput.style.height = 'auto'; // Reset height to calculate scrollHeight correctly
-    chatInput.style.height = chatInput.scrollHeight + 'px'; // Set height to fit content
-
-    // Limit max height to prevent the input area from becoming too large
-    const maxHeight = 100; // pixels
-    if (chatInput.scrollHeight > maxHeight) {
-        chatInput.style.height = maxHeight + 'px';
-        chatInput.style.overflowY = 'auto'; // Enable scrollbar if content exceeds max-height
-    } else {
-        chatInput.style.overflowY = 'hidden'; // Hide scrollbar if content fits
-    }
-}
-
-// --- Chatbot UI Event Handlers ---
-
-/**
- * Toggles the visibility of the chatbot container.
- * Also changes the icon on the open button.
- */
-function toggleChatbot() {
-    isChatOpen = !isChatOpen;
-    chatbotContainer.classList.toggle('open', isChatOpen);
-    // Change button icon based on chat state
-    chatbotOpenBtn.querySelector('i').classList.toggle('fa-comment-dots', !isChatOpen);
-    chatbotOpenBtn.querySelector('i').classList.toggle('fa-times', isChatOpen);
-    if (isChatOpen) {
-        chatInput.focus(); // Focus on input when chat opens
-        scrollToBottom(); // Ensure chat is scrolled to bottom
-    }
-}
-
-/**
- * Toggles between dark and light mode.
- * Updates body class and button icon.
- * Saves the preference to localStorage for persistence.
- */
-function toggleTheme() {
-    isDarkMode = !isDarkMode;
-    document.body.classList.toggle('dark-mode', isDarkMode);
-    themeToggleBtn.querySelector('i').classList.toggle('fa-moon', !isDarkMode);
-    themeToggleBtn.querySelector('i').classList.toggle('fa-sun', isDarkMode);
-    localStorage.setItem('chatbot-theme', isDarkMode ? 'dark' : 'light');
-}
-
-/**
- * Initializes the theme based on user's system preference or saved preference.
- * This function is called once on DOMContentLoaded.
- */
-function initializeTheme() {
-    const savedTheme = localStorage.getItem('chatbot-theme');
-    if (savedTheme) {
-        isDarkMode = (savedTheme === 'dark');
-    } else {
-        // Check system preference if no theme is saved
-        isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    document.body.classList.toggle('dark-mode', isDarkMode);
-    themeToggleBtn.querySelector('i').classList.toggle('fa-moon', !isDarkMode);
-    themeToggleBtn.querySelector('i').classList.toggle('fa-sun', isDarkMode);
-}
-
-// --- Draggable Chat Window Logic ---
-
-/**
- * Handles the start of a drag operation when the mouse is pressed on the header.
- * @param {MouseEvent} e - The mouse event.
- */
-function startDragging(e) {
-    isDragging = true;
-    chatbotHeader.style.cursor = 'grabbing'; // Change cursor to indicate dragging
-    // Calculate offset from mouse position to the top-left corner of the chat window
-    const rect = chatbotContainer.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-
-    // Set position to fixed and clear bottom/right properties
-    // This allows direct control over 'left' and 'top' for dragging
-    chatbotContainer.style.position = 'fixed';
-    chatbotContainer.style.bottom = 'auto';
-    chatbotContainer.style.right = 'auto';
-}
-
-/**
- * Handles the drag movement as the mouse moves.
- * @param {MouseEvent} e - The mouse event.
- */
-function drag(e) {
-    if (!isDragging) return; // Only drag if dragging is active
-
-    // Calculate new position relative to viewport
-    let newX = e.clientX - offsetX;
-    let newY = e.clientY - offsetY;
-
-    // Keep the element within the viewport boundaries
-    const maxX = window.innerWidth - chatbotContainer.offsetWidth;
-    const maxY = window.innerHeight - chatbotContainer.offsetHeight;
-
-    newX = Math.max(0, Math.min(newX, maxX)); // Clamp X position
-    newY = Math.max(0, Math.min(newY, maxY)); // Clamp Y position
-
-    chatbotContainer.style.left = `${newX}px`;
-    chatbotContainer.style.top = `${newY}px`;
-}
-
-/**
- * Handles the end of a drag operation when the mouse button is released.
- */
-function stopDragging() {
-    isDragging = false;
-    chatbotHeader.style.cursor = 'grab'; // Restore cursor
-}
-
-// --- Emoji Picker Functions ---
-
-// A comprehensive list of common emojis
-const emojis = [
-    '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚',
-    '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣',
-    '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗',
-    '🤔', '🤫', '🤭', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐',
-    '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', ' ', '👹', '👺', '🤡', '💩', '👻', '💀', '👽', '👾', '🤖',
-    '💖', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💔', '💯', '👍', '👎', '👏', '🙏', '👋', '💪', '🔥', '✨',
-    '🎉', '🎊', '🎁', '🎈', '🎄', '🎅', '🌟', '💫', '🌈', '☀️', '☁️', '☔', '⚡', '❄️', '🌸', '🌼', '🌻', '🍎', '🍓', '🍕',
-    '🍔', '🍟', '☕', '🍺', '🥂', '🍦', '🍩', '🍪', '🍫', '🍬', '🍭', '🎤', '🎧', '🎸', '🎹', '🥁', '🎮', '🎲', '🧩', '⚽',
-    '🏀', '🏈', '⚾', '🎾', '🏐', '🏆', '🥇', '🥈', '🥉', '🚗', '🚕', '🚌', '🏎️', '🚓', '🚑', '🚒', '✈️', '🚀', '🚢', '🚂',
-    '🚲', '🛴', '🛵', '🗺️', '📍', '🏠', '🏢', '🏫', '🏥', '🏦', '🏪', '💡', '📚', '🖊️', '🗓️', '⏰', '📱', '💻', '🖥️', '🖨️',
-    '📷', '🎥', '📺', '📻', '📞', '🔔', '✉️', '📧', '🔗', '🔒', '🔓', '🔑', '⚙️', '🛠️', '🛒', '💰', '💳', '📈', '📉', '📊'
-];
-
-/**
- * Populates the emoji picker with clickable emoji spans.
- */
-function populateEmojiPicker() {
-    emojis.forEach(emoji => {
-        const span = document.createElement('span');
-        span.textContent = emoji;
-        span.addEventListener('click', () => {
-            chatInput.value += emoji; // Add emoji to textarea
-            autoResizeTextarea(); // Adjust textarea height
-            hideEmojiPicker(); // Hide picker after selection
-            chatInput.focus(); // Keep focus on input
-        });
-        emojiPicker.appendChild(span);
-    });
-}
-
-/**
- * Toggles the visibility of the emoji picker.
- */
-function toggleEmojiPicker() {
-    emojiPicker.classList.toggle('open');
-}
-
-/**
- * Hides the emoji picker.
- */
-function hideEmojiPicker() {
-    emojiPicker.classList.remove('open');
-}
-
-// --- AI Response Logic ---
-
-/**
- * Fetches an answer from Wikipedia based on the query.
- * Uses the Wikipedia API to get a text extract and the full URL.
- * @param {string} query - The search query.
- * @returns {Promise<string|null>} The Wikipedia extract formatted with a link, or null if not found/error.
- */
-async function getWikipediaAnswer(query) {
-    const params = new URLSearchParams({
-        action: 'query',
-        format: 'json',
-        prop: 'extracts|info', // Request extract and info (for URL)
-        exintro: true,         // Return only the introductory section
-        explaintext: true,     // Return plain text, not HTML
-        redirects: 1,          // Resolve redirects
-        titles: query,         // The search term
-        inprop: 'url',         // Include full URL in info
-        origin: '*'            // Required for CORS to work with Fetch API
-    });
-
-    try {
-        const response = await fetch(`${WIKIPEDIA_API_URL}?${params.toString()}`);
-        const data = await response.json();
-
-        const pages = data.query.pages;
-        const pageId = Object.keys(pages)[0]; // Get the first page ID
-
-        if (pageId && pages[pageId].extract && pages[pageId].extract.length > 0) {
-            const extract = pages[pageId].extract;
-            const fullurl = pages[pageId].fullurl;
-            // Limit extract length for display in chat to keep it concise
-            const snippet = extract.length > 500 ? extract.substring(0, 500) + '...' : extract;
-            return `${snippet} <a href="${fullurl}" target="_blank" rel="noopener noreferrer">(Read more on Wikipedia)</a>`;
+        },
+        wikipedia: {
+            endpoint: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
+            searchEndpoint: 'https://en.wikipedia.org/w/api.php?action=opensearch&search='
+        },
+        nasa: {
+            apod: 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY',
+            imageLibrary: 'https://images-api.nasa.gov/search'
         }
-    } catch (error) {
-        console.error('Error fetching from Wikipedia:', error);
-    }
-    return null; // Return null if no valid Wikipedia answer is found or an error occurs
-}
-
-/**
- * Fetches an answer from the Gemini API with enhanced context about the ScienceAndFacts website.         * @param {string} query - The user's query.
- * @returns {Promise<string>} The AI-generated response.
- */
-async function getGeminiAnswer(query) {
-    // Enhanced system instruction with knowledge about the ScienceAndFacts website
-    const systemInstruction = {
-        role: "model",
-        parts: [{
-            text: `You are a helpful science assistant for the ScienceAndFacts website (${SCIENCE_SITE_URL}). 
-            Your role is to provide accurate, engaging explanations about scientific concepts, 
-            particularly those covered on the website. When appropriate, reference the website's content 
-            and provide links to relevant sections. 
-
-            Key website sections to reference:
-            - Physics concepts
-            - Chemistry experiments
-            - Biology facts
-            - Astronomy discoveries
-            - Technology innovations
-
-            Guidelines:
-            1. Be concise but thorough in explanations
-            2. Use simple analogies for complex concepts
-            3. Cite reliable sources when possible
-            4. For math/science problems, show your work
-            5. When mentioning website content, format links like this: 
-               <a href="${SCIENCE_SITE_URL}#section-id" target="_blank">[Relevant Section]</a>
-            6. For Wikipedia references, format like this:
-               <a href="https://en.wikipedia.org/wiki/Topic" target="_blank">[Wikipedia]</a>
-            7. Always maintain a friendly, enthusiastic tone about science`
-        }]
     };
 
-    try {
-        const response = await fetch(GEMINI_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                contents: [systemInstruction, ...currentChatHistory],
-                generationConfig: {
-                    temperature: 0.7, // Balance between creativity and accuracy
-                    topP: 0.9,
-                    topK: 40
-                }
-            })
-        });
+    // Comprehensive Science Knowledge Base with Enhanced NLP
+    const ENHANCED_KNOWLEDGE_BASE = {
+        // Physics Topics
+        quantum: {
+            keywords: ['quantum', 'qubit', 'superposition', 'entanglement', 'heisenberg', 'uncertainty', 'wave function', 'particle', 'photon', 'electron', 'quantum mechanics', 'quantum physics', 'quantum computing', 'quantum field', 'schrodinger'],
+            definition: "🔬 **Quantum Physics** explores the mysterious behavior of matter and energy at the smallest scales in the universe.",
+            explanation: "Quantum physics reveals that particles can exist in multiple states simultaneously (superposition), be instantly connected across vast distances (entanglement), and behave both as particles and waves. This strange quantum world forms the foundation of modern technology like lasers, MRI machines, and quantum computers.",
+            examples: [
+                "Schrödinger's cat demonstrates quantum superposition",
+                "Quantum tunneling allows particles to pass through barriers",
+                "Quantum entanglement enables 'spooky action at a distance'"
+            ],
+            applications: ["Quantum computing", "Quantum cryptography", "Laser technology", "MRI scanners"],
+            funFacts: [
+                "Quantum tunneling is essential for the sun's nuclear fusion",
+                "Your smartphone uses quantum effects in its transistors",
+                "Quantum computers could break current encryption methods"
+            ],
+            level: 'advanced',
+            related: ['particle physics', 'atomic structure', 'wave-particle duality', 'uncertainty principle']
+        },
 
-        const data = await response.json();
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            console.error('Unexpected Gemini API response:', data);
-            return "I'm having trouble processing that request. Could you try rephrasing or asking something else?";
+        space: {
+            keywords: ['space', 'universe', 'galaxy', 'star', 'planet', 'solar system', 'astronomy', 'cosmology', 'nasa', 'rocket', 'satellite', 'mars', 'moon', 'black hole', 'nebula', 'asteroid', 'comet'],
+            definition: "🚀 **Space Exploration** is humanity's quest to understand and explore the cosmos beyond Earth.",
+            explanation: "Space exploration combines cutting-edge technology with scientific curiosity to study planets, stars, galaxies, and the fundamental nature of the universe. From the first satellites to Mars rovers and the James Webb Space Telescope, we continue pushing the boundaries of human knowledge.",
+            examples: [
+                "The Hubble Space Telescope has observed galaxies 13 billion light-years away",
+                "Mars rovers have found evidence of ancient water on the Red Planet",
+                "The Voyager probes have traveled beyond our solar system"
+            ],
+            applications: ["Satellite communications", "Weather forecasting", "GPS navigation", "Medical imaging"],
+            funFacts: [
+                "One day on Venus is longer than its year",
+                "Jupiter's Great Red Spot is a storm larger than Earth",
+                "A teaspoon of neutron star material would weigh 6 billion tons"
+            ],
+            level: 'intermediate',
+            related: ['astronomy', 'astrophysics', 'cosmology', 'planetary science']
+        },
+
+        chemistry: {
+            keywords: ['chemistry', 'chemical', 'reaction', 'molecule', 'atom', 'element', 'compound', 'periodic table', 'bond', 'acid', 'base', 'organic', 'inorganic', 'catalyst', 'enzyme', 'ph', 'oxidation', 'reduction'],
+            definition: "⚗️ **Chemistry** is the science of matter, its properties, composition, structure, and the changes it undergoes.",
+            explanation: "Chemistry bridges physics and biology, explaining how atoms combine to form molecules, how chemical reactions occur, and how these processes drive everything from digestion to photosynthesis. It's the central science that connects the physical and biological worlds.",
+            examples: [
+                "Photosynthesis converts CO₂ and water into glucose using sunlight",
+                "Enzymes catalyze biochemical reactions in living organisms",
+                "The pH scale measures acidity from 0 (very acidic) to 14 (very basic)"
+            ],
+            applications: ["Pharmaceutical development", "Materials science", "Food preservation", "Environmental cleanup"],
+            funFacts: [
+                "Diamond and graphite are both pure carbon but with different structures",
+                "Water expands when it freezes, unlike most substances",
+                "The human body contains about 60 chemical elements"
+            ],
+            level: 'intermediate',
+            related: ['biochemistry', 'molecular biology', 'materials science', 'pharmacology']
+        },
+
+        biology: {
+            keywords: ['biology', 'life', 'cell', 'dna', 'gene', 'evolution', 'ecosystem', 'organism', 'bacteria', 'virus', 'protein', 'enzyme', 'photosynthesis', 'respiration', 'genetics', 'chromosome', 'mutation', 'species'],
+            definition: "🧬 **Biology** is the scientific study of life and living organisms.",
+            explanation: "Biology explores the incredible diversity of life on Earth, from microscopic bacteria to giant sequoias, from simple single-celled organisms to complex humans. It reveals how life works at molecular, cellular, and ecosystem levels.",
+            examples: [
+                "DNA contains the genetic instructions for all living things",
+                "Mitochondria are the powerhouses of cells, producing ATP energy",
+                "Evolution explains the diversity of life through natural selection"
+            ],
+            applications: ["Medicine and healthcare", "Agriculture and food production", "Biotechnology", "Conservation biology"],
+            funFacts: [
+                "Humans share about 50% of their DNA with bananas",
+                "Your body contains more bacterial cells than human cells",
+                "The human brain has about 86 billion neurons"
+            ],
+            level: 'intermediate',
+            related: ['genetics', 'ecology', 'microbiology', 'biochemistry']
+        },
+
+        physics: {
+            keywords: ['physics', 'force', 'energy', 'motion', 'gravity', 'electricity', 'magnetism', 'light', 'sound', 'heat', 'temperature', 'pressure', 'mechanics', 'thermodynamics', 'electromagnetism', 'relativity', 'newton', 'einstein'],
+            definition: "🌌 **Physics** is the fundamental science that studies matter, energy, and their interactions.",
+            explanation: "Physics seeks to understand how the universe works at its most basic level. From the smallest subatomic particles to the largest structures in the cosmos, physics provides the mathematical framework for describing natural phenomena.",
+            examples: [
+                "Newton's laws describe how objects move and interact",
+                "Einstein's relativity shows that time and space are connected",
+                "Thermodynamics explains how heat and energy flow"
+            ],
+            applications: ["Engineering and technology", "Computer science", "Medical devices", "Energy production"],
+            funFacts: [
+                "Light travels at 299,792,458 meters per second in a vacuum",
+                "Absolute zero (-273.15°C) is the coldest possible temperature",
+                "Time passes more slowly in strong gravitational fields"
+            ],
+            level: 'intermediate',
+            related: ['mechanics', 'thermodynamics', 'electromagnetism', 'quantum physics']
+        },
+
+        // Additional specialized topics
+        dna: {
+            keywords: ['dna', 'genetic', 'gene', 'chromosome', 'nucleotide', 'base pair', 'double helix', 'watson', 'crick', 'genome', 'mutation', 'inheritance', 'heredity'],
+            definition: "🧬 **DNA** (Deoxyribonucleic acid) is the molecule that carries genetic instructions in living organisms.",
+            explanation: "DNA is like a biological instruction manual written in a four-letter alphabet (A, T, G, C). This double helix structure contains all the information needed to build and maintain life, passed from parents to offspring.",
+            examples: [
+                "Human DNA contains about 3 billion base pairs",
+                "DNA fingerprinting can identify individuals uniquely",
+                "CRISPR technology allows precise DNA editing"
+            ],
+            level: 'intermediate',
+            related: ['genetics', 'biology', 'evolution', 'biotechnology']
+        },
+
+        blackhole: {
+            keywords: ['black hole', 'blackhole', 'event horizon', 'singularity', 'gravity', 'hawking radiation', 'spacetime', 'relativity'],
+            definition: "🌑 **Black Holes** are regions of spacetime where gravity is so strong that nothing, not even light, can escape.",
+            explanation: "Black holes form when massive stars collapse, creating a point of infinite density called a singularity. They warp spacetime so severely that they create an event horizon - a point of no return.",
+            examples: [
+                "Sagittarius A* is the supermassive black hole at our galaxy's center",
+                "The Event Horizon Telescope captured the first image of a black hole in 2019",
+                "Hawking radiation suggests black holes slowly evaporate over time"
+            ],
+            level: 'advanced',
+            related: ['astronomy', 'relativity', 'spacetime', 'gravity']
         }
-    } catch (error) {
-        console.error('Error calling Gemini API:', error);
-        return "I'm currently unable to access my knowledge base. Please try again later.";
-    }
-}
+    };
 
-/**
- * Handles the user's message and generates an appropriate response.
- * @param {string} message - The user's message.
- */
-async function handleUserMessage(message) {
-    // Add user message to chat
-    addMessage(message, 'user');
-    chatInput.value = ''; // Clear input
-    autoResizeTextarea(); // Reset textarea height
+    // Enhanced Natural Language Processing
+    const NLP_PATTERNS = {
+        question_words: ['what', 'how', 'why', 'when', 'where', 'which', 'who'],
+        greeting_patterns: /\b(hello|hi|hey|greetings|good morning|good afternoon|good evening)\b/i,
+        thanks_patterns: /\b(thank|thanks|appreciate|grateful)\b/i,
+        explanation_requests: /\b(explain|describe|tell me about|what is|how does|define)\b/i,
+        curiosity_patterns: /\b(interesting|fascinating|amazing|wow|cool|awesome)\b/i,
+        confusion_patterns: /\b(confused|don't understand|unclear|complex|difficult)\b/i,
+        help_patterns: /\b(help|assist|support|guide)\b/i
+    };
 
-    // Show typing indicator while processing
-    showTypingIndicator();
+    // Conversational Response Templates
+    const RESPONSE_TEMPLATES = {
+        greetings: [
+            "Hello! I'm your AI Science Guide. What fascinating topic would you like to explore today?",
+            "Hi there! Ready to dive into the amazing world of science?",
+            "Greetings, curious mind! What scientific mystery shall we unravel together?",
+            "Welcome! I'm here to make science accessible and exciting. What interests you?"
+        ],
+        thanks: [
+            "You're very welcome! Science is even more fun when shared. What else would you like to discover?",
+            "My pleasure! Keep that curiosity flowing - what's your next question?",
+            "Happy to help! The universe is full of wonders waiting to be explored."
+        ],
+        encouragement: [
+            "That's a fantastic question! Let me break it down for you:",
+            "Great curiosity! Here's what science tells us:",
+            "Excellent thinking! This is a really important concept:",
+            "I love that you're asking about this! Here's the fascinating answer:"
+        ],
+        confusion_help: [
+            "No worries! Let me explain it in simpler terms:",
+            "I understand this can be complex. Let me break it down step by step:",
+            "That's totally normal to find this confusing! Here's a clearer explanation:"
+        ],
+        topic_transitions: [
+            "Speaking of that, you might also be interested in:",
+            "This connects beautifully to another fascinating topic:",
+            "Since you're curious about this, here's something related that might amaze you:"
+        ]
+    };
 
-    // Check for simple greetings/commands first
-    const lowerMessage = message.toLowerCase().trim();
-    if (lowerMessage.includes('thank') || lowerMessage.includes('thanks')) {
-        hideTypingIndicator();
-        addMessage("You're welcome! Is there anything else you'd like to know about science?", 'bot');
-        return;
-    }
-
-    if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || lowerMessage.includes('hey')) {
-        hideTypingIndicator();
-        addMessage("Hello again! Ready to explore more fascinating science facts?", 'bot');
-        return;
-    }
-
-    // Check if the user is asking about the ScienceAndFacts website specifically
-    if (lowerMessage.includes('website') || lowerMessage.includes('site') || 
-        lowerMessage.includes(SCIENCE_SITE_URL.replace('https://', ''))) {
-        hideTypingIndicator();
-        addMessage(`The ScienceAndFacts website (${SCIENCE_SITE_URL}) is a great resource for science enthusiasts! ` +
-            `It covers topics like physics, chemistry, biology, and astronomy. ` +
-            `You can browse different sections to learn about specific concepts. ` +
-            `Is there a particular topic you'd like me to explain from the website?`, 'bot');
-        return;
-    }
-
-    // Try Wikipedia first for factual queries (good for definitions, historical facts, etc.)
-    const wikiKeywords = ['what is', 'who is', 'define', 'definition', 'explain', 'history of'];
-    const shouldTryWikipedia = wikiKeywords.some(keyword => lowerMessage.includes(keyword));
-
-    let response = null;
-    if (shouldTryWikipedia) {
-        // Extract the main query for Wikipedia (remove question words)
-        const query = message.replace(/\b(what|who|define|definition|explain|history)\b/gi, '').trim();
-        response = await getWikipediaAnswer(query);
-    }
-
-    // If Wikipedia didn't return a good answer or wasn't appropriate, use Gemini
-    if (!response) {
-        response = await getGeminiAnswer(message);
-    }
-
-    // Hide typing indicator and add response
-    hideTypingIndicator();
-    addMessage(response, 'bot');
-}
-
-// --- Event Listeners ---
-
-// Toggle chat window
-chatbotOpenBtn.addEventListener('click', toggleChatbot);
-chatbotCloseBtn.addEventListener('click', toggleChatbot);
-
-// Theme toggle
-themeToggleBtn.addEventListener('click', toggleTheme);
-
-// Draggable window functionality
-chatbotHeader.addEventListener('mousedown', startDragging);
-document.addEventListener('mousemove', drag);
-document.addEventListener('mouseup', stopDragging);
-
-// Emoji picker functionality
-emojiBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevent triggering drag events
-    toggleEmojiPicker();
-});
-
-// Hide emoji picker when clicking elsewhere
-document.addEventListener('click', hideEmojiPicker);
-emojiPicker.addEventListener('click', (e) => e.stopPropagation());
-
-// Handle textarea input and resizing
-chatInput.addEventListener('input', autoResizeTextarea);
-
-// Send message on Enter key (but allow Shift+Enter for new lines)
-chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        const message = chatInput.value.trim();
-        if (message) {
-            handleUserMessage(message);
+    // Initialize Enhanced Chatbot
+    function initChatbot() {
+        setupEventListeners();
+        loadUserPreferences();
+        initSpeechRecognition();
+        positionChatbotToggle();
+        
+        // Check if this is the first visit
+        if (!localStorage.getItem('chatbotVisited')) {
+            localStorage.setItem('chatbotVisited', 'true');
+            scheduleIntroduction();
         }
     }
-});
 
-// Send message on button click
-sendBtn.addEventListener('click', () => {
-    const message = chatInput.value.trim();
-    if (message) {
-        handleUserMessage(message);
+    function positionChatbotToggle() {
+        if (chatbotToggle) {
+            chatbotToggle.style.bottom = '70px';
+            chatbotToggle.style.right = '20px';
+        }
     }
-});
 
-// Initialize the chat
-document.addEventListener('DOMContentLoaded', () => {
-    initializeTheme();
-    populateEmojiPicker();
-    
-    // Add welcome message if no messages exist (besides initial bot message)
-    if (chatbotBody.querySelectorAll('.chat-message').length <= 1) {
+    function loadUserPreferences() {
+        darkMode = localStorage.getItem('chatbotDarkMode') === 'true';
+        ttsEnabled = localStorage.getItem('chatbotTTS') === 'true';
+        
+        const savedProfile = localStorage.getItem('userProfile');
+        if (savedProfile) {
+            userProfile = {...userProfile, ...JSON.parse(savedProfile)};
+        }
+        
+        applyTheme();
+        updateTTSButton();
+    }
+
+    function applyTheme() {
+        if (darkMode && chatbotWindow) {
+            chatbotWindow.classList.add('dark-mode');
+            if (themeToggle) themeToggle.innerHTML = '☀️';
+        }
+    }
+
+    function updateTTSButton() {
+        if (ttsToggle) {
+            ttsToggle.innerHTML = ttsEnabled ? '🔊' : '🔇';
+        }
+    }
+
+    function scheduleIntroduction() {
         setTimeout(() => {
-            addMessage("Try asking me about:<br>" +
-                "- Scientific concepts from the ScienceAndFacts website<br>" +
-                "- Recent discoveries in physics or biology<br>" +
-                "- Explanations of complex topics in simple terms<br>" +
-                "- Help with science homework problems", 'bot');
-        }, 1500);
+            if (!hasShownIntroduction) {
+                showPersonalizedIntroduction();
+                hasShownIntroduction = true;
+            }
+        }, INTRODUCTION_DELAY);
     }
-});
 
-// Make the chat window resizable (handled by CSS resize property)
-// Additional touch support for mobile devices
-if ('ontouchstart' in window) {
-    // Touch support for draggable header
-    chatbotHeader.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        const mouseEvent = new MouseEvent('mousedown', {
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-        startDragging(mouseEvent);
-    });
+    function showPersonalizedIntroduction() {
+        const introMessage = `🌟 **Welcome to ScienceAndFacts!** 
 
-    document.addEventListener('touchmove', (e) => {
-        if (isDragging) {
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousemove', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
+I'm your AI Science Guide, here to make complex scientific concepts accessible and exciting! 
+
+🔬 **I can help you with:**
+• Quantum physics and advanced theories
+• Space exploration and astronomy  
+• Chemistry and molecular science
+• Biology and life sciences
+• Physics fundamentals
+• Current scientific discoveries
+
+🎯 **Try asking me:**
+• "Explain quantum entanglement simply"
+• "What's fascinating about black holes?"
+• "How does photosynthesis work?"
+• "Tell me about recent space discoveries"
+
+Ready to explore the wonders of science together? What interests you most?`;
+
+        setTimeout(() => {
+            addBotMessage(introMessage);
+        }, 500);
+    }
+
+    function setupEventListeners() {
+        if (chatbotToggle) chatbotToggle.addEventListener('click', toggleChatbotWindow);
+        if (chatbotClose) chatbotClose.addEventListener('click', toggleChatbotWindow);
+        if (chatbotSend) chatbotSend.addEventListener('click', sendMessage);
+        if (chatbotInput) {
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendMessage();
+                }
             });
-            drag(mouseEvent);
-            e.preventDefault(); // Prevent scrolling while dragging
         }
-    }, { passive: false });
+        if (chatbotVoice) chatbotVoice.addEventListener('click', toggleVoiceRecognition);
+        if (themeToggle) themeToggle.addEventListener('click', toggleDarkMode);
+        if (ttsToggle) ttsToggle.addEventListener('click', toggleTTS);
+        
+        initDragAndDrop();
+    }
 
-    document.addEventListener('touchend', () => {
-        if (isDragging) {
-            stopDragging();
+    function toggleChatbotWindow() {
+        if (!chatbotWindow) return;
+        
+        const isVisible = chatbotWindow.style.display === 'flex';
+        chatbotWindow.style.display = isVisible ? 'none' : 'flex';
+        
+        if (chatbotToggle) {
+            chatbotToggle.innerHTML = isVisible ? '🤖' : '✕';
+        }
+        
+        if (!isVisible) {
+            setTimeout(() => {
+                scrollToBottom();
+                if (chatbotInput) chatbotInput.focus();
+            }, 100);
+            
+            // Show introduction if it hasn't been shown yet
+            if (!hasShownIntroduction) {
+                showPersonalizedIntroduction();
+                hasShownIntroduction = true;
+            }
+        }
+    }
+
+    function initDragAndDrop() {
+        const header = document.querySelector('.chatbot-header');
+        if (!header || !chatbotWindow) return;
+        
+        header.addEventListener('mousedown', (e) => {
+            if (e.target === header || e.target.classList.contains('chatbot-title')) {
+                isDragging = true;
+                chatbotWindow.classList.add('dragging');
+                
+                const rect = chatbotWindow.getBoundingClientRect();
+                dragOffsetX = e.clientX - rect.left;
+                dragOffsetY = e.clientY - rect.top;
+                
+                e.preventDefault();
+            }
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging && chatbotWindow) {
+                const newLeft = e.clientX - dragOffsetX;
+                const newTop = e.clientY - dragOffsetY;
+                
+                const minDistance = 20;
+                const maxLeft = window.innerWidth - chatbotWindow.offsetWidth - minDistance;
+                const maxTop = window.innerHeight - chatbotWindow.offsetHeight - minDistance;
+                
+                const constrainedLeft = Math.max(minDistance, Math.min(newLeft, maxLeft));
+                const constrainedTop = Math.max(minDistance, Math.min(newTop, maxTop));
+                
+                chatbotWindow.style.left = `${constrainedLeft}px`;
+                chatbotWindow.style.top = `${constrainedTop}px`;
+                chatbotWindow.style.right = 'auto';
+                chatbotWindow.style.bottom = 'auto';
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            if (chatbotWindow) {
+                chatbotWindow.classList.remove('dragging');
+            }
+        });
+    }
+
+    // Enhanced Message Handling
+    function addBotMessage(text, options = {}) {
+        hideTypingIndicator();
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        
+        // Enhanced markdown formatting
+        let formattedText = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+            .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n/g, '<br>')
+            .replace(/• /g, '<span style="margin-left: 10px;">• </span>');
+        
+        messageDiv.innerHTML = formattedText;
+        
+        // Add timestamp
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'message-time';
+        timeSpan.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        messageDiv.appendChild(timeSpan);
+        
+        if (chatbotMessages) {
+            chatbotMessages.appendChild(messageDiv);
+        }
+        scrollToBottom();
+        
+        // Text-to-speech with improved voice
+        if (ttsEnabled && 'speechSynthesis' in window && !options.skipTTS) {
+            speakText(text);
+        }
+    }
+
+    function addUserMessage(text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.textContent = text;
+        
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'message-time';
+        timeSpan.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        messageDiv.appendChild(timeSpan);
+        
+        if (chatbotMessages) {
+            chatbotMessages.appendChild(messageDiv);
+        }
+        scrollToBottom();
+    }
+
+    function speakText(text) {
+        try {
+            // Clean text for speech
+            const cleanText = text
+                .replace(/\*\*(.*?)\*\*/g, '$1')
+                .replace(/\*(.*?)\*/g, '$1')
+                .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+                .replace(/[🔬🚀⚗️🧬🌌🌑🌟]/g, '')
+                .replace(/\n/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            
+            if (cleanText.length > 0) {
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+                utterance.volume = 0.8;
+                
+                // Try to use a better voice if available
+                const voices = speechSynthesis.getVoices();
+                const preferredVoice = voices.find(voice => 
+                    voice.name.includes('Google') || 
+                    voice.name.includes('Natural') ||
+                    voice.lang.startsWith('en-')
+                );
+                
+                if (preferredVoice) {
+                    utterance.voice = preferredVoice;
+                }
+                
+                speechSynthesis.speak(utterance);
+            }
+        } catch (error) {
+            console.error('Text-to-speech error:', error);
+        }
+    }
+
+    function scrollToBottom() {
+        if (chatbotMessages) {
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+    }
+
+    function showTypingIndicator() {
+        hideTypingIndicator();
+        
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typing-indicator';
+        
+        for (let i = 0; i < 3; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'typing-dot';
+            typingDiv.appendChild(dot);
+        }
+        
+        if (chatbotMessages) {
+            chatbotMessages.appendChild(typingDiv);
+        }
+        scrollToBottom();
+    }
+
+    function hideTypingIndicator() {
+        const existingIndicator = document.getElementById('typing-indicator');
+        if (existingIndicator) {
+            existingIndicator.remove();
+        }
+    }
+
+    // Enhanced Message Processing with Advanced NLP
+    async function sendMessage() {
+        const message = chatbotInput?.value?.trim();
+        if (!message) return;
+        
+        addUserMessage(message);
+        if (chatbotInput) chatbotInput.value = '';
+        
+        // Add to user profile
+        userProfile.previousQuestions.push(message);
+        if (userProfile.previousQuestions.length > 10) {
+            userProfile.previousQuestions.shift();
+        }
+        
+        // Save user profile
+        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+        
+        await processMessage(message);
+    }
+
+    async function processMessage(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Update conversation history
+        conversationHistory.push({
+            role: 'user',
+            content: message,
+            timestamp: new Date()
+        });
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Add realistic delay for better UX
+        await new Promise(resolve => setTimeout(resolve, TYPING_DELAY));
+        
+        // Process different types of messages
+        let response = null;
+        
+        // 1. Handle greetings
+        if (NLP_PATTERNS.greeting_patterns.test(lowerMessage)) {
+            response = handleGreeting(message);
+        }
+        // 2. Handle thanks
+        else if (NLP_PATTERNS.thanks_patterns.test(lowerMessage)) {
+            response = handleThanks(message);
+        }
+        // 3. Handle help requests
+        else if (NLP_PATTERNS.help_patterns.test(lowerMessage)) {
+            response = handleHelpRequest(message);
+        }
+        // 4. Handle confusion
+        else if (NLP_PATTERNS.confusion_patterns.test(lowerMessage)) {
+            response = handleConfusion(message);
+        }
+        // 5. Handle science questions
+        else {
+            response = await handleScienceQuestion(message);
+        }
+        
+        // Add response to conversation history
+        conversationHistory.push({
+            role: 'assistant',
+            content: response,
+            timestamp: new Date()
+        });
+        
+        // Limit conversation history
+        if (conversationHistory.length > MAX_HISTORY_LENGTH) {
+            conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_LENGTH);
+        }
+        
+        addBotMessage(response);
+        
+        // Suggest related topics
+        setTimeout(() => {
+            suggestRelatedTopics(message);
+        }, 2000);
+    }
+
+    function handleGreeting(message) {
+        const responses = RESPONSE_TEMPLATES.greetings;
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        
+        // Personalize based on time of day
+        const hour = new Date().getHours();
+        let timeGreeting = '';
+        
+        if (hour < 12) timeGreeting = 'Good morning! ';
+        else if (hour < 17) timeGreeting = 'Good afternoon! ';
+        else timeGreeting = 'Good evening! ';
+        
+        return timeGreeting + randomResponse;
+    }
+
+    function handleThanks(message) {
+        const responses = RESPONSE_TEMPLATES.thanks;
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    function handleHelpRequest(message) {
+        return `🎯 **I'm here to help you explore science!** Here's what I can do:
+
+**🔬 Explain Complex Topics:**
+• Quantum physics and particle behavior
+• Space exploration and astronomy
+• Chemistry and molecular interactions
+• Biology and life processes
+• Physics fundamentals
+
+**🌟 Interactive Learning:**
+• Break down difficult concepts
+• Provide real-world examples
+• Share fascinating facts
+• Connect related topics
+
+**🚀 Current Topics:**
+• Latest space discoveries
+• Breakthrough research
+• Technology applications
+
+**Try asking:**
+• "How do black holes form?"
+• "What makes DNA special?"
+• "Explain photosynthesis"
+• "Tell me about quantum computing"
+
+What scientific topic interests you most?`;
+    }
+
+    function handleConfusion(message) {
+        const responses = RESPONSE_TEMPLATES.confusion_help;
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        
+        return `${randomResponse}
+
+🎯 **Let me help clarify!** 
+
+If you're finding something complex, I can:
+• Explain it in simpler terms
+• Use analogies and examples
+• Break it into smaller steps
+• Focus on the key concepts
+
+What specific part would you like me to explain differently?`;
+    }
+
+    async function handleScienceQuestion(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Find the best matching topic
+        const matchedTopic = findBestTopicMatch(lowerMessage);
+        
+        if (matchedTopic) {
+            currentTopic = matchedTopic.key;
+            return formatEnhancedResponse(matchedTopic.data, message);
+        }
+        
+        // Try external APIs
+        const apiResponse = await tryExternalAPIs(message);
+        if (apiResponse) {
+            return apiResponse;
+        }
+        
+        // Generate contextual response
+        return generateContextualResponse(message);
+    }
+
+    function findBestTopicMatch(message) {
+        let bestMatch = null;
+        let bestScore = 0;
+        
+        for (const [key, data] of Object.entries(ENHANCED_KNOWLEDGE_BASE)) {
+            const score = calculateTopicScore(message, data.keywords);
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = { key, data };
+            }
+        }
+        
+        return bestScore > 0 ? bestMatch : null;
+    }
+
+    function calculateTopicScore(message, keywords) {
+        let score = 0;
+        const words = message.toLowerCase().split(/\s+/);
+        
+        for (const keyword of keywords) {
+            if (words.includes(keyword)) {
+                score += 1;
+            }
+            if (message.toLowerCase().includes(keyword)) {
+                score += 0.5;
+            }
+        }
+        
+        return score;
+    }
+
+    function formatEnhancedResponse(topicData, originalMessage) {
+        const encouragement = RESPONSE_TEMPLATES.encouragement;
+        const randomEncouragement = encouragement[Math.floor(Math.random() * encouragement.length)];
+        
+        let response = `${randomEncouragement}\n\n${topicData.definition}\n\n${topicData.explanation}`;
+        
+        // Add examples if available
+        if (topicData.examples && topicData.examples.length > 0) {
+            response += `\n\n**🌟 Examples:**\n${topicData.examples.map(ex => `• ${ex}`).join('\n')}`;
+        }
+        
+        // Add applications if available
+        if (topicData.applications && topicData.applications.length > 0) {
+            response += `\n\n**🚀 Applications:**\n${topicData.applications.map(app => `• ${app}`).join('\n')}`;
+        }
+        
+        // Add fun facts if available
+        if (topicData.funFacts && topicData.funFacts.length > 0) {
+            const randomFact = topicData.funFacts[Math.floor(Math.random() * topicData.funFacts.length)];
+            response += `\n\n**💡 Fun Fact:** ${randomFact}`;
+        }
+        
+        // Add website reference
+        response += `\n\n**📚 Learn More:** [Explore ${currentTopic} on our website](${API_CONFIG.scienceAndFacts.baseUrl}${API_CONFIG.scienceAndFacts.topics[currentTopic] || ''})`;
+        
+        return response;
+    }
+
+    async function tryExternalAPIs(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Try NASA API for space-related queries
+        if (/space|nasa|astronomy|planet|star|galaxy|universe|mars|moon|rocket|satellite/.test(lowerMessage)) {
+            const nasaResponse = await fetchNASAData(message);
+            if (nasaResponse) return nasaResponse;
+        }
+        
+        // Try Wikipedia for general science topics
+        const wikiResponse = await fetchWikipediaData(message);
+        if (wikiResponse) return wikiResponse;
+        
+        return null;
+    }
+
+    async function fetchNASAData(query) {
+        try {
+            if (/apod|picture.*day|astronomy.*photo/.test(query.toLowerCase())) {
+                const response = await fetch(API_CONFIG.nasa.apod);
+                if (response.ok) {
+                    const data = await response.json();
+                    return `🚀 **NASA Astronomy Picture of the Day** (${data.date})
+
+**${data.title}**
+
+${data.explanation}
+
+[View the full image](${data.url})
+
+*This incredible image showcases the beauty and wonder of our universe!*`;
+                }
+            }
+            
+            // Try NASA image search
+            const searchResponse = await fetch(`${API_CONFIG.nasa.imageLibrary}?q=${encodeURIComponent(query)}&media_type=image`);
+            if (searchResponse.ok) {
+                const searchData = await searchResponse.json();
+                if (searchData.collection.items.length > 0) {
+                    const firstItem = searchData.collection.items[0];
+                    const imageData = firstItem.data[0];
+                    const imageLink = firstItem.links?.[0]?.href;
+                    
+                    return `🚀 **NASA Image: ${imageData.title}**
+
+${imageData.description || 'An amazing view from NASA\'s archives!'}
+
+${imageLink ? `[View Image](${imageLink})` : ''}
+
+*NASA continues to capture breathtaking images that expand our understanding of the cosmos.*`;
+                }
+            }
+        } catch (error) {
+            console.error('NASA API error:', error);
+        }
+        return null;
+    }
+
+    async function fetchWikipediaData(query) {
+        try {
+            const response = await fetch(`${API_CONFIG.wikipedia.endpoint}${encodeURIComponent(query)}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.extract) {
+                    return `📖 **From Wikipedia: ${data.title}**
+
+${data.extract}
+
+[Read the full article](${data.content_urls.desktop.page})
+
+*This information provides a great foundation for understanding ${query}.*`;
+                }
+            }
+        } catch (error) {
+            console.error('Wikipedia API error:', error);
+        }
+        return null;
+    }
+
+    function generateContextualResponse(message) {
+        const responses = [
+            `🤔 That's an interesting question about "${message}"! While I don't have specific information about this exact topic, I can help you explore related scientific concepts.`,
+            `🔬 I'd love to help you understand "${message}" better! Let me suggest some related topics that might interest you.`,
+            `🌟 Great question! While I may not have detailed information about "${message}" specifically, I can guide you to relevant scientific areas.`
+        ];
+        
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        
+        return `${randomResponse}
+
+**🎯 Here's what I can help you explore:**
+
+• **Physics & Quantum Mechanics** - Fundamental forces and particle behavior
+• **Space & Astronomy** - Planets, stars, galaxies, and cosmic phenomena  
+• **Chemistry & Molecules** - Chemical reactions and molecular structures
+• **Biology & Life Sciences** - Living organisms and biological processes
+
+**🚀 You might also find these helpful:**
+• [Explore our ScienceAndFacts website](${API_CONFIG.scienceAndFacts.baseUrl})
+• [Search Wikipedia](https://en.wikipedia.org/wiki/Special:Search/${encodeURIComponent(message)})
+
+What specific aspect of science interests you most? I can provide detailed explanations!`;
+    }
+
+    function suggestRelatedTopics(message) {
+        if (!currentTopic) return;
+        
+        const topicData = ENHANCED_KNOWLEDGE_BASE[currentTopic];
+        if (!topicData || !topicData.related) return;
+        
+        const relatedTopics = topicData.related.slice(0, 3);
+        if (relatedTopics.length === 0) return;
+        
+        const suggestions = relatedTopics.map(topic => `• ${topic}`).join('\n');
+        
+        const transition = RESPONSE_TEMPLATES.topic_transitions;
+        const randomTransition = transition[Math.floor(Math.random() * transition.length)];
+        
+        addBotMessage(`${randomTransition}
+
+${suggestions}
+
+Which of these would you like to explore next?`, { skipTTS: true });
+    }
+
+    // Enhanced Speech Recognition
+    function initSpeechRecognition() {
+        try {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                recognition.maxAlternatives = 1;
+                
+                recognition.onstart = () => {
+                    if (chatbotVoice) {
+                        chatbotVoice.classList.add('listening');
+                    }
+                    addBotMessage("🎤 I'm listening... Please speak your question clearly.", { skipTTS: true });
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    if (chatbotInput) {
+                        chatbotInput.value = transcript;
+                    }
+                    addBotMessage(`🗣️ I heard: "${transcript}"`, { skipTTS: true });
+                    setTimeout(() => sendMessage(), 1000);
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    let errorMessage = "Sorry, I couldn't understand your voice command.";
+                    
+                    switch(event.error) {
+                        case 'no-speech':
+                            errorMessage = "I didn't hear anything. Please try speaking again.";
+                            break;
+                        case 'network':
+                            errorMessage = "Network error. Please check your connection and try again.";
+                            break;
+                        case 'not-allowed':
+                            errorMessage = "Microphone access denied. Please enable microphone permissions.";
+                            break;
+                    }
+                    
+                    addBotMessage(errorMessage);
+                };
+                
+                recognition.onend = () => {
+                    isListening = false;
+                    if (chatbotVoice) {
+                        chatbotVoice.classList.remove('listening');
+                    }
+                };
+            }
+        } catch (error) {
+            console.error('Speech recognition initialization error:', error);
+        }
+    }
+
+    function toggleVoiceRecognition() {
+        if (!recognition) {
+            addBotMessage("🎤 Voice recognition is not supported in your browser. Please type your question instead.");
+            return;
+        }
+        
+        if (isListening) {
+            recognition.stop();
+            isListening = false;
+            if (chatbotVoice) {
+                chatbotVoice.classList.remove('listening');
+            }
+        } else {
+            try {
+                recognition.start();
+                isListening = true;
+            } catch (error) {
+                console.error('Voice recognition start error:', error);
+                addBotMessage("🎤 Sorry, I couldn't start voice recognition. Please check your microphone permissions and try again.");
+            }
+        }
+    }
+
+    // Theme and Settings
+    function toggleDarkMode() {
+        darkMode = !darkMode;
+        if (chatbotWindow) {
+            chatbotWindow.classList.toggle('dark-mode');
+        }
+        if (themeToggle) {
+            themeToggle.innerHTML = darkMode ? '☀️' : '🌙';
+        }
+        localStorage.setItem('chatbotDarkMode', darkMode);
+    }
+
+    function toggleTTS() {
+        ttsEnabled = !ttsEnabled;
+        updateTTSButton();
+        localStorage.setItem('chatbotTTS', ttsEnabled);
+        
+        const message = ttsEnabled ? 
+            "🔊 Text-to-speech enabled! I'll now read my responses aloud." :
+            "🔇 Text-to-speech disabled. I'll only show text responses.";
+        
+        addBotMessage(message, { skipTTS: !ttsEnabled });
+    }
+
+    // Utility Functions
+    function cleanTextForSpeech(text) {
+        return text
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/\*(.*?)\*/g, '$1')
+            .replace(/```[\s\S]*?```/g, '')
+            .replace(/`(.*?)`/g, '$1')
+            .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+            .replace(/[🔬🚀⚗️🧬🌌🌑🌟💡📚🎯🤔]/g, '')
+            .replace(/\n+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function updateUserTopicInterest(topic) {
+        if (!userProfile.preferredTopics.includes(topic)) {
+            userProfile.preferredTopics.push(topic);
+            if (userProfile.preferredTopics.length > 5) {
+                userProfile.preferredTopics.shift();
+            }
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+        }
+    }
+
+    function getPersonalizedGreeting() {
+        const hour = new Date().getHours();
+        const timeOfDay = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
+        
+        if (userProfile.preferredTopics.length > 0) {
+            const favoriteTopic = userProfile.preferredTopics[userProfile.preferredTopics.length - 1];
+            return `Good ${timeOfDay}! Ready to explore more about ${favoriteTopic} or discover something new?`;
+        }
+        
+        return `Good ${timeOfDay}! What fascinating scientific topic would you like to explore today?`;
+    }
+
+    // Error Handling
+    window.addEventListener('error', (event) => {
+        console.error('Chatbot error:', event.error);
+        if (event.error.message.includes('fetch')) {
+            addBotMessage("🔄 I'm having trouble connecting to external services, but I can still help with science topics from my knowledge base!");
         }
     });
-}
+
+    // Initialize the Enhanced Chatbot
+    initChatbot();
+
+    // Expose necessary functions to global scope for debugging
+    window.chatbotDebug = {
+        showIntro: showPersonalizedIntroduction,
+        toggleWindow: toggleChatbotWindow,
+        clearHistory: () => {
+            conversationHistory = [];
+            localStorage.removeItem('userProfile');
+            localStorage.removeItem('chatbotVisited');
+        }
+    };
+});
