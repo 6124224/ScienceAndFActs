@@ -1027,4 +1027,20 @@ Which of these would you like to explore next?`, { skipTTS: true });
             localStorage.removeItem('chatbotVisited');
         }
     };
+// Align chatbot button with back-to-top button
+const alignChatbotButton = () => {
+  const chatBotBtn = document.querySelector('.chatbot-toggle');
+  const backToTopBtn = document.querySelector('.back-to-top-button');
+
+  if (chatBotBtn && backToTopBtn) {
+    const backTopRect = backToTopBtn.getBoundingClientRect();
+    const chatBotRect = chatBotBtn.getBoundingClientRect();
+    const offset = backTopRect.top - chatBotRect.top;
+
+    chatBotBtn.style.position = 'relative';
+    chatBotBtn.style.top = `${offset}px`;
+  }
+};
+
+window.addEventListener('load', alignChatbotButton);
 });
