@@ -1,32 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>
-  /* ====== Custom Science Chatbot Trigger Button ====== */
-  .chat-launch {
-    position: fixed;
-    bottom: 160px;           /* Higher on screen */
-    right: 30px;             /* Horizontal spacing */
-    background: #111111ee;   /* Dark + translucent */
-    color: #00fff7;
-    font-size: 0.85rem;
-    font-family: 'Roboto', sans-serif;
-    padding: 6px 12px;
-    border-radius: 18px;
-    font-weight: 600;
-    box-shadow: 0 0 12px rgba(0,255,255,0.3);
-    z-index: 9999;
-    transition: all 0.3s ease;
-  }
-
-  .chat-launch:hover {
-    background: #00fff7;
-    color: #111;
-    box-shadow: 0 0 14px rgba(0,255,255,0.6);
-    transform: scale(1.05);
-    cursor: pointer;
-  }
-</style>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta charset="UTF-8" />
@@ -44,7 +18,30 @@
 
   <!-- SWIPER.JS FOR CAROUSELS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+<style>/* 🧠 Streamlined Chatbot Button Style */
+.chat-launch {
+  position: fixed;
+  bottom: 180px;           /* Higher placement */
+  right: 30px;             /* Adjust as needed */
+  background: #111111e0;   /* Dark translucent base */
+  color: #00fff7;
+  font-size: 0.75rem;      /* Slightly smaller text */
+  padding: 5px 10px;       /* Reduced padding for compact size */
+  border-radius: 16px;     /* Smaller curve for sleeker look */
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(0,255,255,0.3);
+  z-index: 9999;
+  transition: all 0.3s ease;
+}
 
+.chat-launch:hover {
+  background: #00fff7;
+  color: #111;
+  box-shadow: 0 0 12px rgba(0,255,255,0.6);
+  transform: scale(1.05);
+  cursor: pointer;
+}
+</style>
   <style>
     /* =====================================================================
        RESET + BOX-SIZING + BASE TYPOGRAPHY
@@ -1676,7 +1673,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="chatbot-container">
   <script src='https://cdn.jotfor.ms/agent/embedjs/0198164229527e24bca1d15fbc24cb1102b7/embed.js?skipWelcome=1&maximizable=1'></script>
 </div>
-<button id="customChatTrigger" class="chat-launch">💬 Science Chat</button>
 <script>
   document.getElementById('customChatTrigger').addEventListener('click', () => {
     const iframe = document.querySelector('#jotformAgent-embed-wrapper iframe');
