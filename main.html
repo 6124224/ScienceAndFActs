@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+  /* ====== Custom Science Chatbot Trigger Button ====== */
+  .chat-launch {
+    position: fixed;
+    bottom: 160px;           /* Higher on screen */
+    right: 30px;             /* Horizontal spacing */
+    background: #111111ee;   /* Dark + translucent */
+    color: #00fff7;
+    font-size: 0.85rem;
+    font-family: 'Roboto', sans-serif;
+    padding: 6px 12px;
+    border-radius: 18px;
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(0,255,255,0.3);
+    z-index: 9999;
+    transition: all 0.3s ease;
+  }
+
+  .chat-launch:hover {
+    background: #00fff7;
+    color: #111;
+    box-shadow: 0 0 14px rgba(0,255,255,0.6);
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+</style>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta charset="UTF-8" />
@@ -1650,36 +1676,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="chatbot-container">
   <script src='https://cdn.jotfor.ms/agent/embedjs/0198164229527e24bca1d15fbc24cb1102b7/embed.js?skipWelcome=1&maximizable=1'></script>
 </div>
-<style>
-  /* Your existing CSS... */
-
-  /* Chatbot button customization */
-  #jotformAgent-embed-btn {
-    background-color: #222;
-    border-radius: 30px;
-    padding: 10px;
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-    display: none; /* Hides the default bubble */
-  }
-
-  #jotformAgent-embed-wrapper {
-    bottom: 80px;
-    right: 20px;
-    z-index: 9999;
-  }
-.chat-launch {
-  position: fixed;
-  bottom: 100px; /* Change to move vertically */
-  right: 30px;    /* Change to move horizontally */
-  background: #111;
-  color: #00fff7;
-  padding: 10px 18px;
-  border-radius: 25px;
-  font-weight: bold;
-  box-shadow: 0 0 12px rgba(0,255,255,0.5);
-  z-index: 9999;
-}
-</style>
+<button id="customChatTrigger" class="chat-launch">💬 Science Chat</button>
 <script>
   document.getElementById('customChatTrigger').addEventListener('click', () => {
     const iframe = document.querySelector('#jotformAgent-embed-wrapper iframe');
@@ -1692,6 +1689,14 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
  <script
   src='https://cdn.jotfor.ms/agent/embedjs/0198164229527e24bca1d15fbc24cb1102b7/embed.js?skipWelcome=1&maximizable=1'>
+</script>
+<script>
+  document.getElementById('customChatTrigger').addEventListener('click', () => {
+    const iframe = document.querySelector('#jotformAgent-embed-wrapper iframe');
+    if (iframe) {
+      iframe.contentWindow.postMessage({ type: 'toggleAgent' }, '*');
+    }
+  });
 </script>
 </body>
 </html>
