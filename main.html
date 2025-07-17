@@ -1650,6 +1650,44 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="chatbot-container">
   <script src='https://cdn.jotfor.ms/agent/embedjs/0198164229527e24bca1d15fbc24cb1102b7/embed.js?skipWelcome=1&maximizable=1'></script>
 </div>
+<style>
+  /* Your existing CSS... */
+
+  /* Chatbot button customization */
+  #jotformAgent-embed-btn {
+    background-color: #222;
+    border-radius: 30px;
+    padding: 10px;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+    display: none; /* Hides the default bubble */
+  }
+
+  #jotformAgent-embed-wrapper {
+    bottom: 80px;
+    right: 20px;
+    z-index: 9999;
+  }
+.chat-launch {
+  position: fixed;
+  bottom: 100px; /* Change to move vertically */
+  right: 30px;    /* Change to move horizontally */
+  background: #111;
+  color: #00fff7;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-weight: bold;
+  box-shadow: 0 0 12px rgba(0,255,255,0.5);
+  z-index: 9999;
+}
+</style>
+<script>
+  document.getElementById('customChatTrigger').addEventListener('click', () => {
+    const iframe = document.querySelector('#jotformAgent-embed-wrapper iframe');
+    if (iframe) {
+      iframe.contentWindow.postMessage({ type: 'toggleAgent' }, '*');
+    }
+  });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
  <script
