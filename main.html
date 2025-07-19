@@ -535,217 +535,58 @@ body.dark .theme-toggler i {
     /* =====================================================================
        PORTFOLIO GALLERY + FILTER BUTTONS
        ===================================================================== */
-  /* Science Facts Section - 8 Items (2 rows of 4) */
-#facts {
-  padding: 5rem 2rem;
-  background: #f8f9fa;
-  position: relative;
-  overflow: hidden;
-}
-
-.science-facts-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.section-title {
-  font-size: 2.8rem;
-  margin-bottom: 1.5rem;
-  color: #2c3e50;
-  position: relative;
-  display: inline-block;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-  border-radius: 2px;
-  animation: gradientShift 3s infinite alternate;
-}
-
-@keyframes gradientShift {
-  0% { background-position: 0% }
-  100% { background-position: 100% }
-}
-
-.portfolio-gallery-container {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.portfolio-gallery-part {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-}
-
-.portfolio-item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 15px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  height: 320px;
-  background-size: cover;
-  background-position: center;
-  background-color: #2c3e50;
-}
-
-.portfolio-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Floating Animation for All Items */
-.portfolio-item {
-  animation: float 6s ease-in-out infinite;
-}
-
-.portfolio-item:nth-child(2),
-.portfolio-item:nth-child(6) {
-  animation-delay: 0.5s;
-}
-
-.portfolio-item:nth-child(3),
-.portfolio-item:nth-child(7) {
-  animation-delay: 1s;
-}
-
-.portfolio-item:nth-child(4),
-.portfolio-item:nth-child(8) {
-  animation-delay: 1.5s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-}
-
-.portfolio-item:hover {
-  transform: translateY(-15px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-.portfolio-item:hover img {
-  transform: scale(1.15);
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  text-align: center;
-  opacity: 0;
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform: translateY(20px);
-}
-
-.portfolio-item:hover .overlay {
-  opacity: 1;
-  transform: translateY(0);
-  background: rgba(52, 202, 255, 0.85); /* Neon Sky Blue */
-}
-
-/* Neon Glow Effect */
-.portfolio-item::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(52, 202, 255, 0);
-  transition: all 0.5s;
-  pointer-events: none;
-}
-
-.portfolio-item:hover::after {
-  box-shadow: 0 0 30px rgba(52, 202, 255, 0.8);
-  animation: neon-pulse 1.5s infinite alternate;
-}
-
-@keyframes neon-pulse {
-  from { box-shadow: 0 0 20px rgba(52, 202, 255, 0.8); }
-  to { box-shadow: 0 0 40px rgba(52, 202, 255, 0.8), 
-                  0 0 60px rgba(52, 202, 255, 0.6); }
-}
-
-.fact-icon {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  transform: translateY(-30px);
-  transition: all 0.5s 0.2s;
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
-}
-
-.overlay h4 {
-  font-size: 1.8rem;
-  margin-bottom: 1.2rem;
-  font-weight: 600;
-  transform: translateY(-20px);
-  transition: transform 0.5s 0.2s;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.overlay p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  transform: translateY(20px);
-  transition: transform 0.5s 0.3s;
-  max-width: 90%;
-}
-
-.portfolio-item:hover .fact-icon,
-.portfolio-item:hover .overlay h4,
-.portfolio-item:hover .overlay p {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Responsive Layout */
-@media (max-width: 1200px) {
-  .portfolio-gallery-part {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .portfolio-gallery-part {
-    grid-template-columns: 1fr;
-  }
-  
-  .section-title {
-    font-size: 2.2rem;
-  }
-  
-  .portfolio-item {
-    height: 280px;
-  }
-}
+    .portfolio-filter {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .portfolio-filter button {
+      background: #fff;
+      color: #3498db;
+      padding: 0.6rem 1.2rem;
+      margin: 0.2rem;
+      border: 2px solid #3498db;
+      border-radius: 50px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .portfolio-filter button.active,
+    .portfolio-filter button:hover {
+      background: #3498db;
+      color: #fff;
+    }
+    .portfolio-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .portfolio-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s;
+    }
+    .portfolio-item:hover img {
+      transform: scale(1.1);
+    }
+    .portfolio-item .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .portfolio-item:hover .overlay {
+      opacity: 1;
+    }
 
     /* =====================================================================
        TEAM SECTION
