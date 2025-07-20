@@ -121,6 +121,39 @@
             font-size: 1.1rem;
         }
 
+        /* Topic Filter */
+        .topic-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .topic-btn {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .topic-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .topic-btn.active {
+            background: var(--primary-dark);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
         /* Books Grid */
         .books-grid {
             display: grid;
@@ -150,6 +183,14 @@
         .book-card:nth-child(6) { animation-delay: 0.6s; }
         .book-card:nth-child(7) { animation-delay: 0.7s; }
         .book-card:nth-child(8) { animation-delay: 0.8s; }
+        .book-card:nth-child(9) { animation-delay: 0.9s; }
+        .book-card:nth-child(10) { animation-delay: 1.0s; }
+        .book-card:nth-child(11) { animation-delay: 1.1s; }
+        .book-card:nth-child(12) { animation-delay: 1.2s; }
+        .book-card:nth-child(13) { animation-delay: 1.3s; }
+        .book-card:nth-child(14) { animation-delay: 1.4s; }
+        .book-card:nth-child(15) { animation-delay: 1.5s; }
+        .book-card:nth-child(16) { animation-delay: 1.6s; }
 
         .book-card:hover {
             transform: translateY(-10px) scale(1.02);
@@ -444,9 +485,9 @@
                 <i class="fas fa-gamepad"></i> Science Games
             </a>
         </li>
- <li>
+        <li>
             <a href="trying.html">
-                <i class="fas fa-book-open"></i> Books & Magzines
+                <i class="fas fa-book-open"></i> Books & Magazines
             </a>
         </li>
     </ul>
@@ -466,9 +507,21 @@
             <p>Discover books that bridge the gap between complex scientific concepts and practical understanding</p>
         </div>
 
+        <!-- Topic Filter -->
+        <div class="topic-filter">
+            <button class="topic-btn active" data-category="all">All Topics</button>
+            <button class="topic-btn" data-category="biology">Biology</button>
+            <button class="topic-btn" data-category="chemistry">Chemistry</button>
+            <button class="topic-btn" data-category="physics">Physics</button>
+            <button class="topic-btn" data-category="astronomy">Astronomy</button>
+            <button class="topic-btn" data-category="zoology">Zoology</button>
+            <button class="topic-btn" data-category="microbiology">Microbiology</button>
+            <button class="topic-btn" data-category="philosophy">Philosophy</button>
+        </div>
+
         <div class="books-grid">
             <!-- Book 1 -->
-            <div class="book-card">
+            <div class="book-card" data-category="biology">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Natural Sciences">
                     <div class="book-badge">Bestseller</div>
@@ -489,7 +542,7 @@
             </div>
 
             <!-- Book 2 -->
-            <div class="book-card">
+            <div class="book-card" data-category="technology">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Natural Sciences and Technology">
                     <div class="book-badge">New</div>
@@ -510,7 +563,7 @@
             </div>
 
             <!-- Book 3 -->
-            <div class="book-card">
+            <div class="book-card" data-category="meteorology">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1605722243979-fe0be8158232?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Numerical Methods">
                 </div>
@@ -530,7 +583,7 @@
             </div>
 
             <!-- Book 4 -->
-            <div class="book-card">
+            <div class="book-card" data-category="agriculture">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Agricultural Meteorology">
                 </div>
@@ -550,7 +603,7 @@
             </div>
 
             <!-- Book 5 -->
-            <div class="book-card">
+            <div class="book-card" data-category="earth-science">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Geochemistry">
                 </div>
@@ -570,7 +623,7 @@
             </div>
 
             <!-- Book 6 -->
-            <div class="book-card">
+            <div class="book-card" data-category="astronomy">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="General Astronomy">
                 </div>
@@ -590,7 +643,7 @@
             </div>
 
             <!-- Book 7 -->
-            <div class="book-card">
+            <div class="book-card" data-category="physics">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Discover Physics">
                 </div>
@@ -610,7 +663,7 @@
             </div>
 
             <!-- Book 8 -->
-            <div class="book-card">
+            <div class="book-card" data-category="biology">
                 <div class="book-cover">
                     <img src="https://images.unsplash.com/photo-1575505586569-646b2ca898fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Models In Biology">
                 </div>
@@ -624,6 +677,186 @@
                         <span class="book-year"><i class="fas fa-calendar-alt"></i> 2019</span>
                     </div>
                     <a href="6.%20Models%20In%20Biology%20-%20History,%20Philosophy,%20and%20Practical%20Concerns%20Atuhro%20Georg%20Striedter.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 9 - General Zoology -->
+            <div class="book-card" data-category="zoology">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="General Zoology">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Zoology</span>
+                    <h3 class="book-title">General Zoology</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Stephen W. Ziser</p>
+                    <p class="book-desc">Comprehensive introduction to the study of animals, their classification, structure, physiology, and behavior.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 580 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2020</span>
+                    </div>
+                    <a href="02.%20General%20Zoology%20Autor%20Stephen%20W.%20Ziser.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 10 - Cell Biology -->
+            <div class="book-card" data-category="biology">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Cell Biology">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Biology</span>
+                    <h3 class="book-title">Cell Biology, Genetics, and Biochemistry</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Renée J. LeClair</p>
+                    <p class="book-desc">Integrated approach to cellular and molecular biology with emphasis on medical applications for pre-clinical students.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 620 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2021</span>
+                    </div>
+                    <a href="Cell%20Biology,%20Genetics,%20and%20Biochemistry%20for%20Pre-Clinical%20Students,%20Renée%20J.%20LeClair.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 11 - General Microbiology -->
+            <div class="book-card" data-category="microbiology">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="General Microbiology">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Microbiology</span>
+                    <h3 class="book-title">General Microbiology</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Linda Bruslind</p>
+                    <p class="book-desc">Fundamentals of microbiology covering microbial structure, function, genetics, and their roles in nature and human affairs.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 450 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2019</span>
+                    </div>
+                    <a href="General%20Microbiology,%20Linda%20Bruslind.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 12 - Analytical Methods -->
+            <div class="book-card" data-category="chemistry">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1605030753481-bb38b08c384a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Validation of Qualitative Methods">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Chemistry</span>
+                    <h3 class="book-title">Validation of Qualitative Analytical Methods</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Esther Trullols Soler</p>
+                    <p class="book-desc">Comprehensive guide to validation procedures for qualitative analytical methods in chemical and pharmaceutical analysis.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 320 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2018</span>
+                    </div>
+                    <a href="03.%20Validation%20of%20Qualitative%20-%20Analytical%20Methods%20Author%20Esther%20Trullols%20Soler.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 13 - Inorganic Chemistry -->
+            <div class="book-card" data-category="chemistry">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Inorganic Chemistry">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Chemistry</span>
+                    <h3 class="book-title">Introduction to Inorganic Chemistry</h3>
+                    <p class="book-author"><i class="fas fa-university"></i> Penn State University</p>
+                    <p class="book-desc">Fundamental principles of inorganic chemistry including atomic structure, bonding, and properties of inorganic compounds.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 480 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2020</span>
+                    </div>
+                    <a href="Introduction%20to%20Inorganic%20Chemistry,%20Penn%20State%20University.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 14 - Metaphysics -->
+            <div class="book-card" data-category="philosophy">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Metaphysics">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Philosophy</span>
+                    <h3 class="book-title">Metaphysics</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Aristotle</p>
+                    <p class="book-desc">Foundational work of Western philosophy examining the fundamental nature of reality, existence, and the universe.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 350 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> Ancient</span>
+                    </div>
+                    <a href="Metaphysics-Aristotle.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 15 - Stellar Astrophysics -->
+            <div class="book-card" data-category="astronomy">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Stellar Astrophysics">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Astrophysics</span>
+                    <h3 class="book-title">The Fundamentals of Stellar Astrophysics</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> George W. Collins, II</p>
+                    <p class="book-desc">Comprehensive treatment of the physics of stars, their structure, evolution, and the physical processes occurring within them.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 520 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2017</span>
+                    </div>
+                    <a href="The%20Fundamentals%20of%20Stellar%20Astrophysics,%20George%20W.%20Collins,%20ll.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 16 - Kinematics -->
+            <div class="book-card" data-category="physics">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Kinematics">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Physics</span>
+                    <h3 class="book-title">Kinematics Fundamentals</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Sunil Kumar Singh</p>
+                    <p class="book-desc">Detailed study of motion without considering its causes, covering displacement, velocity, acceleration, and relative motion.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 280 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2019</span>
+                    </div>
+                    <a href="Kinematics%20fundamentals%20-%20Sunil%20Kumar%20Singh.pdf" class="read-btn" download>
+                        Read Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Book 17 - Newtonian Dynamics -->
+            <div class="book-card" data-category="physics">
+                <div class="book-cover">
+                    <img src="https://images.unsplash.com/photo-1506704565089-923d7cd12d5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Newtonian Dynamics">
+                </div>
+                <div class="book-info">
+                    <span class="book-category">Physics</span>
+                    <h3 class="book-title">Newtonian Dynamics</h3>
+                    <p class="book-author"><i class="fas fa-user-edit"></i> Richard Fitzpatrick</p>
+                    <p class="book-desc">Classical mechanics treatment focusing on Newton's laws of motion and their applications to various physical systems.</p>
+                    <div class="book-meta">
+                        <span class="book-pages"><i class="fas fa-book-open"></i> 410 pages</span>
+                        <span class="book-year"><i class="fas fa-calendar-alt"></i> 2020</span>
+                    </div>
+                    <a href="Newtonian%20Dynamics%20-%20Richard%20Fitzpatrick.pdf" class="read-btn" download>
                         Read Now <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -668,6 +901,30 @@
 
             cards.forEach(card => {
                 observer.observe(card);
+            });
+
+            // Topic filter functionality
+            const topicBtns = document.querySelectorAll('.topic-btn');
+            const bookCards = document.querySelectorAll('.book-card');
+
+            topicBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    topicBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    const category = btn.dataset.category;
+                    
+                    // Filter books
+                    bookCards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
             });
         });
     </script>
