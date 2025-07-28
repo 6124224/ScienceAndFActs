@@ -8,6 +8,96 @@
     <title>Science Quizzes | ScienceAndFacts</title>
     <link rel="stylesheet" href="styles4.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Add these new styles to your existing CSS */
+        .timer-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            color: #444;
+        }
+        
+        .timer {
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            margin-left: 5px;
+            color: #e74c3c;
+        }
+        
+        .timer-warning {
+            animation: pulse 1s infinite;
+            color: #e74c3c;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .option-selected {
+            transform: scale(0.98);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+        }
+        
+        .option-correct {
+            background-color: #2ecc71 !important;
+            color: white !important;
+            animation: correctAnswer 0.5s;
+        }
+        
+        .option-incorrect {
+            background-color: #e74c3c !important;
+            color: white !important;
+            animation: incorrectAnswer 0.5s;
+        }
+        
+        @keyframes correctAnswer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes incorrectAnswer {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .question-text {
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .score-circle {
+            animation: grow 1s ease-out;
+        }
+        
+        @keyframes grow {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .badge-earned {
+            animation: bounce 0.5s;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-15px);}
+            60% {transform: translateY(-7px);}
+        }
+    </style>
 </head>
 <body>
 <!-- Sidebar Toggle Button -->
@@ -210,6 +300,10 @@
         <div class="quiz-modal" id="quizModal">
             <div class="modal-content">
                 <div class="modal-header">
+                    <div class="timer-container">
+                        <i class="fas fa-clock"></i>
+                        <div class="timer" id="quizTimer">01:00</div>
+                    </div>
                     <h2 id="quizTitle">Quiz Title</h2>
                     <span class="close-modal">&times;</span>
                 </div>
@@ -265,6 +359,9 @@
                         <i class="fas fa-award"></i>
                         <span class="badge-text"></span>
                     </div>
+                    <div class="time-stats">
+                        <p><i class="fas fa-stopwatch"></i> Time taken: <span id="timeTaken">0:00</span></p>
+                    </div>
                 </div>
                 <div class="results-footer">
                     <button class="retry-btn">Retry Quiz</button>
@@ -274,6 +371,120 @@
         </div>
     </div>
 <script src="sidebar.js"></script>
-    <script src="alba.js"></script>
+    <script>
+        // Timer functionality
+        let timer;
+        let timeLeft = 60; // 1 minute per question (adjust as needed)
+        let startTime;
+        
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 60;
+            updateTimerDisplay();
+            startTime = new Date();
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 10) {
+                    document.getElementById('quizTimer').classList.add('timer-warning');
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('quizTimer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function timeUp() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Mark the correct answer
+            const currentQuiz = quizzes[currentQuizIndex];
+            const currentQuestion = currentQuiz.questions[currentQuestionIndex];
+            const correctOption = document.querySelector(`.option[data-option="${currentQuestion.correctAnswer}"]`);
+            correctOption.classList.add('option-correct');
+            
+            // Show feedback
+            document.querySelector('.feedback-text').textContent = "Time's up!";
+            document.querySelector('.fact-text').textContent = currentQuestion.fact || "Better luck next time!";
+            document.querySelector('.quiz-feedback').style.display = 'block';
+            document.querySelector('.next-btn').style.display = 'block';
+        }
+        
+        function stopTimer() {
+            clearInterval(timer);
+            document.getElementById('quizTimer').classList.remove('timer-warning');
+        }
+        
+        function calculateTimeTaken() {
+            const endTime = new Date();
+            const timeDiff = (endTime - startTime) / 1000; // in seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = Math.floor(timeDiff % 60);
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Enhanced quiz functionality with animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... (your existing quiz initialization code)
+            
+            // Add event listeners for option selection with animations
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('option')) {
+                    const selectedOption = e.target;
+                    const options = document.querySelectorAll('.option');
+                    
+                    // Add selection animation
+                    selectedOption.classList.add('option-selected');
+                    
+                    setTimeout(() => {
+                        selectedOption.classList.remove('option-selected');
+                        
+                        // Process answer selection
+                        // ... (your existing answer processing code)
+                        
+                        // Add correct/incorrect animations
+                        if (selectedOption.dataset.option === correctAnswer) {
+                            selectedOption.classList.add('option-correct');
+                        } else {
+                            selectedOption.classList.add('option-incorrect');
+                            // Also show correct answer
+                            const correctOption = document.querySelector(`.option[data-option="${correctAnswer}"]`);
+                            correctOption.classList.add('option-correct');
+                        }
+                    }, 200);
+                    
+                    // Disable all options after selection
+                    options.forEach(opt => {
+                        opt.style.pointerEvents = 'none';
+                    });
+                    
+                    // Stop the timer when an answer is selected
+                    stopTimer();
+                }
+            });
+            
+            // Update results modal with time taken
+            function showResults() {
+                document.getElementById('timeTaken').textContent = calculateTimeTaken();
+                // ... (your existing results display code)
+            }
+        });
+        
+        // ... (rest of your existing JavaScript code)
+    </script>
 </body>
 </html>
