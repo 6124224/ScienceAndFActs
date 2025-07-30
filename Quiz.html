@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sidebar.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Science Quizzes | ScienceAndFacts</title>
@@ -10,52 +10,53 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<!-- Sidebar Toggle Button -->
-<button class="sidebar-toggle" id="sidebarToggle">
-    <i class="fas fa-bars"></i>
-</button>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
-<!-- Overlay -->
-<div class="overlay" id="overlay"></div>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
 
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <h3>Science & Facts</h3>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Science & Facts</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="main.html">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li>
+                <a href="dictionary.html">
+                    <i class="fas fa-book"></i> Dictionary
+                </a>
+            </li>
+            <li>
+                <a href="Quiz.html">
+                    <i class="fas fa-question-circle"></i> Quiz
+                </a>
+            </li>
+            <li>
+                <a href="test.html">
+                    <i class="fas fa-lightbulb"></i> Facts & Discoveries
+                </a>
+            </li>
+            <li>
+                <a href="Games.html">
+                    <i class="fas fa-gamepad"></i> Science Games
+                </a>
+            </li>
+            <li>
+                <a href="trying.html">
+                    <i class="fas fa-book-open"></i> Books & Magzines
+                </a>
+            </li>
+        </ul>
     </div>
-    <ul class="sidebar-menu">
-        <li>
-            <a href="main.html">
-                <i class="fas fa-home"></i> Home
-            </a>
-        </li>
-        <li>
-            <a href="dictionary.html">
-                <i class="fas fa-book"></i> Dictionary
-            </a>
-        </li>
-        <li>
-            <a href="Quiz.html">
-                <i class="fas fa-question-circle"></i> Quiz
-            </a>
-        </li>
-        <li>
-            <a href="test.html">
-                <i class="fas fa-lightbulb"></i> Facts & Discoveries
-            </a>
-        </li>
-        <li>
-            <a href="Games.html">
-                <i class="fas fa-gamepad"></i> Science Games
-            </a>
-        </li>
-<li>
-            <a href="trying.html">
-                <i class="fas fa-book-open"></i> Books & Magzines
-            </a>
-</li>
-    </ul>
-</div>
+
     <div class="quiz-container">
         <!-- Header Section -->
         <header class="quiz-header">
@@ -76,7 +77,7 @@
                         <p>How well do you know our cosmic neighborhood?</p>
                         <div class="quiz-stats">
                             <span><i class="fas fa-question-circle"></i> 10 Questions</span>
-                            <span><i class="fas fa-clock"></i> 5 min</span>
+                            <span><i class="fas fa-clock"></i> 3 min</span>
                         </div>
                         <button class="start-btn">Start Quiz</button>
                     </div>
@@ -104,7 +105,7 @@
                         <p>Prove your knowledge of galaxies and cosmic phenomena!</p>
                         <div class="quiz-stats">
                             <span><i class="fas fa-question-circle"></i> 10 Questions</span>
-                            <span><i class="fas fa-clock"></i> 5 min</span>
+                            <span><i class="fas fa-clock"></i> 4 min</span>
                         </div>
                         <button class="start-btn">Start Quiz</button>
                     </div>
@@ -132,7 +133,7 @@
                         <p>Test your knowledge of astronomical discoveries!</p>
                         <div class="quiz-stats">
                             <span><i class="fas fa-question-circle"></i> 10 Questions</span>
-                            <span><i class="fas fa-clock"></i> 5 min</span>
+                            <span><i class="fas fa-clock"></i> 3 min</span>
                         </div>
                         <button class="start-btn">Start Quiz</button>
                     </div>
@@ -160,7 +161,7 @@
                         <p>How much do you know about space exploration tech?</p>
                         <div class="quiz-stats">
                             <span><i class="fas fa-question-circle"></i> 10 Questions</span>
-                            <span><i class="fas fa-clock"></i> 5 min</span>
+                            <span><i class="fas fa-clock"></i> 3.5 min</span>
                         </div>
                         <button class="start-btn">Start Quiz</button>
                     </div>
@@ -188,7 +189,7 @@
                         <p>Discover how much you know about planets beyond our solar system!</p>
                         <div class="quiz-stats">
                             <span><i class="fas fa-question-circle"></i> 10 Questions</span>
-                            <span><i class="fas fa-clock"></i> 5 min</span>
+                            <span><i class="fas fa-clock"></i> 4 min</span>
                         </div>
                         <button class="start-btn">Start Quiz</button>
                     </div>
@@ -211,17 +212,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 id="quizTitle">Quiz Title</h2>
+                    <div class="timer">
+                        <i class="fas fa-clock"></i>
+                        <span class="time-left">3:00</span>
+                    </div>
                     <span class="close-modal">&times;</span>
                 </div>
-<div class="modal-header">
-    <h2 id="quizTitle">Quiz Title</h2>
-    <div class="timer-container">
-        <span class="timer-text">Time left: </span>
-        <span class="timer-countdown">30</span>
-        <span class="timer-seconds">s</span>
-    </div>
-    <span class="close-modal">&times;</span>
-</div>
                 <div class="modal-body">
                     <div class="quiz-progress">
                         <div class="progress-bar">
@@ -282,7 +278,8 @@
             </div>
         </div>
     </div>
-<script src="sidebar.js"></script>
+
+    <script src="sidebar.js"></script>
     <script src="alba.js"></script>
 </body>
 </html>
