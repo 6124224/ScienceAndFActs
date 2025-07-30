@@ -524,13 +524,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Timer Functions
     function startTimer() {
         updateTimerDisplay();
+        clearInterval(timerInterval); // Clear any existing timer
         timerInterval = setInterval(() => {
             timeLeft--;
             updateTimerDisplay();
             
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                timeUp();
+                endQuizDueToTime();
             }
         }, 1000);
     }
@@ -554,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function timeUp() {
+    function endQuizDueToTime() {
         // Disable all options
         document.querySelectorAll('.option-btn').forEach(btn => {
             btn.disabled = true;
@@ -564,9 +565,14 @@ document.addEventListener('DOMContentLoaded', function() {
         feedbackContainer.style.display = 'block';
         correctIcon.style.display = 'none';
         incorrectIcon.style.display = 'block';
-        feedbackText.textContent = 'Time\'s up!';
-        factText.textContent = 'You ran out of time for this question.';
-        nextBtn.style.display = 'block';
+        feedbackText.textContent = 'Time\'s up! The quiz has ended.';
+        factText.textContent = 'You ran out of time before completing all questions.';
+        nextBtn.style.display = 'none';
+        
+        // Show results after a short delay
+        setTimeout(() => {
+            showResults();
+        }, 2000);
     }
 
     // Show Question Function
@@ -662,7 +668,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearInterval(timerInterval);
         closeQuizModal();
         
-        const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+        const percentage = Math.round((score / currentQuiz.questions.length) * 100;
         finalScoreElement.textContent = score;
         finalTotalElement.textContent = currentQuiz.questions.length;
         scorePercentElement.textContent = `${percentage}%`;
