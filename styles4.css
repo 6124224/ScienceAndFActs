@@ -12,32 +12,43 @@
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 /* Timer styles */
-.timer-container {
-    position: absolute;
-    right: 60px;
-    top: 20px;
-    font-size: 1.2rem;
-    color: #333;
-    background-color: #f8f9fa;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-.timer-countdown {
-    font-weight: bold;
-    color: #e63946;
+.timer i {
+    color: var(--primary-dark);
 }
 
-/* Warning when time is running low */
-.timer-warning {
+.time-left {
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Timer warning states */
+.timer.warning {
+    color: #ff9800;
     animation: pulse 1s infinite;
-    color: #e63946;
+}
+
+.timer.danger {
+    color: #f44336;
+    animation: pulse 0.5s infinite;
 }
 
 @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    50% { transform: scale(1.05); }
     100% { transform: scale(1); }
 }
 * {
