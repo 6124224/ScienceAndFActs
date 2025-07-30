@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // DOM Elements
-     const quizCards = document.querySelectorAll('.quiz-card');
+    const quizCards = document.querySelectorAll('.quiz-card');
     const quizModal = document.getElementById('quizModal');
     const resultsModal = document.getElementById('resultsModal');
     const quizTitleElement = document.getElementById('quizTitle');
@@ -470,40 +470,23 @@ document.addEventListener('DOMContentLoaded', function() {
     let timerInterval = null;
     let timeLeft = 0;
 
-    // Event Listeners - Fixed version
+    // Event Listeners
     quizCards.forEach(card => {
-        const startBtn = card.querySelector('.start-btn');
-        
-        if (startBtn) {
-            startBtn.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent the card flip when clicking the button
-                const quizId = card.getAttribute('data-quiz');
-                if (quizId && quizzes[quizId]) {
-                    startQuiz(quizId);
-                } else {
-                    console.error('Quiz not found:', quizId);
-                }
-            });
-        }
+        const front = card.querySelector('.quiz-card-front');
+        const back = card.querySelector('.quiz-card-back');
+        const startBtn = front.querySelector('.start-btn');
+        const flipBackBtn = back.querySelector('.flip-back-btn');
 
-        // Flip card on click (excluding the start button)
-        card.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('start-btn') && 
-                !e.target.closest('.start-btn') && 
-                !e.target.classList.contains('flip-back-btn')) {
-                card.classList.toggle('flipped');
+        // Flip card on click
+        front.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('start-btn')) {
+                card.classList.add('flipped');
             }
         });
 
-        // Flip back button
-        const flipBackBtn = card.querySelector('.flip-back-btn');
-        if (flipBackBtn) {
-            flipBackBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                card.classList.remove('flipped');
-            });
-        }
-    });
+        flipBackBtn.addEventListener('click', () => {
+            card.classList.remove('flipped');
+        });
 
         // Start quiz
         startBtn.addEventListener('click', () => {
@@ -519,7 +502,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Start Quiz Function
     function startQuiz(quizId) {
-        console.log('Starting quiz:', quizId); // Debug log
         currentQuiz = quizzes[quizId];
         currentQuestionIndex = 0;
         score = 0;
@@ -542,14 +524,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Timer Functions
     function startTimer() {
         updateTimerDisplay();
-        clearInterval(timerInterval); // Clear any existing timer
         timerInterval = setInterval(() => {
             timeLeft--;
             updateTimerDisplay();
             
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                endQuizDueToTime();
+                timeUp();
             }
         }, 1000);
     }
@@ -573,7 +554,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function endQuizDueToTime() {
+    function timeUp() {
         // Disable all options
         document.querySelectorAll('.option-btn').forEach(btn => {
             btn.disabled = true;
@@ -583,14 +564,9 @@ document.addEventListener('DOMContentLoaded', function() {
         feedbackContainer.style.display = 'block';
         correctIcon.style.display = 'none';
         incorrectIcon.style.display = 'block';
-        feedbackText.textContent = 'Time\'s up! The quiz has ended.';
-        factText.textContent = 'You ran out of time before completing all questions.';
-        nextBtn.style.display = 'none';
-        
-        // Show results after a short delay
-        setTimeout(() => {
-            showResults();
-        }, 2000);
+        feedbackText.textContent = 'Time\'s up!';
+        factText.textContent = 'You ran out of time for this question.';
+        nextBtn.style.display = 'block';
     }
 
     // Show Question Function
@@ -686,7 +662,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearInterval(timerInterval);
         closeQuizModal();
         
-        const percentage = Math.round((score / currentQuiz.questions.length) * 100;
+        const percentage = Math.round((score / currentQuiz.questions.length) * 100);
         finalScoreElement.textContent = score;
         finalTotalElement.textContent = currentQuiz.questions.length;
         scorePercentElement.textContent = `${percentage}%`;
