@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // DOM Elements
-    const quizCards = document.querySelectorAll('.quiz-card');
+     const quizCards = document.querySelectorAll('.quiz-card');
     const quizModal = document.getElementById('quizModal');
     const resultsModal = document.getElementById('resultsModal');
     const quizTitleElement = document.getElementById('quizTitle');
@@ -470,23 +470,40 @@ document.addEventListener('DOMContentLoaded', function() {
     let timerInterval = null;
     let timeLeft = 0;
 
-    // Event Listeners
+    // Event Listeners - Fixed version
     quizCards.forEach(card => {
-        const front = card.querySelector('.quiz-card-front');
-        const back = card.querySelector('.quiz-card-back');
-        const startBtn = front.querySelector('.start-btn');
-        const flipBackBtn = back.querySelector('.flip-back-btn');
+        const startBtn = card.querySelector('.start-btn');
+        
+        if (startBtn) {
+            startBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent the card flip when clicking the button
+                const quizId = card.getAttribute('data-quiz');
+                if (quizId && quizzes[quizId]) {
+                    startQuiz(quizId);
+                } else {
+                    console.error('Quiz not found:', quizId);
+                }
+            });
+        }
 
-        // Flip card on click
-        front.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('start-btn')) {
-                card.classList.add('flipped');
+        // Flip card on click (excluding the start button)
+        card.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('start-btn') && 
+                !e.target.closest('.start-btn') && 
+                !e.target.classList.contains('flip-back-btn')) {
+                card.classList.toggle('flipped');
             }
         });
 
-        flipBackBtn.addEventListener('click', () => {
-            card.classList.remove('flipped');
-        });
+        // Flip back button
+        const flipBackBtn = card.querySelector('.flip-back-btn');
+        if (flipBackBtn) {
+            flipBackBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                card.classList.remove('flipped');
+            });
+        }
+    });
 
         // Start quiz
         startBtn.addEventListener('click', () => {
@@ -502,6 +519,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Start Quiz Function
     function startQuiz(quizId) {
+        console.log('Starting quiz:', quizId); // Debug log
         currentQuiz = quizzes[quizId];
         currentQuestionIndex = 0;
         score = 0;
