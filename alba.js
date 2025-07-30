@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'solar-system': {
             title: 'Solar System Quiz',
             description: 'Test your knowledge about our cosmic neighborhood!',
+            timeLimit: 180, // 3 minutes in seconds
             questions: [
                 {
                     question: 'Which planet is known as the "Red Planet"?',
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'galaxies': {
             title: 'Galaxy Challenge',
             description: 'Prove your knowledge of galaxies and cosmic phenomena!',
+            timeLimit: 240, // 4 minutes
             questions: [
                 {
                     question: 'What type of galaxy is the Milky Way?',
@@ -166,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'astronomy-history': {
             title: 'Astronomy History',
             description: 'Test your knowledge of astronomical discoveries and history!',
+            timeLimit: 180, // 3 minutes
             questions: [
                 {
                     question: 'Who first proposed the heliocentric model of the solar system?',
@@ -237,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'space-tech': {
             title: 'Space Technology',
             description: 'How much do you know about space exploration technology?',
+            timeLimit: 210, // 3.5 minutes
             questions: [
                 {
                     question: 'What is the main advantage of a multistage rocket?',
@@ -338,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'exoplanets': {
             title: 'Exoplanets Explorer',
             description: 'Discover how much you know about planets beyond our solar system!',
+            timeLimit: 240, // 4 minutes
             questions: [
                 {
                     question: 'What was the first confirmed exoplanet discovered around a sun-like star?',
@@ -454,12 +459,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const retryBtn = document.querySelector('.retry-btn');
     const quitBtn = document.querySelector('.quit-btn');
     const circleFill = document.querySelector('.circle-fill');
+    const timerElement = document.querySelector('.timer');
+    const timeLeftElement = document.querySelector('.time-left');
 
     // Quiz Variables
     let currentQuiz = null;
     let currentQuestionIndex = 0;
     let score = 0;
     let selectedOption = null;
+    let timerInterval = null;
+    let timeLeft = 0;
 
     // Event Listeners
     quizCards.forEach(card => {
@@ -496,6 +505,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentQuiz = quizzes[quizId];
         currentQuestionIndex = 0;
         score = 0;
+        timeLeft = currentQuiz.timeLimit;
 
         // Update modal with quiz info
         quizTitleElement.textContent = currentQuiz.title;
@@ -506,6 +516,57 @@ document.addEventListener('DOMContentLoaded', function() {
         showQuestion();
         quizModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+
+        // Start timer
+        startTimer();
+    }
+
+    // Timer Functions
+    function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timeUp();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timeLeftElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        // Change color when time is running low
+        if (timeLeft <= 30) {
+            timerElement.classList.add('warning');
+        } else {
+            timerElement.classList.remove('warning');
+        }
+        
+        if (timeLeft <= 10) {
+            timerElement.classList.add('danger');
+        } else {
+            timerElement.classList.remove('danger');
+        }
+    }
+
+    function timeUp() {
+        // Disable all options
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.disabled = true;
+        });
+        
+        // Show time up message
+        feedbackContainer.style.display = 'block';
+        correctIcon.style.display = 'none';
+        incorrectIcon.style.display = 'block';
+        feedbackText.textContent = 'Time\'s up!';
+        factText.textContent = 'You ran out of time for this question.';
+        nextBtn.style.display = 'block';
     }
 
     // Show Question Function
@@ -598,6 +659,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show Results Function
     function showResults() {
+        clearInterval(timerInterval);
         closeQuizModal();
         
         const percentage = Math.round((score / currentQuiz.questions.length) * 100);
@@ -642,6 +704,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close Quiz Modal Function
     function closeQuizModal() {
+        clearInterval(timerInterval);
         quizModal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
@@ -655,7 +718,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Retry Quiz Function
     function retryQuiz() {
         closeResultsModal();
-        startQuiz(currentQuiz.title.toLowerCase().replace(' ', '-'));
+        startQuiz(Object.keys(quizzes).find(key => quizzes[key].title === currentQuiz.title));
     }
 
     // Flip Card Animation
