@@ -461,7 +461,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const circleFill = document.querySelector('.circle-fill');
     const timerElement = document.querySelector('.timer');
     const timeLeftElement = document.querySelector('.time-left');
-    const timeWarningElement = document.querySelector('.time-warning');
 
     // Quiz Variables
     let currentQuiz = null;
@@ -470,7 +469,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedOption = null;
     let timerInterval = null;
     let timeLeft = 0;
-    let quizCompleted = false;
 
     // Event Listeners
     quizCards.forEach(card => {
@@ -508,13 +506,11 @@ document.addEventListener('DOMContentLoaded', function() {
         currentQuestionIndex = 0;
         score = 0;
         timeLeft = currentQuiz.timeLimit;
-        quizCompleted = false;
 
         // Update modal with quiz info
         quizTitleElement.textContent = currentQuiz.title;
         totalQuestions.textContent = currentQuiz.questions.length;
         scoreValue.textContent = score;
-        timeWarningElement.style.display = 'none';
 
         // Show first question
         showQuestion();
@@ -534,12 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                if (!quizCompleted) {
-                    quizCompleted = true;
-                    timeUp();
-                }
-            } else if (timeLeft <= 10) {
-                showTimeWarning();
+                timeUp();
             }
         }, 1000);
     }
@@ -563,33 +554,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function showTimeWarning() {
-        timeWarningElement.style.display = 'block';
-        timeWarningElement.textContent = `Hurry! Only ${timeLeft} second${timeLeft === 1 ? '' : 's'} remaining!`;
-        
-        // Add animation
-        timeWarningElement.classList.add('pulse');
-        setTimeout(() => {
-            timeWarningElement.classList.remove('pulse');
-        }, 1000);
-    }
-
     function timeUp() {
-        // Show time up message
-        feedbackContainer.style.display = 'block';
-        correctIcon.style.display = 'none';
-        incorrectIcon.style.display = 'block';
-        feedbackText.textContent = 'Quiz Complete!';
-        factText.textContent = 'Time has run out for the entire quiz.';
-        nextBtn.style.display = 'none';
-        
         // Disable all options
         document.querySelectorAll('.option-btn').forEach(btn => {
             btn.disabled = true;
         });
         
-        // Calculate results based on questions answered
-        showResults();
+        // Show time up message
+        feedbackContainer.style.display = 'block';
+        correctIcon.style.display = 'none';
+        incorrectIcon.style.display = 'block';
+        feedbackText.textContent = 'Time\'s up!';
+        factText.textContent = 'You ran out of time for this question.';
+        nextBtn.style.display = 'block';
     }
 
     // Show Question Function
@@ -624,7 +601,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Select Option Function
     function selectOption(optionElement, optionIndex) {
-        if (selectedOption !== null || quizCompleted) return;
+        if (selectedOption !== null) return;
 
         selectedOption = optionIndex;
         const question = currentQuiz.questions[currentQuestionIndex];
@@ -676,7 +653,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentQuestionIndex < currentQuiz.questions.length) {
             showQuestion();
         } else {
-            quizCompleted = true;
             showResults();
         }
     }
@@ -686,7 +662,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearInterval(timerInterval);
         closeQuizModal();
         
-        const percentage = Math.round((score / currentQuiz.questions.length) * 100;
+        const percentage = Math.round((score / currentQuiz.questions.length) * 100);
         finalScoreElement.textContent = score;
         finalTotalElement.textContent = currentQuiz.questions.length;
         scorePercentElement.textContent = `${percentage}%`;
@@ -718,12 +694,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             message = 'Keep exploring! The universe is full of wonders to discover!';
             badge = 'Rookie Astronomer';
-        }
-        
-        // Special message if time ran out
-        if (timeLeft <= 0) {
-            message = 'Time\'s up! ' + message;
-            badge = 'Time Traveler ' + badge;
         }
         
         resultsMessageElement.textContent = message;
