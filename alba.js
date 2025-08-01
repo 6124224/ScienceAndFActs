@@ -489,7 +489,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Start quiz
-        startBtn.addEventListener('click', () => {
+        startBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent card flip when clicking start button
             const quizId = card.getAttribute('data-quiz');
             startQuiz(quizId);
         });
@@ -668,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearInterval(timerInterval);
         closeQuizModal();
         
-        const percentage = Math.round((score / currentQuiz.questions.length) * 100;
+        const percentage = Math.round((score / currentQuiz.questions.length) * 100);
         finalScoreElement.textContent = score;
         finalTotalElement.textContent = currentQuiz.questions.length;
         scorePercentElement.textContent = `${percentage}%`;
@@ -729,9 +730,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Flip Card Animation
     document.querySelectorAll('.quiz-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('start-btn') && !e.target.classList.contains('flip-back-btn')) {
-                this.classList.toggle('flipped');
+        const front = card.querySelector('.quiz-card-front');
+        const back = card.querySelector('.quiz-card-back');
+        
+        front.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('start-btn')) {
+                card.classList.toggle('flipped');
+            }
+        });
+        
+        back.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('flip-back-btn')) {
+                card.classList.toggle('flipped');
             }
         });
     });
