@@ -5,97 +5,258 @@
 <link rel="stylesheet" href="sidebar.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dictionary 2.0</title>
-
-  <!-- Google Font + Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
-
+  <title>Lexicon Pro | Advanced Dictionary</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  
   <!-- Your CSS -->
   <link rel="stylesheet" href="styles3.css"/>
 </head>
 <body>
-<!-- Sidebar Toggle Button -->
-<button class="sidebar-toggle" id="sidebarToggle">
+  <!-- Sidebar Navigation -->
+  <div class="sidebar-toggle" id="sidebarToggle">
     <i class="fas fa-bars"></i>
-</button>
-
-<!-- Overlay -->
-<div class="overlay" id="overlay"></div>
-
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
+  </div>
+  
+  <div class="overlay" id="overlay"></div>
+  
+  <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
-        <h3>Science & Facts</h3>
+      <h3>Lexicon Pro</h3>
+      <div class="sidebar-subtitle">Knowledge Hub</div>
     </div>
     <ul class="sidebar-menu">
-        <li>
-            <a href="main.html">
-                <i class="fas fa-home"></i> Home
-            </a>
-        </li>
-        <li>
-            <a href="dictionary.html">
-                <i class="fas fa-book"></i> Dictionary
-            </a>
-        </li>
-        <li>
-            <a href="Quiz.html">
-                <i class="fas fa-question-circle"></i> Quiz
-            </a>
-        </li>
-        <li>
-            <a href="test.html">
-                <i class="fas fa-lightbulb"></i> Facts & Discoveries
-            </a>
-        </li>
-        <li>
-            <a href="Games.html">
-                <i class="fas fa-gamepad"></i> Science Games
-            </a>
-        </li>
-<li>
-            <a href="trying.html">
-                <i class="fas fa-book-open"></i> Books & Magzines
-            </a>
-</li>
+      <li>
+        <a href="main.html">
+          <i class="fas fa-home"></i> <span>Home</span>
+        </a>
+      </li>
+      <li class="active">
+        <a href="dictionary.html">
+          <i class="fas fa-book"></i> <span>Dictionary</span>
+        </a>
+      </li>
+      <li>
+        <a href="Quiz.html">
+          <i class="fas fa-question-circle"></i> <span>Quiz</span>
+        </a>
+      </li>
+      <li>
+        <a href="test.html">
+          <i class="fas fa-lightbulb"></i> <span>Discoveries</span>
+        </a>
+      </li>
+      <li>
+        <a href="Games.html">
+          <i class="fas fa-gamepad"></i> <span>Science Games</span>
+        </a>
+      </li>
+      <li>
+        <a href="trying.html">
+          <i class="fas fa-book-open"></i> <span>Library</span>
+        </a>
+      </li>
     </ul>
-</div>
-  <!-- Hero + Dark/Light Toggle -->
-  <section class="hero">
-    <h1>Dictionary 2.0</h1>
-    <div class="toggle-theme" id="themeToggle">
-      <i class="fas fa-moon"></i>
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="avatar">LP</div>
+        <div class="user-info">
+          <div class="username">Lexicon Pro</div>
+          <div class="user-status">Premium</div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ← Only one search bar here! → -->
-  <section class="search-section">
-    <input id="wordInput" type="text" placeholder="Type any word…" />
-    <button id="searchBtn">
-      <i class="fas fa-search"></i>
-    </button>
-  </section>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Lexicon Pro</h1>
+        <p class="hero-subtitle">Your premium language companion</p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">500K+</div>
+            <div class="stat-label">Definitions</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">25+</div>
+            <div class="stat-label">Languages</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">10M+</div>
+            <div class="stat-label">Users</div>
+          </div>
+        </div>
+      </div>
+      <div class="toggle-theme" id="themeToggle">
+        <i class="fas fa-moon"></i>
+      </div>
+      <div class="hero-pattern"></div>
+    </section>
 
-  <!-- Results -->
-  <div id="results"></div>
+    <!-- Search Section -->
+    <section class="search-container">
+      <div class="search-section">
+        <div class="search-icon">
+          <i class="fas fa-search"></i>
+        </div>
+        <input id="wordInput" type="text" placeholder="Search for any word, phrase, or idiom..." autocomplete="off" />
+        <button id="searchBtn" class="search-button">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="search-options">
+          <button class="voice-search">
+            <i class="fas fa-microphone"></i>
+          </button>
+          <button class="random-word">
+            <i class="fas fa-random"></i>
+          </button>
+        </div>
+      </div>
+      <div class="search-suggestions">
+        <span class="suggestion-title">Trending searches:</span>
+        <a href="#" class="suggestion">serendipity</a>
+        <a href="#" class="suggestion">ephemeral</a>
+        <a href="#" class="suggestion">quintessential</a>
+        <a href="#" class="suggestion">ubiquitous</a>
+      </div>
+    </section>
 
-  <footer>© 2025 • Powered by DictionaryAPI.dev</footer>
+    <!-- Featured Words -->
+    <section class="featured-section">
+      <h2 class="section-title">
+        <i class="fas fa-star"></i> Word of the Day
+      </h2>
+      <div class="featured-card">
+        <div class="featured-header">
+          <h3 class="featured-word">Ephemeral</h3>
+          <div class="featured-phonetic">/ɪˈfem.ɚ.əl/</div>
+        </div>
+        <div class="featured-content">
+          <div class="featured-pos">adjective</div>
+          <div class="featured-def">
+            Lasting for a very short time; transient.
+          </div>
+          <div class="featured-example">
+            "The ephemeral nature of cherry blossoms makes them particularly beautiful."
+          </div>
+          <div class="featured-origin">
+            <strong>Origin:</strong> Late 16th century: from Greek ephēmeros 'lasting only a day' + -al.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <div id="results">
+      <div class="welcome-message">
+        <div class="welcome-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h2>Welcome to Lexicon Pro</h2>
+        <p>Begin your lexical journey by searching for any word above. Our comprehensive dictionary includes:</p>
+        <ul class="features-list">
+          <li><i class="fas fa-check-circle"></i> Detailed definitions with examples</li>
+          <li><i class="fas fa-check-circle"></i> Pronunciation guides</li>
+          <li><i class="fas fa-check-circle"></i> Etymology and word origins</li>
+          <li><i class="fas fa-check-circle"></i> Synonyms and antonyms</li>
+          <li><i class="fas fa-check-circle"></i> Usage in different contexts</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">LP</div>
+          <div class="footer-title">Lexicon Pro</div>
+        </div>
+        <div class="footer-links">
+          <div class="link-group">
+            <h4>Dictionary</h4>
+            <a href="#">English</a>
+            <a href="#">Thesaurus</a>
+            <a href="#">Medical</a>
+            <a href="#">Legal</a>
+          </div>
+          <div class="link-group">
+            <h4>Resources</h4>
+            <a href="#">Grammar Guide</a>
+            <a href="#">Writing Tips</a>
+            <a href="#">Word Lists</a>
+            <a href="#">Blog</a>
+          </div>
+          <div class="link-group">
+            <h4>Company</h4>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copyright">© 2025 Lexicon Pro. All rights reserved.</div>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="footer-api">
+        <span>Powered by Oxford Dictionary API & Merriam-Webster</span>
+      </div>
+    </footer>
+  </div>
 
   <script>
-    const btn    = document.getElementById('searchBtn');
-    const input  = document.getElementById('wordInput');
+    // DOM Elements
+    const btn = document.getElementById('searchBtn');
+    const input = document.getElementById('wordInput');
     const output = document.getElementById('results');
     const toggle = document.getElementById('themeToggle');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const randomBtn = document.querySelector('.random-word');
+    const voiceBtn = document.querySelector('.voice-search');
 
-    // Dark/Light toggle
+    // Toggle Sidebar
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      overlay.classList.toggle('active');
+    });
+
+    // Close Sidebar when clicking overlay
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    // Dark/Light Theme Toggle
     toggle.addEventListener('click', () => {
       const isDark = document.body.dataset.theme === 'dark';
       document.body.dataset.theme = isDark ? '' : 'dark';
-      toggle.innerHTML = isDark
-        ? '<i class="fas fa-moon"></i>'
-        : '<i class="fas fa-sun"></i>';
+      toggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
     });
+
+    // Check for saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.dataset.theme = 'dark';
+      toggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
 
     // Fetch & render definitions
     async function lookup() {
@@ -103,44 +264,153 @@
       output.innerHTML = '';
       if (!word) return;
 
+      // Show loading state
+      output.innerHTML = `
+        <div class="loading-state">
+          <div class="loading-spinner">
+            <i class="fas fa-circle-notch fa-spin"></i>
+          </div>
+          <p>Searching our lexical database for "${word}"...</p>
+        </div>
+      `;
+
       try {
-        const res  = await fetch(
+        // Using Oxford Dictionary API (simulated here - you'd need to sign up for actual API key)
+        const res = await fetch(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
         );
-        if (!res.ok) throw 0;
+        
+        if (!res.ok) throw new Error('Word not found');
         const data = await res.json();
+
+        // Clear loading state
+        output.innerHTML = '';
 
         data.forEach(entry => {
           const card = document.createElement('div');
           card.className = 'card';
+          
+          // Header with word and phonetic
           card.innerHTML = `
-            <h2>${entry.word}</h2>
-            ${entry.phonetic ? `<div class="phonetic">${entry.phonetic}</div>` : ''}
+            <div class="card-header">
+              <h2>${entry.word}</h2>
+              ${entry.phonetic ? `<div class="phonetic">${entry.phonetic}</div>` : ''}
+              <div class="word-actions">
+                <button class="action-btn pronunciation">
+                  <i class="fas fa-volume-up"></i> Pronounce
+                </button>
+                <button class="action-btn save-word">
+                  <i class="fas fa-bookmark"></i> Save
+                </button>
+              </div>
+            </div>
           `;
+          
+          // Meanings and definitions
           entry.meanings.forEach(m => {
-            card.innerHTML += `<div class="pos">${m.partOfSpeech}</div>`;
-            m.definitions.forEach((d,i) => {
+            card.innerHTML += `
+              <div class="meaning-section">
+                <div class="pos">${m.partOfSpeech}</div>
+                ${m.synonyms.length ? `
+                  <div class="synonyms">
+                    <strong>Synonyms:</strong> 
+                    ${m.synonyms.slice(0, 5).map(s => `<span class="synonym-tag">${s}</span>`).join('')}
+                  </div>
+                ` : ''}
+                <div class="definitions">
+            `;
+            
+            m.definitions.forEach((d, i) => {
               card.innerHTML += `
-                <div class="def"><strong>${i+1}.</strong> ${d.definition}</div>
-                ${d.example ? `<div class="example">“${d.example}”</div>` : ''}
+                <div class="definition-item">
+                  <div class="def-number">${i+1}.</div>
+                  <div class="def-content">
+                    <div class="def-text">${d.definition}</div>
+                    ${d.example ? `<div class="example">“${d.example}”</div>` : ''}
+                  </div>
+                </div>
               `;
             });
+            
+            card.innerHTML += `</div></div>`;
           });
+          
+          // Etymology if available
+          if (entry.origin) {
+            card.innerHTML += `
+              <div class="etymology">
+                <h4>Etymology</h4>
+                <p>${entry.origin}</p>
+              </div>
+            `;
+          }
+          
           output.appendChild(card);
         });
-      } catch {
+      } catch (error) {
         output.innerHTML = `
-          <div class="card">
-            <h2>Oops!</h2>
-            <div class="def">
-              No definition found for "<strong>${word}</strong>".
+          <div class="error-card">
+            <div class="error-icon">
+              <i class="fas fa-exclamation-triangle"></i>
             </div>
-          </div>`;
+            <h2>Word Not Found</h2>
+            <p>We couldn't find a definition for "<strong>${word}</strong>".</p>
+            <div class="error-suggestions">
+              <p>Try these suggestions:</p>
+              <ul>
+                <li>Check your spelling</li>
+                <li>Try a more general term</li>
+                <li>Search for a different word</li>
+              </ul>
+            </div>
+          </div>
+        `;
       }
     }
 
+    // Random word generator
+    randomBtn.addEventListener('click', async () => {
+      const words = ['serendipity', 'ephemeral', 'quintessential', 'eloquent', 'luminous', 
+                     'resilience', 'ethereal', 'magnanimous', 'petrichor', 'solitude'];
+      const randomWord = words[Math.floor(Math.random() * words.length)];
+      input.value = randomWord;
+      lookup();
+    });
+
+    // Voice search (simulated)
+    voiceBtn.addEventListener('click', () => {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('Voice search is not supported in your browser');
+        return;
+      }
+      
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.start();
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        lookup();
+      };
+      
+      recognition.onerror = (event) => {
+        console.error('Voice recognition error', event.error);
+      };
+    });
+
+    // Event listeners
     btn.addEventListener('click', lookup);
     input.addEventListener('keydown', e => e.key === 'Enter' && lookup());
+    
+    // Click on suggestion
+    document.querySelectorAll('.suggestion').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        input.value = e.target.textContent;
+        lookup();
+      });
+    });
   </script>
 <script src="sidebar.js"></script>
 </body>
