@@ -518,98 +518,56 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'hidden';
 
         // Start timer
-  // Global timer variables
-let quizTimeLeft; // Time remaining for the whole quiz
-let quizTimerInterval;
-const totalQuizTime = 300; // 5 minutes for the whole quiz (adjust as needed)
+        startTimer();
+    }
 
-// Initialize quiz timer (call this when quiz starts)
-function initQuizTimer() {
-    quizTimeLeft = totalQuizTime;
-    startQuizTimer();
-}
+    // Timer Functions
+    function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timeUp();
+            }
+        }, 1000);
+    }
 
-// Start the quiz timer
-function startQuizTimer() {
-    updateQuizTimerDisplay();
-    quizTimerInterval = setInterval(() => {
-        quizTimeLeft--;
-        updateQuizTimerDisplay();
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timeLeftElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         
-        if (quizTimeLeft <= 0) {
-            clearInterval(quizTimerInterval);
-            quizTimeUp();
+        // Change color when time is running low
+        if (timeLeft <= 30) {
+            timerElement.classList.add('warning');
+        } else {
+            timerElement.classList.remove('warning');
         }
-    }, 1000);
-}
-
-function updateQuizTimerDisplay() {
-    const minutes = Math.floor(quizTimeLeft / 60);
-    const seconds = quizTimeLeft % 60;
-    timeLeftElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    
-    // Visual warnings when time is running low
-    if (quizTimeLeft <= 30) {
-        timerElement.classList.add('warning');
-    } else {
-        timerElement.classList.remove('warning');
+        
+        if (timeLeft <= 10) {
+            timerElement.classList.add('danger');
+        } else {
+            timerElement.classList.remove('danger');
+        }
     }
-    
-    if (quizTimeLeft <= 10) {
-        timerElement.classList.add('danger');
-    } else {
-        timerElement.classList.remove('danger');
+
+    function timeUp() {
+        // Disable all options
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.disabled = true;
+        });
+        
+        // Show time up message
+        feedbackContainer.style.display = 'block';
+        correctIcon.style.display = 'none';
+        incorrectIcon.style.display = 'block';
+        feedbackText.textContent = 'Time\'s up!';
+        factText.textContent = 'You ran out of time for this question.';
+        nextBtn.style.display = 'block';
     }
-}
-
-function quizTimeUp() {
-    // Disable all interactive elements
-    document.querySelectorAll('.option-btn, .next-btn').forEach(btn => {
-        btn.disabled = true;
-    });
-    
-    // Show time up message
-    feedbackContainer.style.display = 'block';
-    correctIcon.style.display = 'none';
-    incorrectIcon.style.display = 'block';
-    feedbackText.textContent = 'Quiz Complete!';
-    factText.textContent = 'Time has expired. Your quiz will be submitted.';
-    
-    // Hide next button and show submit button
-    nextBtn.style.display = 'none';
-    submitBtn.style.display = 'block';
-    
-    // Automatically submit after 3 seconds (optional)
-    setTimeout(submitQuiz, 3000);
-}
-
-// Call this when user manually submits quiz
-function stopQuizTimer() {
-    clearInterval(quizTimerInterval);
-}
-
-// Your quiz submission function
-function submitQuiz() {
-    // Calculate score, show results, etc.
-    // ...
-    showQuizResults();
-}
-
-// Example CSS for timer warnings (add to your stylesheet)
-/*
-.warning {
-    color: orange;
-    font-weight: bold;
-}
-.danger {
-    color: red;
-    animation: pulse 0.5s infinite alternate;
-}
-@keyframes pulse {
-    from { opacity: 1; }
-    to { opacity: 0.5; }
-}
-*/
 
     // Show Question Function
     function showQuestion() {
