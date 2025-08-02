@@ -3,120 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Universal Dictionary & Translator</title>
+  <title>Dictionary 2.0</title>
 
   <!-- Google Font + Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <!-- Your CSS -->
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles3.css"/>
+  <link rel="stylesheet" href="sidebar.css">
 </head>
 <body>
-  <!-- Sidebar Toggle Button -->
-  <button class="sidebar-toggle" id="sidebarToggle">
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" id="sidebarToggle">
     <i class="fas fa-bars"></i>
-  </button>
+</button>
 
-  <!-- Overlay -->
-  <div class="overlay" id="overlay"></div>
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
 
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <h3>Science & Facts</h3>
+        <h3>Science & Facts</h3>
     </div>
     <ul class="sidebar-menu">
-      <li>
-        <a href="main.html">
-          <i class="fas fa-home"></i> Home
-        </a>
-      </li>
-      <li>
-        <a href="dictionary.html">
-          <i class="fas fa-book"></i> Dictionary
-        </a>
-      </li>
-      <li>
-        <a href="Quiz.html">
-          <i class="fas fa-question-circle"></i> Quiz
-        </a>
-      </li>
-      <li>
-        <a href="test.html">
-          <i class="fas fa-lightbulb"></i> Facts & Discoveries
-        </a>
-      </li>
-      <li>
-        <a href="Games.html">
-          <i class="fas fa-gamepad"></i> Science Games
-        </a>
-      </li>
-      <li>
-        <a href="trying.html">
-          <i class="fas fa-book-open"></i> Books & Magzines
-        </a>
-      </li>
+        <li>
+            <a href="main.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        <li>
+            <a href="dictionary.html">
+                <i class="fas fa-book"></i> Dictionary
+            </a>
+        </li>
+        <li>
+            <a href="Quiz.html">
+                <i class="fas fa-question-circle"></i> Quiz
+            </a>
+        </li>
+        <li>
+            <a href="test.html">
+                <i class="fas fa-lightbulb"></i> Facts & Discoveries
+            </a>
+        </li>
+        <li>
+            <a href="Games.html">
+                <i class="fas fa-gamepad"></i> Science Games
+            </a>
+        </li>
+        <li>
+            <a href="trying.html">
+                <i class="fas fa-book-open"></i> Books & Magzines
+            </a>
+        </li>
     </ul>
-  </div>
+</div>
 
   <!-- Hero + Dark/Light Toggle -->
   <section class="hero">
-    <h1>Universal Dictionary & Translator</h1>
+    <h1>Dictionary & Translator</h1>
     <div class="toggle-theme" id="themeToggle">
       <i class="fas fa-moon"></i>
     </div>
   </section>
 
-  <!-- Language Selection -->
-  <section class="language-section">
-    <div class="language-selector">
-      <label for="sourceLang">From:</label>
-      <select id="sourceLang">
-        <option value="en">English</option>
-        <option value="zh">Chinese</option>
-        <option value="es">Spanish</option>
-        <option value="hi">Hindi</option>
-        <option value="ar">Arabic</option>
-        <option value="pt">Portuguese</option>
-        <option value="bn">Bengali</option>
-        <option value="ru">Russian</option>
-        <option value="ja">Japanese</option>
-        <option value="pa">Punjabi</option>
-        <option value="de">German</option>
-        <option value="fr">French</option>
-      </select>
-    </div>
-    <div class="language-selector">
-      <label for="targetLang">To:</label>
-      <select id="targetLang">
-        <option value="en">English</option>
-        <option value="zh">Chinese</option>
-        <option value="es">Spanish</option>
-        <option value="hi">Hindi</option>
-        <option value="ar">Arabic</option>
-        <option value="pt">Portuguese</option>
-        <option value="bn">Bengali</option>
-        <option value="ru">Russian</option>
-        <option value="ja">Japanese</option>
-        <option value="pa">Punjabi</option>
-        <option value="de">German</option>
-        <option value="fr">French</option>
-      </select>
-    </div>
-    <button id="swapLangs" title="Swap languages">
-      <i class="fas fa-exchange-alt"></i>
-    </button>
-  </section>
-
   <!-- Search Section -->
   <section class="search-section">
-    <input id="wordInput" type="text" placeholder="Type any word or phrase…" />
-    <div class="search-buttons">
-      <button id="searchBtn" title="Dictionary Lookup">
-        <i class="fas fa-book"></i> Define
+    <div class="mode-toggle">
+      <button class="mode-btn active" data-mode="dictionary">Dictionary</button>
+      <button class="mode-btn" data-mode="translator">Translator</button>
+    </div>
+    
+    <div class="search-container" id="dictionarySearch">
+      <input id="wordInput" type="text" placeholder="Type any word…" />
+      <select id="dictLanguage">
+        <option value="en">English</option>
+        <option value="es">Spanish</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="it">Italian</option>
+        <option value="pt">Portuguese</option>
+        <option value="ru">Russian</option>
+        <option value="zh">Chinese</option>
+        <option value="ja">Japanese</option>
+        <option value="ar">Arabic</option>
+      </select>
+      <button id="searchBtn">
+        <i class="fas fa-search"></i>
       </button>
-      <button id="translateBtn" title="Translate">
+    </div>
+    
+    <div class="search-container hidden" id="translatorSearch">
+      <textarea id="textToTranslate" placeholder="Text to translate..."></textarea>
+      <div class="language-selectors">
+        <select id="sourceLanguage">
+          <option value="auto">Detect Language</option>
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="it">Italian</option>
+          <option value="pt">Portuguese</option>
+          <option value="ru">Russian</option>
+          <option value="zh">Chinese</option>
+          <option value="ja">Japanese</option>
+          <option value="ar">Arabic</option>
+        </select>
+        <i class="fas fa-exchange-alt swap-btn" id="swapLanguages"></i>
+        <select id="targetLanguage">
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="it">Italian</option>
+          <option value="pt">Portuguese</option>
+          <option value="ru">Russian</option>
+          <option value="zh">Chinese</option>
+          <option value="ja">Japanese</option>
+          <option value="ar">Arabic</option>
+        </select>
+      </div>
+      <button id="translateBtn">
         <i class="fas fa-language"></i> Translate
       </button>
     </div>
@@ -124,13 +133,11 @@
 
   <!-- Results -->
   <div id="results"></div>
+  <div id="translationResults" class="hidden"></div>
 
-  <footer>
-    <p>© 2025 • Powered by DictionaryAPI.dev & LibreTranslate</p>
-    <p class="api-status" id="apiStatus">API Status: <span class="online">Online</span></p>
-  </footer>
+  <footer>© 2025 • Powered by DictionaryAPI.dev & LibreTranslate</footer>
 
-  <script src="app.js"></script>
   <script src="sidebar.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
