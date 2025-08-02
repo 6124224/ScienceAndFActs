@@ -170,7 +170,78 @@ body {
 #translateBtn:hover {
   transform: scale(1.02);
 }
+/* Additional styles for new elements */
+.loading-spinner {
+    text-align: center;
+    padding: 1rem;
+    color: var(--clr-header);
+}
 
+.audio-btn {
+    background: var(--clr-header);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.audio-btn:hover {
+    transform: scale(1.05);
+}
+
+.translate-option button, .dict-lookup-btn {
+    background: var(--clr-accent);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.translate-option button:hover, .dict-lookup-btn:hover {
+    transform: scale(1.02);
+}
+
+.synonyms, .antonyms {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background: rgba(0,0,0,0.05);
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+[data-theme="dark"] .synonyms, [data-theme="dark"] .antonyms {
+    background: rgba(255,255,255,0.1);
+}
+
+.translation-original, .translation-result {
+    margin-bottom: 1.5rem;
+}
+
+.translation-original .translation-text {
+    background: rgba(78, 84, 200, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.translation-result .translation-text {
+    background: rgba(255, 101, 132, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+}
 /* ——— RESULTS GRID & CARDS ——— */
 #results, #translationResults {
   width: 90%;
@@ -277,3 +348,4 @@ footer {
     flex-direction: column;
   }
 }
+
