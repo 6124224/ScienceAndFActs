@@ -11,20 +11,25 @@ const dictionarySearch = document.getElementById('dictionarySearch');
 const translatorSearch = document.getElementById('translatorSearch');
 const swapBtn = document.getElementById('swapLanguages');
 
-// Language codes and names for UI
+// Supported languages with names and codes
 const languages = {
-    'en': 'English',
-    'es': 'Spanish',
-    'fr': 'French',
-    'de': 'German',
-    'it': 'Italian',
-    'pt': 'Portuguese',
-    'ru': 'Russian',
-    'zh': 'Chinese',
-    'ja': 'Japanese',
-    'ar': 'Arabic',
-    'hi': 'Hindi'
+    'en': { name: 'English', apiCode: 'en' },
+    'es': { name: 'Spanish', apiCode: 'es' },
+    'fr': { name: 'French', apiCode: 'fr' },
+    'de': { name: 'German', apiCode: 'de' },
+    'it': { name: 'Italian', apiCode: 'it' },
+    'pt': { name: 'Portuguese', apiCode: 'pt' },
+    'ru': { name: 'Russian', apiCode: 'ru' },
+    'zh': { name: 'Chinese', apiCode: 'zh' },
+    'ja': { name: 'Japanese', apiCode: 'ja' },
+    'ar': { name: 'Arabic', apiCode: 'ar' },
+    'hi': { name: 'Hindi', apiCode: 'hi' }
 };
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', function() {
+    initLanguageDropdowns();
+});
 
 // Dark/Light toggle
 toggle.addEventListener('click', () => {
@@ -68,11 +73,42 @@ swapBtn.addEventListener('click', () => {
     target.value = temp;
 });
 
-// Dictionary API with fallback
+// Initialize language dropdowns
+function initLanguageDropdowns() {
+    const dictLanguage = document.getElementById('dictLanguage');
+    const sourceLanguage = document.getElementById('sourceLanguage');
+    const targetLanguage = document.getElementById('targetLanguage');
+    
+    // Clear existing options
+    dictLanguage.innerHTML = '';
+    sourceLanguage.innerHTML = '<option value="auto">Detect Language</option>';
+    targetLanguage.innerHTML = '';
+    
+    // Add language options
+    Object.entries(languages).forEach(([code, lang]) => {
+        const option1 = document.createElement('option');
+        option1.value = code;
+        option1.textContent = lang.name;
+        dictLanguage.appendChild(option1);
+        
+        const option2 = document.createElement('option');
+        option2.value = code;
+        option2.textContent = lang.name;
+        sourceLanguage.appendChild(option2.cloneNode(true));
+        
+        const option3 = option2.cloneNode(true);
+        targetLanguage.appendChild(option3);
+    });
+    
+    // Set default target to English
+    targetLanguage.value = 'en';
+}
+
+// Dictionary API using Free Dictionary API
 async function lookup() {
     const word = input.value.trim();
     const language = document.getElementById('dictLanguage').value;
-    output.innerHTML = '<div class="card"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Searching...</div></div>';
+    output.innerHTML = '<div class="card"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Searching dictionary...</div></div>';
     
     if (!word) {
         output.innerHTML = '<div class="card"><div class="def">Please enter a word to search</div></div>';
@@ -80,17 +116,14 @@ async function lookup() {
     }
 
     try {
-        // Try DictionaryAPI.dev first
-        const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${language}/${encodeURIComponent(word)}`);
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${language}/${encodeURIComponent(word)}`);
         
-        if (dictRes.ok) {
-            const data = await dictRes.json();
-            displayDictionaryResults(data, language);
-            return;
+        if (!response.ok) {
+            throw new Error(`Word not found in ${languages[language].name} dictionary`);
         }
         
-        // If DictionaryAPI fails, try WordsAPI (note: requires API key in production)
-        await fallbackDictionaryLookup(word, language);
+        const data = await response.json();
+        displayDictionaryResults(data, language);
         
     } catch (error) {
         console.error('Dictionary error:', error);
@@ -98,7 +131,7 @@ async function lookup() {
             <div class="card">
                 <h2>Oops!</h2>
                 <div class="def">
-                    No definition found for "<strong>${word}</strong>".
+                    No definition found for "<strong>${word}</strong>" in ${languages[language].name}.
                     ${error.message ? error.message : 'Try another word or language.'}
                 </div>
             </div>`;
@@ -120,7 +153,7 @@ function displayDictionaryResults(data, language) {
         // Add pronunciation audio if available
         if (entry.phonetics && entry.phonetics.length > 0) {
             const audioPhonetic = entry.phonetics.find(p => p.audio);
-            if (audioPhonetic) {
+            if (audioPhonetic && audioPhonetic.audio) {
                 card.innerHTML += `
                     <button class="audio-btn" onclick="playAudio('${audioPhonetic.audio}')">
                         <i class="fas fa-volume-up"></i> Listen
@@ -134,9 +167,11 @@ function displayDictionaryResults(data, language) {
             m.definitions.forEach((d, i) => {
                 card.innerHTML += `
                     <div class="def"><strong>${i+1}.</strong> ${d.definition}</div>
-                    ${d.example ? `<div class="example">“${d.example}”</div>` : ''}
+                    ${d.example ? `<div class="example">"${d.example}"</div>` : ''}
                     ${d.synonyms && d.synonyms.length > 0 ? 
-                        `<div class="synonyms">Synonyms: ${d.synonyms.join(', ')}</div>` : ''}
+                        `<div class="synonyms"><strong>Synonyms:</strong> ${d.synonyms.join(', ')}</div>` : ''}
+                    ${d.antonyms && d.antonyms.length > 0 ? 
+                        `<div class="antonyms"><strong>Antonyms:</strong> ${d.antonyms.join(', ')}</div>` : ''}
                 `;
             });
         });
@@ -152,13 +187,6 @@ function displayDictionaryResults(data, language) {
         
         output.appendChild(card);
     });
-}
-
-// Fallback dictionary API
-async function fallbackDictionaryLookup(word, language) {
-    // In production, you would use a fallback API here
-    // For example, WordsAPI (requires API key) or another service
-    throw new Error('Dictionary service unavailable. Try another word or language.');
 }
 
 // Play pronunciation audio
@@ -183,7 +211,7 @@ async function translateWord(word, sourceLang) {
     }, 300);
 }
 
-// Translation API with fallback
+// Translation using MyMemory API (no API key needed)
 async function translateText() {
     const text = textToTranslate.value.trim();
     const sourceLang = document.getElementById('sourceLanguage').value;
@@ -202,29 +230,26 @@ async function translateText() {
         </div>`;
     
     try {
-        // Try LibreTranslate first
-        const libretranslateRes = await fetch('https://libretranslate.de/translate', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                q: text,
-                source: sourceLang === 'auto' ? 'auto' : sourceLang,
-                target: targetLang,
-                format: 'text'
-            })
-        });
+        // Use MyMemory API as it doesn't require an API key
+        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang === 'auto' ? 'auto' : sourceLang}|${targetLang}`);
         
-        if (libretranslateRes.ok) {
-            const data = await libretranslateRes.json();
-            displayTranslationResults(text, data.translatedText, data.detectedLanguage || { language: sourceLang });
-            return;
+        if (!response.ok) throw new Error('Translation service unavailable');
+        
+        const data = await response.json();
+        
+        if (data.responseData && data.responseData.translatedText) {
+            displayTranslationResults(
+                text, 
+                data.responseData.translatedText, 
+                { 
+                    language: sourceLang === 'auto' ? (data.responseData.detectedLanguage || 'en') : sourceLang,
+                    confidence: data.responseData.match ? (data.responseData.match / 100) : undefined
+                },
+                targetLang
+            );
+        } else {
+            throw new Error('No translation found');
         }
-        
-        // If LibreTranslate fails, try MyMemory API as fallback
-        await fallbackTranslation(text, sourceLang, targetLang);
-        
     } catch (error) {
         console.error('Translation error:', error);
         translationResults.innerHTML = `
@@ -240,78 +265,51 @@ async function translateText() {
     }
 }
 
-// Display translation results with dictionary lookup option
-function displayTranslationResults(originalText, translatedText, detectedLanguage) {
+// Display translation results
+function displayTranslationResults(originalText, translatedText, detectedLanguage, targetLang) {
     translationResults.innerHTML = '';
     
     // Main translation card
     const translationCard = document.createElement('div');
     translationCard.className = 'translation-card';
     translationCard.innerHTML = `
-        <h2>Translation</h2>
+        <h2>Translation Results</h2>
         <div class="translation-original">
-            <strong>Original (${languages[detectedLanguage.language] || detectedLanguage.language}):</strong>
+            <strong>Original (${languages[detectedLanguage.language]?.name || detectedLanguage.language}):</strong>
             <div class="translation-text">${originalText}</div>
         </div>
         <div class="translation-result">
-            <strong>Translated (${languages[document.getElementById('targetLanguage').value]}):</strong>
+            <strong>Translated (${languages[targetLang]?.name || targetLang}):</strong>
             <div class="translation-text">${translatedText}</div>
         </div>
-        <div class="translation-meta">
-            <span>Detected language: ${languages[detectedLanguage.language] || detectedLanguage.language}</span>
-            ${detectedLanguage.confidence ? 
-                `<span>Confidence: ${Math.round(detectedLanguage.confidence * 100)}%</span>` : ''}
-        </div>
+        ${detectedLanguage.confidence ? `
+            <div class="translation-meta">
+                <span>Detection confidence: ${Math.round(detectedLanguage.confidence * 100)}%</span>
+            </div>
+        ` : ''}
     `;
     
     // Add dictionary lookup option if text is a single word
-    if (translatedText.split(/\s+/).length === 1) {
+    const translatedWord = translatedText.split(/\s+/)[0];
+    if (translatedWord && translatedWord.length > 0 && translatedWord.length < 30 && !translatedWord.match(/[^\w']/)) {
         const lookupBtn = document.createElement('button');
         lookupBtn.className = 'dict-lookup-btn';
-        lookupBtn.innerHTML = `<i class="fas fa-book"></i> Look up "${translatedText}" in dictionary`;
+        lookupBtn.innerHTML = `<i class="fas fa-book"></i> Look up "${translatedWord}" in dictionary`;
         lookupBtn.onclick = () => {
             // Switch to dictionary mode
             document.querySelector('.mode-btn[data-mode="dictionary"]').click();
             // Set the word and language
-            input.value = translatedText;
-            document.getElementById('dictLanguage').value = document.getElementById('targetLanguage').value;
+            input.value = translatedWord;
+            document.getElementById('dictLanguage').value = targetLang;
             // Trigger search
             setTimeout(() => {
                 lookup();
             }, 300);
         };
-        
         translationCard.appendChild(lookupBtn);
     }
     
     translationResults.appendChild(translationCard);
-}
-
-// Fallback translation API
-async function fallbackTranslation(text, sourceLang, targetLang) {
-    // Try MyMemory API as fallback
-    try {
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang === 'auto' ? 'auto' : sourceLang}|${targetLang}`);
-        
-        if (!response.ok) throw new Error('Translation service unavailable');
-        
-        const data = await response.json();
-        
-        if (data.responseData && data.responseData.translatedText) {
-            displayTranslationResults(
-                text, 
-                data.responseData.translatedText, 
-                { 
-                    language: sourceLang === 'auto' ? data.responseData.detectedLanguage || 'en' : sourceLang,
-                    confidence: data.responseData.match ? data.responseData.match / 100 : undefined
-                }
-            );
-        } else {
-            throw new Error('No translation found');
-        }
-    } catch (error) {
-        throw new Error('Fallback translation service failed. Please try again later.');
-    }
 }
 
 // Event Listeners
@@ -324,37 +322,3 @@ textToTranslate.addEventListener('keydown', e => {
         translateText();
     }
 });
-
-// Initialize language dropdowns
-function initLanguageDropdowns() {
-    const dictLanguage = document.getElementById('dictLanguage');
-    const sourceLanguage = document.getElementById('sourceLanguage');
-    const targetLanguage = document.getElementById('targetLanguage');
-    
-    // Clear existing options
-    dictLanguage.innerHTML = '';
-    sourceLanguage.innerHTML = '<option value="auto">Detect Language</option>';
-    targetLanguage.innerHTML = '';
-    
-    // Add language options
-    Object.entries(languages).forEach(([code, name]) => {
-        const option1 = document.createElement('option');
-        option1.value = code;
-        option1.textContent = name;
-        dictLanguage.appendChild(option1);
-        
-        const option2 = document.createElement('option');
-        option2.value = code;
-        option2.textContent = name;
-        sourceLanguage.appendChild(option2.cloneNode(true));
-        
-        const option3 = option2.cloneNode(true);
-        targetLanguage.appendChild(option3);
-    });
-    
-    // Set default target to English
-    targetLanguage.value = 'en';
-}
-
-// Initialize the app
-initLanguageDropdowns();
