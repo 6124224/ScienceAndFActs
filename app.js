@@ -10,7 +10,40 @@ const modeButtons = document.querySelectorAll('.mode-btn');
 const dictionarySearch = document.getElementById('dictionarySearch');
 const translatorSearch = document.getElementById('translatorSearch');
 const swapBtn = document.getElementById('swapLanguages');
+const translatorDictInput = document.getElementById('translatorDictInput');
+const translatorDictBtn = document.getElementById('translatorDictBtn');
 
+// Add this event listener
+translatorDictBtn.addEventListener('click', () => {
+  const word = translatorDictInput.value.trim();
+  if (!word) return;
+  
+  // Use the target language from translator
+  const targetLang = document.getElementById('targetLanguage').value;
+  
+  // Show results in translationResults div
+  translationResults.innerHTML = '<div class="card"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Searching...</div></div>';
+  
+  fetch(`https://api.dictionaryapi.dev/api/v2/entries/${targetLang}/${word}`)
+    .then(response => response.json())
+    .then(data => {
+      // Reuse your existing displayDictionaryResults function
+      displayDictionaryResults(data, targetLang, translationResults);
+    })
+    .catch(error => {
+      translationResults.innerHTML = `
+        <div class="card">
+          <h2>Error</h2>
+          <div class="def">Couldn't find "${word}" in ${languages[targetLang].name}</div>
+        </div>`;
+    });
+});
+
+// Modify your existing displayDictionaryResults function to accept container parameter
+function displayDictionaryResults(data, language, container = output) {
+  container.innerHTML = '';
+  // ... rest of your existing function code ...
+}
 // Supported languages with names and codes
 const languages = {
     'en': { name: 'English', apiCode: 'en' },
@@ -322,3 +355,4 @@ textToTranslate.addEventListener('keydown', e => {
         translateText();
     }
 });
+
