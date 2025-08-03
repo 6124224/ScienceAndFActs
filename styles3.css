@@ -118,7 +118,28 @@ body {
 #dictionarySearch button:hover {
   transform: scale(1.1);
 }
+.translator-dict-search {
+  display: flex;
+  margin-bottom: 1rem;
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
 
+.translator-dict-search input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  font-size: 1rem;
+}
+
+.translator-dict-search button {
+  width: 50px;
+  border: none;
+  background: var(--clr-header);
+  color: white;
+  cursor: pointer;
+}
 /* Translator Search */
 #textToTranslate {
   width: 100%;
@@ -348,6 +369,4 @@ footer {
     flex-direction: column;
   }
 }
-
-
 
