@@ -99,20 +99,18 @@ body {
   border: none;
   font-size: 1rem;
 }
-#dictionarySearch select {
-  display: none; /* Hide language selector in dictionary */
-}
 #dictionarySearch button {
-  width: 60px;
+  width: 120px;
   border: none;
   background: var(--clr-accent);
   color: #fff;
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: transform .2s;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  transition: background .2s;
 }
 #dictionarySearch button:hover {
-  transform: scale(1.1);
+  background: #e05572;
 }
 
 /* Translator Search */
@@ -162,89 +160,17 @@ body {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   cursor: pointer;
-  transition: transform .2s;
+  transition: background .2s;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
 #translateBtn:hover {
-  transform: scale(1.02);
+  background: #e05572;
 }
 
-/* Additional styles for new elements */
-.loading-spinner {
-    text-align: center;
-    padding: 1rem;
-    color: var(--clr-header);
-}
-
-.audio-btn {
-    background: var(--clr-header);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.audio-btn:hover {
-    transform: scale(1.05);
-}
-
-.translate-option button, .dict-lookup-btn {
-    background: var(--clr-accent);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 50px;
-    margin-top: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    width: 100%;
-    justify-content: center;
-}
-
-.translate-option button:hover, .dict-lookup-btn:hover {
-    transform: scale(1.02);
-}
-
-.synonyms, .antonyms {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    background: rgba(0,0,0,0.05);
-    border-radius: 8px;
-    font-size: 0.9rem;
-}
-
-[data-theme="dark"] .synonyms, [data-theme="dark"] .antonyms {
-    background: rgba(255,255,255,0.1);
-}
-
-.translation-original, .translation-result {
-    margin-bottom: 1.5rem;
-}
-
-.translation-original .translation-text {
-    background: rgba(78, 84, 200, 0.1);
-    padding: 1rem;
-    border-radius: 8px;
-}
-
-.translation-result .translation-text {
-    background: rgba(255, 101, 132, 0.1);
-    padding: 1rem;
-    border-radius: 8px;
-}
-/* ——— RESULTS GRID & CARDS ——— */
+/* ——— RESULTS ——— */
 #results, #translationResults {
   width: 90%;
   max-width: 1000px;
@@ -311,15 +237,6 @@ body {
   margin-bottom: 1rem;
   line-height: 1.6;
 }
-.translation-meta {
-  display: flex;
-  justify-content: space-between;
-  color: #666;
-  font-size: 0.9rem;
-}
-[data-theme="dark"] .translation-meta {
-  color: #aaa;
-}
 
 /* ——— FOOTER ——— */
 footer {
@@ -339,11 +256,9 @@ footer {
   .hero h1 {
     font-size: 1.8rem;
   }
-  #dictionarySearch {
-    flex-direction: row; /* Keep it as row even on mobile */
-  }
-  #dictionarySearch select {
-    display: none; /* Keep language selector hidden */
+  #dictionarySearch button {
+    width: 80px;
+    font-size: 0.9rem;
   }
   .language-selectors {
     flex-direction: column;
