@@ -76,52 +76,68 @@
       <button class="mode-btn" data-mode="translator">Translator</button>
     </div>
     
+    <!-- Dictionary Search -->
     <div class="search-container" id="dictionarySearch">
-      <input id="wordInput" type="text" placeholder="Type any English word…" />
-      <button id="searchBtn">
-        <i class="fas fa-search"></i> Search
-      </button>
+      <div class="search-box">
+        <input id="wordInput" type="text" placeholder="Type any word…" />
+        <select id="dictLanguage">
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+        </select>
+        <button id="searchBtn">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
     </div>
     
+    <!-- Translator Search -->
     <div class="search-container hidden" id="translatorSearch">
-      <textarea id="textToTranslate" placeholder="Text to translate..."></textarea>
-      <div class="language-selectors">
-        <select id="sourceLanguage">
-          <option value="auto">Detect Language</option>
-          <option value="en">English</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
-          <option value="de">German</option>
-          <option value="it">Italian</option>
-          <option value="pt">Portuguese</option>
-          <option value="ru">Russian</option>
-          <option value="zh">Chinese</option>
-          <option value="ja">Japanese</option>
-          <option value="ar">Arabic</option>
-        </select>
-        <i class="fas fa-exchange-alt swap-btn" id="swapLanguages"></i>
-        <select id="targetLanguage">
-          <option value="en">English</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
-          <option value="de">German</option>
-          <option value="it">Italian</option>
-          <option value="pt">Portuguese</option>
-          <option value="ru">Russian</option>
-          <option value="zh">Chinese</option>
-          <option value="ja">Japanese</option>
-          <option value="ar">Arabic</option>
-        </select>
+      <textarea id="textToTranslate" placeholder="Enter text to translate..."></textarea>
+      <div class="language-controls">
+        <div class="language-selectors">
+          <select id="sourceLanguage">
+            <option value="auto">Detect Language</option>
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="ru">Russian</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ar">Arabic</option>
+          </select>
+          <button class="swap-btn" id="swapLanguages">
+            <i class="fas fa-exchange-alt"></i>
+          </button>
+          <select id="targetLanguage">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="ru">Russian</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ar">Arabic</option>
+          </select>
+        </div>
+        <button id="translateBtn">
+          <i class="fas fa-language"></i> Translate
+        </button>
       </div>
-      <button id="translateBtn">
-        <i class="fas fa-language"></i> Translate
-      </button>
     </div>
   </section>
 
-  <!-- Results -->
-  <div id="results"></div>
-  <div id="translationResults" class="hidden"></div>
+  <!-- Results Sections -->
+  <div class="results-container">
+    <div id="results"></div>
+    <div id="translationResults" class="hidden"></div>
+  </div>
 
   <footer>© 2025 • Powered by DictionaryAPI.dev & LibreTranslate</footer>
 
