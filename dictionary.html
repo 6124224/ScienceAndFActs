@@ -79,23 +79,25 @@
     <!-- Dictionary Search -->
     <div class="search-container" id="dictionarySearch">
       <div class="search-box">
-        <input id="wordInput" type="text" placeholder="Type any word…" />
-        <select id="dictLanguage">
+        <div class="search-input-container">
+          <input id="wordInput" type="text" placeholder="Type any word…" />
+          <button id="searchBtn" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <select id="dictLanguage" class="language-select">
           <option value="en">English</option>
           <option value="hi">Hindi</option>
         </select>
-        <button id="searchBtn">
-          <i class="fas fa-search"></i> Search
-        </button>
       </div>
     </div>
     
     <!-- Translator Search -->
     <div class="search-container hidden" id="translatorSearch">
-      <textarea id="textToTranslate" placeholder="Enter text to translate..."></textarea>
+      <textarea id="textToTranslate" placeholder="Enter text to translate..." class="translate-textarea"></textarea>
       <div class="language-controls">
         <div class="language-selectors">
-          <select id="sourceLanguage">
+          <select id="sourceLanguage" class="language-select">
             <option value="auto">Detect Language</option>
             <option value="en">English</option>
             <option value="hi">Hindi</option>
@@ -112,7 +114,7 @@
           <button class="swap-btn" id="swapLanguages">
             <i class="fas fa-exchange-alt"></i>
           </button>
-          <select id="targetLanguage">
+          <select id="targetLanguage" class="language-select">
             <option value="en">English</option>
             <option value="hi">Hindi</option>
             <option value="es">Spanish</option>
@@ -126,7 +128,7 @@
             <option value="ar">Arabic</option>
           </select>
         </div>
-        <button id="translateBtn">
+        <button id="translateBtn" class="translate-button">
           <i class="fas fa-language"></i> Translate
         </button>
       </div>
