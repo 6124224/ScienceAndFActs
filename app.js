@@ -1,8 +1,8 @@
 // DOM Elements
-const btn = document.getElementById('searchBtn');
-const input = document.getElementById('wordInput');
-const output = document.getElementById('results');
-const toggle = document.getElementById('themeToggle');
+const searchBtn = document.getElementById('searchBtn');
+const wordInput = document.getElementById('wordInput');
+const resultsDiv = document.getElementById('results');
+const themeToggle = document.getElementById('themeToggle');
 const translateBtn = document.getElementById('translateBtn');
 const textToTranslate = document.getElementById('textToTranslate');
 const translationResults = document.getElementById('translationResults');
@@ -10,43 +10,14 @@ const modeButtons = document.querySelectorAll('.mode-btn');
 const dictionarySearch = document.getElementById('dictionarySearch');
 const translatorSearch = document.getElementById('translatorSearch');
 const swapBtn = document.getElementById('swapLanguages');
-const translatorDictInput = document.getElementById('translatorDictInput');
-const translatorDictBtn = document.getElementById('translatorDictBtn');
+const dictLanguageSelect = document.getElementById('dictLanguage');
+const sourceLanguageSelect = document.getElementById('sourceLanguage');
+const targetLanguageSelect = document.getElementById('targetLanguage');
 
-// Add this event listener
-translatorDictBtn.addEventListener('click', () => {
-  const word = translatorDictInput.value.trim();
-  if (!word) return;
-  
-  // Use the target language from translator
-  const targetLang = document.getElementById('targetLanguage').value;
-  
-  // Show results in translationResults div
-  translationResults.innerHTML = '<div class="card"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Searching...</div></div>';
-  
-  fetch(`https://api.dictionaryapi.dev/api/v2/entries/${targetLang}/${word}`)
-    .then(response => response.json())
-    .then(data => {
-      // Reuse your existing displayDictionaryResults function
-      displayDictionaryResults(data, targetLang, translationResults);
-    })
-    .catch(error => {
-      translationResults.innerHTML = `
-        <div class="card">
-          <h2>Error</h2>
-          <div class="def">Couldn't find "${word}" in ${languages[targetLang].name}</div>
-        </div>`;
-    });
-});
-
-// Modify your existing displayDictionaryResults function to accept container parameter
-function displayDictionaryResults(data, language, container = output) {
-  container.innerHTML = '';
-  // ... rest of your existing function code ...
-}
-// Supported languages with names and codes
+// Supported languages
 const languages = {
     'en': { name: 'English', apiCode: 'en' },
+    'hi': { name: 'Hindi', apiCode: 'hi' },
     'es': { name: 'Spanish', apiCode: 'es' },
     'fr': { name: 'French', apiCode: 'fr' },
     'de': { name: 'German', apiCode: 'de' },
@@ -55,100 +26,115 @@ const languages = {
     'ru': { name: 'Russian', apiCode: 'ru' },
     'zh': { name: 'Chinese', apiCode: 'zh' },
     'ja': { name: 'Japanese', apiCode: 'ja' },
-    'ar': { name: 'Arabic', apiCode: 'ar' },
-    'hi': { name: 'Hindi', apiCode: 'hi' }
+    'ar': { name: 'Arabic', apiCode: 'ar' }
 };
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
-    initLanguageDropdowns();
+    // Set up event listeners
+    setupEventListeners();
+    
+    // Set default theme based on user preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) {
+        document.body.dataset.theme = 'dark';
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
 });
 
-// Dark/Light toggle
-toggle.addEventListener('click', () => {
-    const isDark = document.body.dataset.theme === 'dark';
-    document.body.dataset.theme = isDark ? '' : 'dark';
-    toggle.innerHTML = isDark
-        ? '<i class="fas fa-moon"></i>'
-        : '<i class="fas fa-sun"></i>';
-});
-
-// Mode Toggle
-modeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        modeButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        
-        if (button.dataset.mode === 'dictionary') {
-            dictionarySearch.classList.remove('hidden');
-            translatorSearch.classList.add('hidden');
-            output.classList.remove('hidden');
-            translationResults.classList.add('hidden');
-        } else {
-            dictionarySearch.classList.add('hidden');
-            translatorSearch.classList.remove('hidden');
-            output.classList.add('hidden');
-            translationResults.classList.remove('hidden');
+// Set up all event listeners
+function setupEventListeners() {
+    // Theme toggle
+    themeToggle.addEventListener('click', toggleTheme);
+    
+    // Dictionary search
+    searchBtn.addEventListener('click', searchDictionary);
+    wordInput.addEventListener('keydown', (e) => e.key === 'Enter' && searchDictionary());
+    
+    // Translation
+    translateBtn.addEventListener('click', translateText);
+    textToTranslate.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault();
+            translateText();
         }
     });
-});
-
-// Swap Languages
-swapBtn.addEventListener('click', () => {
-    const source = document.getElementById('sourceLanguage');
-    const target = document.getElementById('targetLanguage');
-    const temp = source.value;
     
-    // Don't swap if source is 'auto'
-    if (temp === 'auto') return;
-    
-    source.value = target.value;
-    target.value = temp;
-});
-
-// Initialize language dropdowns
-function initLanguageDropdowns() {
-    const dictLanguage = document.getElementById('dictLanguage');
-    const sourceLanguage = document.getElementById('sourceLanguage');
-    const targetLanguage = document.getElementById('targetLanguage');
-    
-    // Clear existing options
-    dictLanguage.innerHTML = '';
-    sourceLanguage.innerHTML = '<option value="auto">Detect Language</option>';
-    targetLanguage.innerHTML = '';
-    
-    // Add language options
-    Object.entries(languages).forEach(([code, lang]) => {
-        const option1 = document.createElement('option');
-        option1.value = code;
-        option1.textContent = lang.name;
-        dictLanguage.appendChild(option1);
-        
-        const option2 = document.createElement('option');
-        option2.value = code;
-        option2.textContent = lang.name;
-        sourceLanguage.appendChild(option2.cloneNode(true));
-        
-        const option3 = option2.cloneNode(true);
-        targetLanguage.appendChild(option3);
+    // Mode switching
+    modeButtons.forEach(button => {
+        button.addEventListener('click', () => switchMode(button.dataset.mode));
     });
     
-    // Set default target to English
-    targetLanguage.value = 'en';
+    // Language swap
+    swapBtn.addEventListener('click', swapLanguages);
 }
 
-// Dictionary API using Free Dictionary API
-async function lookup() {
-    const word = input.value.trim();
-    const language = document.getElementById('dictLanguage').value;
-    output.innerHTML = '<div class="card"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Searching dictionary...</div></div>';
+// Toggle between dark and light theme
+function toggleTheme() {
+    const isDark = document.body.dataset.theme === 'dark';
+    document.body.dataset.theme = isDark ? '' : 'dark';
+    themeToggle.innerHTML = isDark 
+        ? '<i class="fas fa-moon"></i>'
+        : '<i class="fas fa-sun"></i>';
+    
+    // Save preference to localStorage
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+
+// Switch between dictionary and translator modes
+function switchMode(mode) {
+    // Update active button
+    modeButtons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.mode-btn[data-mode="${mode}"]`).classList.add('active');
+    
+    // Show/hide appropriate sections
+    if (mode === 'dictionary') {
+        dictionarySearch.classList.remove('hidden');
+        translatorSearch.classList.add('hidden');
+        resultsDiv.classList.remove('hidden');
+        translationResults.classList.add('hidden');
+        wordInput.focus();
+    } else {
+        dictionarySearch.classList.add('hidden');
+        translatorSearch.classList.remove('hidden');
+        resultsDiv.classList.add('hidden');
+        translationResults.classList.remove('hidden');
+        textToTranslate.focus();
+    }
+}
+
+// Swap source and target languages for translation
+function swapLanguages() {
+    const source = sourceLanguageSelect.value;
+    const target = targetLanguageSelect.value;
+    
+    // Don't swap if source is 'auto'
+    if (source === 'auto') return;
+    
+    sourceLanguageSelect.value = target;
+    targetLanguageSelect.value = source;
+}
+
+// Search dictionary for word
+async function searchDictionary() {
+    const word = wordInput.value.trim();
+    const language = dictLanguageSelect.value;
     
     if (!word) {
-        output.innerHTML = '<div class="card"><div class="def">Please enter a word to search</div></div>';
+        showDictionaryError('Please enter a word to search');
         return;
     }
-
+    
+    // Show loading state
+    resultsDiv.innerHTML = `
+        <div class="card">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i> Searching dictionary...
+            </div>
+        </div>`;
+    
     try {
+        // Use Free Dictionary API
         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${language}/${encodeURIComponent(word)}`);
         
         if (!response.ok) {
@@ -160,20 +146,13 @@ async function lookup() {
         
     } catch (error) {
         console.error('Dictionary error:', error);
-        output.innerHTML = `
-            <div class="card">
-                <h2>Oops!</h2>
-                <div class="def">
-                    No definition found for "<strong>${word}</strong>" in ${languages[language].name}.
-                    ${error.message ? error.message : 'Try another word or language.'}
-                </div>
-            </div>`;
+        showDictionaryError(`No definition found for "${word}" in ${languages[language].name}. Try another word.`);
     }
 }
 
 // Display dictionary results
 function displayDictionaryResults(data, language) {
-    output.innerHTML = '';
+    resultsDiv.innerHTML = '';
     
     data.forEach(entry => {
         const card = document.createElement('div');
@@ -184,9 +163,9 @@ function displayDictionaryResults(data, language) {
         `;
         
         // Add pronunciation audio if available
-        if (entry.phonetics && entry.phonetics.length > 0) {
+        if (entry.phonetics?.length) {
             const audioPhonetic = entry.phonetics.find(p => p.audio);
-            if (audioPhonetic && audioPhonetic.audio) {
+            if (audioPhonetic?.audio) {
                 card.innerHTML += `
                     <button class="audio-btn" onclick="playAudio('${audioPhonetic.audio}')">
                         <i class="fas fa-volume-up"></i> Listen
@@ -195,16 +174,20 @@ function displayDictionaryResults(data, language) {
             }
         }
         
-        entry.meanings.forEach(m => {
-            card.innerHTML += `<div class="pos">${m.partOfSpeech}</div>`;
-            m.definitions.forEach((d, i) => {
+        // Add meanings and definitions
+        entry.meanings.forEach(meaning => {
+            card.innerHTML += `<div class="pos">${meaning.partOfSpeech}</div>`;
+            
+            meaning.definitions.forEach((def, i) => {
                 card.innerHTML += `
-                    <div class="def"><strong>${i+1}.</strong> ${d.definition}</div>
-                    ${d.example ? `<div class="example">"${d.example}"</div>` : ''}
-                    ${d.synonyms && d.synonyms.length > 0 ? 
-                        `<div class="synonyms"><strong>Synonyms:</strong> ${d.synonyms.join(', ')}</div>` : ''}
-                    ${d.antonyms && d.antonyms.length > 0 ? 
-                        `<div class="antonyms"><strong>Antonyms:</strong> ${d.antonyms.join(', ')}</div>` : ''}
+                    <div class="def"><strong>${i+1}.</strong> ${def.definition}</div>
+                    ${def.example ? `<div class="example">"${def.example}"</div>` : ''}
+                    ${def.synonyms?.length ? `
+                        <div class="synonyms"><strong>Synonyms:</strong> ${def.synonyms.join(', ')}</div>
+                    ` : ''}
+                    ${def.antonyms?.length ? `
+                        <div class="antonyms"><strong>Antonyms:</strong> ${def.antonyms.join(', ')}</div>
+                    ` : ''}
                 `;
             });
         });
@@ -212,49 +195,48 @@ function displayDictionaryResults(data, language) {
         // Add translation option
         card.innerHTML += `
             <div class="translate-option">
-                <button onclick="translateWord('${entry.word}', '${language}')">
+                <button class="dict-lookup-btn" onclick="translateWord('${entry.word}', '${language}')">
                     <i class="fas fa-language"></i> Translate this word
                 </button>
             </div>
         `;
         
-        output.appendChild(card);
+        resultsDiv.appendChild(card);
     });
+}
+
+// Show dictionary error message
+function showDictionaryError(message) {
+    resultsDiv.innerHTML = `
+        <div class="card">
+            <h2>Oops!</h2>
+            <div class="def">${message}</div>
+        </div>`;
 }
 
 // Play pronunciation audio
 function playAudio(audioUrl) {
     if (!audioUrl) return;
-    const audio = new Audio(audioUrl);
-    audio.play().catch(e => console.error('Audio playback failed:', e));
+    try {
+        const audio = new Audio(audioUrl);
+        audio.play().catch(e => console.error('Audio playback failed:', e));
+    } catch (error) {
+        console.error('Error playing audio:', error);
+    }
 }
 
-// Translate word from dictionary results
-async function translateWord(word, sourceLang) {
-    // Switch to translator mode
-    document.querySelector('.mode-btn[data-mode="translator"]').click();
-    
-    // Set the text and languages
-    textToTranslate.value = word;
-    document.getElementById('sourceLanguage').value = sourceLang;
-    
-    // Trigger translation
-    setTimeout(() => {
-        translateText();
-    }, 300);
-}
-
-// Translation using MyMemory API (no API key needed)
+// Translate text using LibreTranslate (no API key needed)
 async function translateText() {
     const text = textToTranslate.value.trim();
-    const sourceLang = document.getElementById('sourceLanguage').value;
-    const targetLang = document.getElementById('targetLanguage').value;
+    const sourceLang = sourceLanguageSelect.value;
+    const targetLang = targetLanguageSelect.value;
     
     if (!text) {
-        translationResults.innerHTML = '<div class="translation-card"><div class="translation-text">Please enter text to translate</div></div>';
+        showTranslationError('Please enter text to translate');
         return;
     }
     
+    // Show loading state
     translationResults.innerHTML = `
         <div class="translation-card">
             <div class="loading-spinner">
@@ -263,21 +245,29 @@ async function translateText() {
         </div>`;
     
     try {
-        // Use MyMemory API as it doesn't require an API key
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang === 'auto' ? 'auto' : sourceLang}|${targetLang}`);
+        // Use LibreTranslate API (public instance)
+        const response = await fetch('https://libretranslate.de/translate', {
+            method: 'POST',
+            body: JSON.stringify({
+                q: text,
+                source: sourceLang === 'auto' ? '' : sourceLang,
+                target: targetLang,
+                format: 'text'
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        });
         
-        if (!response.ok) throw new Error('Translation service unavailable');
+        if (!response.ok) {
+            throw new Error('Translation service unavailable');
+        }
         
         const data = await response.json();
         
-        if (data.responseData && data.responseData.translatedText) {
+        if (data.translatedText) {
             displayTranslationResults(
-                text, 
-                data.responseData.translatedText, 
-                { 
-                    language: sourceLang === 'auto' ? (data.responseData.detectedLanguage || 'en') : sourceLang,
-                    confidence: data.responseData.match ? (data.responseData.match / 100) : undefined
-                },
+                text,
+                data.translatedText,
+                sourceLang === 'auto' ? (data.detectedLanguage?.language || 'en') : sourceLang,
                 targetLang
             );
         } else {
@@ -285,74 +275,79 @@ async function translateText() {
         }
     } catch (error) {
         console.error('Translation error:', error);
-        translationResults.innerHTML = `
-            <div class="translation-card">
-                <h2>Error</h2>
-                <div class="translation-text">
-                    Failed to translate: ${error.message || 'Service unavailable'}
-                </div>
-                <div class="translation-meta">
-                    Please try again later or use shorter text.
-                </div>
-            </div>`;
+        showTranslationError(`Failed to translate: ${error.message || 'Service unavailable'}`);
     }
 }
 
 // Display translation results
-function displayTranslationResults(originalText, translatedText, detectedLanguage, targetLang) {
+function displayTranslationResults(originalText, translatedText, detectedLang, targetLang) {
     translationResults.innerHTML = '';
     
-    // Main translation card
     const translationCard = document.createElement('div');
     translationCard.className = 'translation-card';
     translationCard.innerHTML = `
         <h2>Translation Results</h2>
         <div class="translation-original">
-            <strong>Original (${languages[detectedLanguage.language]?.name || detectedLanguage.language}):</strong>
+            <strong>Original (${languages[detectedLang]?.name || detectedLang}):</strong>
             <div class="translation-text">${originalText}</div>
         </div>
         <div class="translation-result">
             <strong>Translated (${languages[targetLang]?.name || targetLang}):</strong>
             <div class="translation-text">${translatedText}</div>
         </div>
-        ${detectedLanguage.confidence ? `
-            <div class="translation-meta">
-                <span>Detection confidence: ${Math.round(detectedLanguage.confidence * 100)}%</span>
-            </div>
-        ` : ''}
     `;
     
     // Add dictionary lookup option if text is a single word
     const translatedWord = translatedText.split(/\s+/)[0];
-    if (translatedWord && translatedWord.length > 0 && translatedWord.length < 30 && !translatedWord.match(/[^\w']/)) {
-        const lookupBtn = document.createElement('button');
-        lookupBtn.className = 'dict-lookup-btn';
-        lookupBtn.innerHTML = `<i class="fas fa-book"></i> Look up "${translatedWord}" in dictionary`;
-        lookupBtn.onclick = () => {
-            // Switch to dictionary mode
-            document.querySelector('.mode-btn[data-mode="dictionary"]').click();
-            // Set the word and language
-            input.value = translatedWord;
-            document.getElementById('dictLanguage').value = targetLang;
-            // Trigger search
-            setTimeout(() => {
-                lookup();
-            }, 300);
-        };
-        translationCard.appendChild(lookupBtn);
+    if (translatedWord && translatedWord.length < 30 && !translatedWord.match(/[^\w']/)) {
+        translationCard.innerHTML += `
+            <button class="dict-lookup-btn" onclick="lookupTranslatedWord('${translatedWord}', '${targetLang}')">
+                <i class="fas fa-book"></i> Look up "${translatedWord}" in dictionary
+            </button>
+        `;
     }
     
     translationResults.appendChild(translationCard);
 }
 
-// Event Listeners
-btn.addEventListener('click', lookup);
-input.addEventListener('keydown', e => e.key === 'Enter' && lookup());
-translateBtn.addEventListener('click', translateText);
-textToTranslate.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && e.ctrlKey) {
-        e.preventDefault();
-        translateText();
-    }
-});
+// Look up translated word in dictionary
+function lookupTranslatedWord(word, language) {
+    // Switch to dictionary mode
+    switchMode('dictionary');
+    
+    // Set the word and language
+    wordInput.value = word;
+    dictLanguageSelect.value = language;
+    
+    // Trigger search after a small delay
+    setTimeout(searchDictionary, 300);
+}
 
+// Show translation error message
+function showTranslationError(message) {
+    translationResults.innerHTML = `
+        <div class="translation-card">
+            <h2>Error</h2>
+            <div class="translation-text">${message}</div>
+        </div>`;
+}
+
+// Translate word from dictionary results
+function translateWord(word, sourceLang) {
+    // Switch to translator mode
+    switchMode('translator');
+    
+    // Set the text and languages
+    textToTranslate.value = word;
+    sourceLanguageSelect.value = sourceLang;
+    
+    // Focus on translation input
+    setTimeout(() => {
+        textToTranslate.focus();
+    }, 300);
+}
+
+// Make functions available globally for HTML onclick attributes
+window.playAudio = playAudio;
+window.translateWord = translateWord;
+window.lookupTranslatedWord = lookupTranslatedWord; 
